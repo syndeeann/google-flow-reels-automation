@@ -24,6 +24,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 - 2026-10-27: scheduled task **"Kwento: Kilabot daily videos"** created: daily 8:45 AM Asia/Manila, on the owner's Mac (needs the Claude desktop app open and online), Downloads folder attached, push notifications on. Each run makes up to 3 videos and sends them for approval; it never posts.
 
+- 2026-10-27 04:00: owner: **at least 1 video a day**. Policy: video 1 always (lean 4–5-clip story ≤ 50 credits when the balance is under 300, matching the +50/day allowance); videos 2–3 only when the balance stays ≥ 300 afterwards.
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.

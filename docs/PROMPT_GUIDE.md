@@ -6,6 +6,7 @@ Claude writes the stories. The owner approves every finished video before anythi
 
 ## Story rules
 - **Short but interesting: 45–60 seconds**, 5–7 clips, about 80–110 spoken words in total. One idea, one creature, one twist.
+- **Lean story** (when credits are low, see RUNBOOK Daily run): 4–5 clips, ~35–45 s, 55–75 words, ≤ 50 credits — hook, two beats, twist.
 - **First person**, told by the Narrator as something that happened to him or his family. Relatable modern Filipino life (night shift, tricycle, sari-sari store, lamay, probinsya visit, OFW, group chat) colliding with old folklore.
 - **Creatures and elementals:** aswang, manananggal, tiktik, wakwak, tikbalang, kapre, duwende, nuno sa punso, engkanto, diwata, tiyanak, sigbin, santelmo, white lady, berberoka, bungisngis, mangkukulam / barang, kambal-tuko, multo sa lumang bahay. Use authentic details (tiktik sound gets louder when it's far, aswang reflection upside down in the eyes, asin at bawang, "tabi-tabi po").
 - **Variety:** don't reuse the creature or the twist type of the last 6 stories in `queue/topics.yaml`. Each day's 3 stories should use 3 different creatures and 3 different settings.

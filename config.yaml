@@ -28,9 +28,13 @@ flow:
   model: "Omni 1.1 Flash"       # 720p, 9:16, Ingredients mode; 6s=10, 8s=12, 10s=15 credits
   outputs_per_prompt: 1         # variants per clip (each one costs credits)
   max_clips_per_run: 8          # per VIDEO (redos count too)
-  videos_per_run: 3             # daily run makes up to 3 videos
-  credits_per_video_estimate: 90
-  credit_reserve: 60            # never spend the balance below this
+  min_videos_per_run: 1         # owner: at least 1 video every day (always made first)
+  videos_per_run: 3             # up to 3 when credits allow
+  credits_per_video_estimate: 90   # standard 45-60s story (6-7 clips)
+  lean_video_max_credits: 50    # lean story (4-5 clips, ~35-45s) fits the +50 credits/day allowance
+  extras_reserve: 300           # make videos 2-3 only if the balance stays above this afterwards
+  lean_below: 300               # below this balance, video 1 is a lean story so the daily video never stops
+  credit_reserve: 0             # absolute floor
   download_clips: true          # download finished clips to the computer's Downloads folder
 
 delivery:
@@ -47,4 +51,4 @@ facebook:
 
 schedule:
   # Informational: the actual schedule is the Claude scheduled task "Kwento: Kilabot daily videos" (created 2026-10-27, runs on the owner's computer, auto-approved actions; never posts).
-  description: "Daily 8:45 AM Asia/Manila, up to 3 videos per run, each sent for approval"
+  description: "Daily 8:45 AM Asia/Manila: at least 1 video, up to 3 when credits allow; each sent for approval"
