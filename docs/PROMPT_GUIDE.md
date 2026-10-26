@@ -1,49 +1,64 @@
-# Writing Kwento: Kilabot scripts, Flow prompts and captions
+# Writing Kwento: Kilabot stories, Flow prompts and captions
 
-Channel: **Kwento: Kilabot** — Tagalog horror stories based on Filipino folklore. Dark foggy night scenes, a slow eerie male narrator, and every video ends on a twist.
+Channel: **Kwento: Kilabot** — short Tagalog horror stories from Filipino folklore, always ending on a twist. Dark foggy night scenes, one low, tired, almost calm male narrator (the Flow **Narrator** character).
 
-## Script
-- Language: natural spoken **Tagalog** (not deep/formal Filipino; a few common English words are fine if that's how people talk). No English narration.
-- One voice-over line per ~8-second clip, max `max_words_per_clip` words (default 15). The narrator is slow with pauses: read it aloud slowly; it must fit in 8 seconds.
-- Story shape:
-  - **Clip 1 = hook.** Drop the viewer into the dread in the first 2 seconds: a rule ("Huwag kang lilingon kapag may tumawag sa pangalan mo sa gabi."), an eerie detail, or "Totoo ito, nangyari sa probinsya namin."
-  - **Middle clips = build.** One beat each; escalate. Show, don't explain. Name the creature only if it adds dread.
-  - **Last clip = the twist.** A reveal that flips what came before (often recontextualizing the narrator or a "safe" character). End on the twist line itself, no moral, no outro, no call to action (the CTA lives in the caption). `video.cta_in_last_clip` is false.
-- Use the topic's `folklore` and `notes`. If `notes` suggest a twist, you may improve it, but keep it a twist.
-- Folklore should feel authentic: aswang, manananggal, tikbalang, kapre, tiyanak, duwende, white lady, santelmo, sigbin, etc., with provincial settings (kubo, bukid, balete, kawayan, lumang bahay na bato, sapa).
+Claude writes the stories. The owner approves every finished video before anything is posted.
+
+## Story rules
+- **Short but interesting: 45–60 seconds**, 5–7 clips, about 80–110 spoken words in total. One idea, one creature, one twist.
+- **First person**, told by the Narrator as something that happened to him or his family. Relatable modern Filipino life (night shift, tricycle, sari-sari store, lamay, probinsya visit, OFW, group chat) colliding with old folklore.
+- **Creatures and elementals:** aswang, manananggal, tiktik, wakwak, tikbalang, kapre, duwende, nuno sa punso, engkanto, diwata, tiyanak, sigbin, santelmo, white lady, berberoka, bungisngis, mangkukulam / barang, kambal-tuko, multo sa lumang bahay. Use authentic details (tiktik sound gets louder when it's far, aswang reflection upside down in the eyes, asin at bawang, "tabi-tabi po").
+- **Variety:** don't reuse the creature or the twist type of the last 6 stories in `queue/topics.yaml`. Each day's 3 stories should use 3 different creatures and 3 different settings.
+- **Shape:**
+  1. **Hook (clip 1, first 2–3 s spoken):** a rule, a confession, an impossible detail, or a price (see `docs/CAPTION_GUIDE.md`). Say a searchable word early (e.g. "aswang").
+  2. **Build (2–4 clips):** one escalating beat per clip. Show, don't explain.
+  3. **Twist (last clip):** one line that flips everything (the narrator is the creature; the "rescuer" was the monster; the date shows he died years ago…). End on the twist line. No moral, no outro, no CTA spoken.
+- Keep it horror, not gore: imply violence (shadows, sounds, aftermath off screen). No children harmed on screen, no real people, no real crimes, no brands.
+- **Second voices are risky:** Flow refused a clip twice when another character shouted a line. Keep other characters' lines short and quiet (on-camera, spoken softly), or have the narrator quote them.
+- Title format: `Kilabot #N: <Tagalog title>`; N continues from the last number in the queue.
+
+## Clip timing (Flow Omni 1.1 Flash: 4/6/8/10 s)
+Count narration + dialogue words per clip:
+| words | clip length | credits |
+|---|---|---|
+| ≤ 9 | 6 s | 10 |
+| 10–14 | 8 s | 12 |
+| 15–18 | 10 s | 15 |
+Never more than 18 words in one clip (it gets cut off at the end). Put `"seconds"` on every clip in prompts.json.
 
 ## Prompts
-Every prompt must stand on its own. Veo does not remember the previous clip. Use this order:
+Every prompt stands on its own (the model doesn't remember other clips). Order:
+1. `Vertical 9:16 video.` + the Narrator line:
+   - off screen: `The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over.`
+   - on screen: `The attached Narrator character is the young man in this scene (use his look); his voice is the voice-over.`
+   - clip where only another character speaks: no Narrator line, and don't attach the character in Flow.
+2. Camera + action for these seconds (slow push-in, static wide, slow pan to a doorway…). Suggest the creature (silhouette, eyes in the dark, shadow, sound) more than show it.
+3. Setting/light: the brief's `look` + scene details (Metro Manila street or province, as the story needs).
+4. Audio: `Narrator voice-over in Tagalog (<brief.narrator>): "<exact line>"` + 2–3 specific sounds (crickets stopping, tiktik calls, wind in bamboo, creaking floorboards, distant dog howl, low drone). For on-camera speech: `The old woman says quietly in Tagalog: "<line>"`.
+5. Negatives last: the brief's `negatives`.
 
-1. **Format + camera:** "Vertical 9:16 video." plus a slow, ominous move (slow push-in, slow dolly through fog, static wide shot, slow pan to a dark doorway).
-2. **Character sheet:** if a person recurs, paste the SAME sentence in every clip, word for word (age, face, hair, clothes). Put it in `character` in prompts.json too.
-3. **Action:** what happens in these 8 seconds. Suggest the creature (silhouette, eyes in the dark, shadow on the wall, shape in the fog) more than you show it.
-4. **Setting, light, style:** the brief's `look` (dark foggy night) plus scene details.
-5. **Audio:** `Narrator voice-over in Tagalog (<brief.narrator>): "<exact voiceover line>"` plus ambience/SFX (crickets stopping, wind in bamboo, creaking floorboards, distant dog howl, low drone). No music with lyrics.
-6. **Negatives last:** the brief's `negatives` (no subtitles, no on-screen text, no watermark, no logos, no gore, no blood).
+Recurring non-narrator characters: write one character sheet sentence and paste it word for word in every clip they appear in.
 
-Keep it horror, not gore: Flow refuses graphic violence, so imply it (sounds, shadows, aftermath kept off-screen). Avoid real people, real crimes, brand logos, copyrighted characters, and children in danger shown explicitly (imply instead).
-
-## Caption (prompts.json → `caption_text`, `hashtags`)
-- `caption_text`: 1–3 short Tagalog lines: a creepy hook + a teaser question ("Ikaw, lilingon ka ba?"). **Never reveal the twist.** No hashtags here.
-- `hashtags`: 2–4 topic-specific tags, e.g. `["#Aswang", "#KwentongAswang"]`.
-- `render` builds `caption.txt` = caption_text + the channel CTA + topic hashtags + channel hashtags (`config.yaml → caption`).
-
-## prompts.json shape
+## prompts.json
 ```json
 {
-  "title": "Aswang sa Kabilang Bahay",
-  "character": "<one-line character sheet, or empty string>",
+  "title": "Kilabot #2: …",
+  "character": "",
   "narrator": "<exactly brief.narrator>",
   "clips": [
-    {"voiceover": "<= max_words_per_clip words, Tagalog>", "visual": "<one line>", "prompt": "<full Flow prompt>"}
+    {"seconds": 8, "voiceover": "…", "dialogue": "", "visual": "…", "prompt": "…"}
   ],
-  "caption_text": "<hook + teaser, no twist spoiler>",
-  "hashtags": ["#Aswang"]
+  "caption_full": "<the Facebook caption, exactly as it will be posted>",
+  "caption_text": "<line 1 of the caption>",
+  "hashtags": [],
+  "captions": {"facebook": "…", "instagram": "…", "tiktok": "…", "pinned_comment": "…", "replies": ["…", "…"]},
+  "end_card": "<short question for the last card, ≤ 2 lines of ~30 chars>",
+  "characters": {"<name>": "<sheet>"}
 }
 ```
+Captions follow `docs/CAPTION_GUIDE.md`.
 
-## Example clip (hook)
+## Example clip (hook, narrator off screen)
 ```
-Vertical 9:16 video. Slow push-in through thick fog toward a lone nipa hut on stilts, one window glowing with a dim oil lamp. A young Filipina woman, early 20s, long straight black hair, pale yellow duster dress, stands frozen at the window staring at the bamboo grove outside. Dark foggy night, thick low mist, cold blue moonlight, deep shadows, rural Philippine province, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (slow, deep, eerie adult Filipino male voice, hushed Tagalog storytelling with long pauses): "Sa probinsya namin, may isang patakaran. Huwag kang sisilip sa bintana pagsapit ng hatinggabi." Crickets suddenly go silent, wind rustling bamboo, low droning tone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in through thick fog toward a lone nipa hut on stilts, one window glowing with a dim oil lamp, bamboo grove swaying behind it. Dark foggy night, thick low mist, cold blue moonlight, deep shadows, rural Philippine province, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Sa probinsya namin, kapag mahina ang tiktik… ibig sabihin, nasa tabi mo na siya." Crickets suddenly go silent, a faint tik-tik call, low drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
 ```

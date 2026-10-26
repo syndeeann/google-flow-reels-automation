@@ -180,8 +180,12 @@ def main(run_dir: Path) -> None:
     whole = loudness(tmp / "audio.wav", 0, nsamp / SR)
     g = -14.0 - whole
     final = run_dir / f"{tid}-final.mp4"
+    # size cap: Claude in Chrome uploads files < 10 MB; long videos fall back to ~1.1 Mb/s (owner drags the file in)
+    max_mb = float(edit.get("max_mb", 9.5))
+    secs = nframes / FPS
+    vkbps = int(min(1400, max(1100 if secs > 75 else 500, max_mb * 8000 / secs * 0.93 - 128)))
     run(["-i", str(tmp / "video.mkv"), "-i", str(tmp / "audio.wav"), "-map", "0:v", "-map", "1:a",
-         "-c:v", "libx264", "-preset", "veryfast", "-crf", "22", "-maxrate", "1100k", "-bufsize", "2200k",
+         "-c:v", "libx264", "-preset", "veryfast", "-crf", "22", "-maxrate", f"{vkbps}k", "-bufsize", f"{2*vkbps}k",
          "-af", f"volume={g:.2f}dB,alimiter=limit=0.85:attack=5:release=50:level=disabled",
          "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(final)])
 

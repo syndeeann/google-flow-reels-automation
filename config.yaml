@@ -3,17 +3,18 @@
 
 video:
   aspect_ratio: "9:16"          # vertical for Reels / TikTok / Shorts
-  length_seconds: 32            # 16, 24, 32, 40 ... -> 2, 3, 4, 5 ... clips of ~8s
-  clip_seconds: 8               # Veo clip length
-  max_words_per_clip: 15        # slow, eerie narration: ~15 Tagalog words fit in 8s
+  length_seconds: 54            # short stories: 45-60s, 5-7 clips of 6/8/10s (see PROMPT_GUIDE clip timing)
+  clip_seconds: 9               # average clip length used to estimate clip count
+  max_words_per_clip: 18        # hard cap for a 10s clip; 8s = 14, 6s = 9
   cta_in_last_clip: false       # last clip is the twist; the call to action goes in the caption instead
 
 voice:
   language: "Tagalog"
-  narrator: "slow, deep, eerie adult Filipino male voice, hushed Tagalog storytelling with long pauses"
+  narrator: "low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting"
+  flow_character: "Narrator"   # Flow character with voice enceladus; attach to every narrated clip
 
 style:
-  look: "dark foggy night, thick low mist, cold blue moonlight, deep shadows, rural Philippine province, cinematic, realistic, slow ominous camera movement, subtle film grain"
+  look: "dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain"   # add the setting per story (province or Metro Manila)
   negatives: "no subtitles, no on-screen text, no watermark, no logos, no gore, no blood"
 
 caption:
@@ -24,9 +25,19 @@ caption:
 
 flow:
   url: "https://flow.google.com"
+  model: "Omni 1.1 Flash"       # 720p, 9:16, Ingredients mode; 6s=10, 8s=12, 10s=15 credits
   outputs_per_prompt: 1         # variants per clip (each one costs credits)
-  max_clips_per_run: 8          # safety cap on credits per run (redos count too)
+  max_clips_per_run: 8          # per VIDEO (redos count too)
+  videos_per_run: 3             # daily run makes up to 3 videos
+  credits_per_video_estimate: 90
+  credit_reserve: 60            # never spend the balance below this
   download_clips: true          # download finished clips to the computer's Downloads folder
+
+delivery:
+  width: 720
+  height: 1280
+  max_mb: 9.5                   # Claude in Chrome uploads files < 10 MB
+  folder: "~/Downloads/Kwento Kilabot"
 
 facebook:
   page_name: "Kwento: Kilabot"
@@ -36,4 +47,4 @@ facebook:
 
 schedule:
   # Informational: the actual schedule is the Claude scheduled task (not created yet; owner reviews it first).
-  description: "Weekdays 8:45 AM Asia/Manila, one video per run"
+  description: "Daily 8:45 AM Asia/Manila, up to 3 videos per run, each sent for approval"

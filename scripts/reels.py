@@ -108,6 +108,7 @@ def build_brief(topic: dict, cfg: dict) -> dict:
         "aspect_ratio": v["aspect_ratio"],
         "length_seconds": length,
         "clip_count": n,
+        "clip_count_fixed": "clip_count" in topic,
         "clip_seconds": v["clip_seconds"],
         "max_words_per_clip": int(topic.get("max_words_per_clip", v["max_words_per_clip"])),
         "max_clips": cap_clips,
@@ -153,8 +154,11 @@ def cmd_validate(run_dir: Path) -> None:
     clips = data.get("clips") or []
     problems: list[str] = []
 
-    if len(clips) != brief["clip_count"]:
+    if brief.get("clip_count_fixed", True) and len(clips) != brief["clip_count"]:
         problems.append(f"expected {brief['clip_count']} clips, found {len(clips)}")
+    if not brief.get("clip_count_fixed", True) and not (4 <= len(clips) <= 8):
+        problems.append(f"short stories need 4-8 clips, found {len(clips)}")
+    word_cap = {6: 9, 8: 14, 10: 18}
 
     character = (data.get("character") or "").strip()
     narrator = (data.get("narrator") or brief["narrator"]).strip()
@@ -166,8 +170,15 @@ def cmd_validate(run_dir: Path) -> None:
             problems.append(f"{tag}: missing voiceover line (or dialogue)")
         if dialogue and dialogue not in prompt:
             problems.append(f"{tag}: prompt doesn't contain the exact dialogue line")
-        elif word_count(vo) > brief["max_words_per_clip"]:
-            problems.append(f"{tag}: voiceover has {word_count(vo)} words (max {brief['max_words_per_clip']}) — won't fit in {brief['clip_seconds']}s")
+        secs = c.get("seconds")
+        spoken = word_count(vo) + word_count(dialogue)
+        if secs is not None:
+            if secs not in word_cap:
+                problems.append(f"{tag}: seconds must be 6, 8 or 10")
+            elif spoken > word_cap[secs]:
+                problems.append(f"{tag}: {spoken} spoken words won't fit in {secs}s (max {word_cap[secs]})")
+        elif vo and word_count(vo) > brief["max_words_per_clip"]:
+            problems.append(f"{tag}: voiceover has {word_count(vo)} words (max {brief['max_words_per_clip']})")
         if not prompt:
             problems.append(f"{tag}: missing prompt")
             continue
@@ -199,6 +210,20 @@ def cmd_validate(run_dir: Path) -> None:
         if "#" in caption_text:
             problems.append("caption_text has hashtags; put them in 'hashtags' instead")
 
+    caps = data.get("captions")
+    if caps is not None:
+        for k in ("facebook", "instagram", "tiktok", "pinned_comment"):
+            if not (caps.get(k) or "").strip():
+                problems.append(f"captions.{k} missing")
+        for k in ("facebook", "instagram", "tiktok"):
+            n = len(re.findall(r"#\w+", caps.get(k) or ""))
+            if not 3 <= n <= 5:
+                problems.append(f"captions.{k}: {n} hashtags (use 3-5; Instagram allows max 5)")
+        bait = re.compile(r"\b(i-?share|i-?tag|tag mo|tag a friend|like and share|share this)\b", re.I)
+        for k in ("facebook", "instagram", "tiktok"):
+            if bait.search(caps.get(k) or ""):
+                problems.append(f"captions.{k}: engagement bait (like/share/tag demands get demoted)")
+
     if problems:
         print("INVALID")
         for p in problems:
@@ -227,11 +252,20 @@ def cmd_render(run_dir: Path) -> None:
     out += ["## Facebook caption", "", "```", caption, "```", ""]
     (run_dir / "prompts.md").write_text("\n".join(out), encoding="utf-8")
     (run_dir / "caption.txt").write_text(caption + "\n", encoding="utf-8")
+    if data.get("captions"):
+        c = data["captions"]
+        txt = [f"=== Facebook (posted on the Page) ===\n{c['facebook']}", f"=== Instagram ===\n{c['instagram']}",
+               f"=== TikTok ===\n{c['tiktok']}", f"=== Pinned first comment ===\n{c['pinned_comment']}"]
+        if c.get("replies"):
+            txt.append("=== Reply templates ===\n" + "\n".join("- " + r for r in c["replies"]))
+        (run_dir / "captions.txt").write_text("\n\n".join(txt) + "\n", encoding="utf-8")
     print(f"Wrote {(run_dir / 'prompts.md').relative_to(ROOT)} and {(run_dir / 'caption.txt').relative_to(ROOT)}")
 
 
 def compose_caption(brief: dict, data: dict) -> str:
-    """caption_text + channel CTA + hashtags (topic-specific first, then channel defaults, no duplicates)."""
+    """captions.facebook, or caption_full, or caption_text + channel CTA + hashtags."""
+    if (data.get("captions") or {}).get("facebook"):
+        return data["captions"]["facebook"].strip()
     if (data.get("caption_full") or "").strip():  # owner-supplied caption, used verbatim
         return data["caption_full"].strip()
     parts = [(data.get("caption_text") or "").strip()]

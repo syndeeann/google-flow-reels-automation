@@ -19,6 +19,9 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 - 2026-10-27: first video produced: **Kilabot #1 "Bote, Diyaryo, at Alaala"** (topic `bote-diyaryo-alaala`), from the owner's "Story #1 + Facebook Growth Kit" doc. Full ~2:20 script as 23 Omni 1.1 Flash clips with a Flow **Narrator** character (voice `enceladus`) for a consistent narrator; edited with `scripts/assemble.py` (trims, faint cart-creak bed, silence before the twist, end card). 3:07, sent to the owner for approval; status `awaiting_approval`. Caption = Caption A from the doc. ~320 Flow credits used (balance was 1,050).
 
+- 2026-10-27 03:07: owner **approved Kilabot #1** (status `approved`; posting pending Facebook access). First cut had the voice-over out of sync (per-clip `loudnorm` dropped ~3s of audio); fixed in `assemble.py` with frame-locked audio + a sync check.
+- 2026-10-27: owner made this a **daily task**: Claude writes 3 short (45–60 s) Filipino horror stories with twists (aswang and other elementals), generates them in Flow, edits them, writes Facebook/Instagram/TikTok captions per `docs/CAPTION_GUIDE.md`, and sends all for approval. Nothing is posted without approval; ask the owner when Facebook access is needed.
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.
