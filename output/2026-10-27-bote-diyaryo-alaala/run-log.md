@@ -1,1 +1,5 @@
 - 2026-10-27 00:51 — Claimed topic 'bote-diyaryo-alaala' (22 clips, 9:16).
+- 2026-10-27 01:00 — Flow project "Kilabot #1 Bote Diyaryo at Alaala 2026-10-27" (Omni 1.1 Flash, 9:16, 720p, x1). Narrator character created (portrait + voice `enceladus`) and attached to every narrated clip.
+- 2026-10-27 01:25 — 23/23 clips generated (16 × 10s, 5 × 8s, 2 × 6s ≈ 320 credits). Clip 8 refused twice by the policy filter (vendor's shouted line in a second voice; refunded); v3 has the narrator quote the call and passed.
+- 2026-10-27 01:30 — Two clips (8, 15) were moved to Flow's trash by a mis-click on the toolbar and restored right away; a third was undone. Nothing lost.
+- 2026-10-27 01:33 — Edited with scripts/assemble.py: trims per edit.json, faint cart-creak bed (lifted from clip 22) under clips 1–17, silence before the twist (18–20), end card "Kung kayo ang nasa lugar ko, ibebenta niyo ba?". 187.4s, -14 LUFS. Delivery copy 720×1280 two-pass.

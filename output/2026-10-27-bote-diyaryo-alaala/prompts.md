@@ -15,7 +15,7 @@
 | 5 | Night shift ako sa call center, kaya ako ang laging nakakarinig. Masaya ang boses niya. | Narrator walking home from night shift at 3 AM |
 | 6 | Parang pagod na kuyang sanay na sa kalsada. Pero may mali. | The cart silhouette pauses under a flickering streetlight |
 | 7 | Pag-uwi ko, walang bakas ng gulong ng kariton. At walang kapitbahay na nakakarinig sa kanya. | Wet empty road with no cart tracks; dark silent houses |
-| 8 | Isang gabi, iba ang isinigaw niya. Napatigil ako sa labas ng gate. | Narrator freezes outside his gate as the new call comes |
+| 8 | Isang gabi, iba ang isinigaw niya: Bili po ng masasakit na alaala, mataas ang presyo. Napatigil ako sa labas ng gate. | Foggy empty street toward a closed green gate (v3; narrator quotes the call) |
 | 9 | Nung sumunod na linggo, nakita ko si Aling Cora. Namatayan siya ng anak noong isang taon. | Aling Cora's house by day-dusk: she sweeps, smiling |
 | 10 | Dati, hindi siya makalabas ng bahay sa sobrang lungkot. Pero ngayon, nakangiti siya. Nagwawalis. Humuhuni pa. | Cora humming, too happy |
 | 11 | Pagdaan ko sa bintana niya, may dalawang plato sa mesa. Dalawang baso. | Through her window: two plates, two glasses on the table |
@@ -79,7 +79,7 @@ Vertical 9:16 video. Low angle slow dolly along a wet, empty asphalt road with n
 ### Clip 8
 
 ```
-Vertical 9:16 video. Medium shot from behind of a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard stopped outside a closed green steel gate, keys in hand, slowly turning his head toward the fog. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Isang gabi, iba ang isinigaw niya. Napatigil ako sa labas ng gate." A man's cheerful voice calling far away in the fog, "Bili po ng masasakit na alaala! Mataas ang presyo!", a faint, slow squeaky cart wheel creaking far away, keys jingling then going still. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in down a foggy, empty residential street at night toward a closed green steel gate under a dim orange streetlight. Dark foggy night, thick low mist, cold blue moonlight, deep shadows, Metro Manila side street, cinematic, realistic, slow camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed storytelling): "Isang gabi, iba ang isinigaw niya: Bili po ng masasakit na alaala, mataas ang presyo. Napatigil ako sa labas ng gate." A faint squeaky cart wheel far away, gentle wind. No subtitles, no on-screen text, no watermark, no logos.
 ```
 
 ### Clip 9

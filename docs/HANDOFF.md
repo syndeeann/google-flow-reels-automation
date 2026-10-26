@@ -17,6 +17,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
   - RUNBOOK steps 4–7: join → send video + caption for approval → handle reply → post via Claude in Chrome / Meta Business Suite only after "approve".
   - Café sample replaced with 5 starter folklore topics (aswang, tikbalang, kapre, manananggal, tiyanak), all `draft`.
 
+- 2026-10-27: first video produced: **Kilabot #1 "Bote, Diyaryo, at Alaala"** (topic `bote-diyaryo-alaala`), from the owner's "Story #1 + Facebook Growth Kit" doc. Full ~2:20 script as 23 Omni 1.1 Flash clips with a Flow **Narrator** character (voice `enceladus`) for a consistent narrator; edited with `scripts/assemble.py` (trims, faint cart-creak bed, silence before the twist, end card). 3:07, sent to the owner for approval; status `awaiting_approval`. Caption = Caption A from the doc. ~320 Flow credits used (balance was 1,050).
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.
@@ -31,10 +33,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 ## To do next
 1. Owner reviews the proposed scheduled task below; create it only after they approve it (needs the owner's computer: `requires_local_device: true`).
-2. Owner marks one or more topics `ready` (or asks Claude to), then a supervised first run ("make the next Reel") to check:
-   - how well Veo speaks Tagalog in the native-audio narration (if poor, consider Taglish or a separate TTS track),
-   - whether Flow accepts the folklore prompts without policy refusals,
-   - the Meta Business Suite Reel upload flow in Claude in Chrome (file upload step).
+2. Owner reviews Kilabot #1 (voice quality in Tagalog, pacing, wheel bed). On "approve", post via RUNBOOK step 7 (first real test of the Meta Business Suite upload in Claude in Chrome).
+3. Decide on the scheduled task's per-run size: a full ~2–3 min story is ~23 clips / ~320 credits, beyond the 8-clip default cap and the AI Pro allowance for daily runs (balance 1,050 + 50/day). Options: shorter ~60s stories (8 clips, ~110 credits) on the schedule, full-length stories on request.
 
 ## Proposed scheduled task (NOT created yet)
 - Name: Kwento: Kilabot daily Reel

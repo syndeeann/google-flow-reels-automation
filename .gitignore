@@ -9,3 +9,7 @@ __pycache__/
 
 # Frame grabs used to check a joined video
 output/**/*.png
+*.mkv
+output/**/assemble-*/
+output/**/check/
+*.log
