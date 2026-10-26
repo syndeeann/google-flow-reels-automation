@@ -1,0 +1,20 @@
+# Video queue. Each scheduled run takes the FIRST topic with status: ready.
+#
+# status values:
+#   draft        - not ready yet, skipped
+#   ready        - will be produced on the next run
+#   in_progress  - a run picked it up (set automatically)
+#   prompts_only - script + prompts written, Flow generation not done (e.g. computer offline)
+#   done         - clips generated
+#   failed       - see the run log in output/
+#
+# Optional per-topic overrides: length_seconds, narrator, look, language, cta, notes
+
+topics:
+  - id: example-ube-latte
+    status: draft             # change to "ready" to produce it
+    topic: "Our café's new ube latte: creamy, purple, made with real ube halaya"
+    audience: "young professionals in Metro Manila"
+    cta: "Visit us this week and get 10% off your first ube latte"
+    length_seconds: 30
+    notes: "Cozy café vibe, rainy afternoon, Taglish narration"

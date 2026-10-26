@@ -1,0 +1,25 @@
+# Defaults for every video. A topic in queue/topics.yaml can override any of these.
+
+video:
+  aspect_ratio: "9:16"          # vertical for Reels / TikTok / Shorts
+  length_seconds: 30            # 15, 30, 45 or 60 -> 2, 4, 6 or 8 clips of ~8s
+  clip_seconds: 8               # Veo clip length
+  max_words_per_clip: 20        # voice-over words that fit in one 8s clip
+
+voice:
+  language: "English"
+  narrator: "warm adult female, Filipino-English accent, friendly and calm"
+
+style:
+  look: "cinematic, realistic, soft natural light, shallow depth of field"
+  negatives: "no subtitles, no on-screen text, no watermark, no logos"
+
+flow:
+  url: "https://flow.google.com"
+  outputs_per_prompt: 1         # variants per clip (each one costs credits)
+  max_clips_per_run: 8          # safety cap on credits per scheduled run
+  download_clips: true          # download finished clips to the computer's Downloads folder
+
+schedule:
+  # Informational: the actual schedule is the Claude scheduled task.
+  description: "Weekdays 8:45 AM Asia/Manila, one video per run"

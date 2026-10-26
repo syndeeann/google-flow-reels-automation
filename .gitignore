@@ -1,0 +1,8 @@
+# Video files live on your computer, not in git
+*.mp4
+*.mov
+*.webm
+*.wav
+*.mp3
+__pycache__/
+.DS_Store
