@@ -1,4 +1,4 @@
-# Captions and hooks for Facebook, Instagram and TikTok
+# Captions and hooks for Facebook, YouTube Shorts, Instagram and TikTok
 
 Research summary, 2026-10-27. Sources at the bottom; most are marketing sites summarizing Meta and TikTok statements, so treat numbers as guidance and let Page Insights decide.
 
@@ -23,6 +23,8 @@ Research summary, 2026-10-27. Sources at the bottom; most are marketing sites su
 - **Instagram:** same text, ≤5 hashtags (hard limit), keywords in the first line (Instagram leans on keywords over hashtags). Instagram's non-follower ceiling is 3 min, so 1-minute stories are fine.
 - **TikTok:** shorter: hook line + question + 3–5 hashtags. TikTok transcribes audio and reads on-screen text, so the spoken hook should contain the search words too (e.g. the narrator says "aswang" early).
 
+- **YouTube Shorts:** a **title** (≤ 100 chars, aim for ≤ 60) that leads with the hook + a search phrase and the series number, e.g. `May bumibili ng alaala tuwing 3AM 😨 | Tagalog Horror Story | Kilabot #1`; a **description**: the Facebook caption's lines 1–3 + "Kwento: Kilabot — Tagalog horror stories mula sa Filipino folklore. Kathang-isip lamang." + 3–5 hashtags (#Shorts can be one of them); **tags**: 5–10 search phrases (kwentong kilabot, tagalog horror story, aswang, …). No `<` or `>`. Mark the video as altered/synthetic content (realistic AI video) and not made for kids.
+
 ## Hook formulas (Tagalog) for the spoken first line and caption line 1
 - **The rule:** "Sa probinsya namin, may isang patakaran: huwag kang sasagot kapag may tumawag sa pangalan mo pagkalampas ng hatinggabi."
 - **The confession:** "Hanggang ngayon, hindi ko pa rin sinasabi kay Mama kung ano talaga ang nakita ko noong gabing 'yon."
@@ -36,7 +38,7 @@ Pick the one that matches the story; the first 2 seconds must already be uneasy.
 - **2 reply templates** in the narrator's voice for the first hour of comments.
 
 ## Output format
-`prompts.json` → `"captions": {"facebook": "...", "instagram": "...", "tiktok": "...", "pinned_comment": "...", "replies": ["...", "..."]}`; `caption_full` = the Facebook caption (what gets posted on the Page).
+`prompts.json` → `"captions": {"facebook": "...", "instagram": "...", "tiktok": "...", "youtube": {"title": "...", "description": "...", "tags": ["..."]}, "pinned_comment": "...", "replies": ["...", "..."]}`; `caption_full` = the Facebook caption (what gets posted on the Page).
 
 ## Sources
 - Buffer, "Inside the Facebook Algorithm in 2026" (Jan 2026): https://buffer.com/library/facebook-news-feed-algorithm/

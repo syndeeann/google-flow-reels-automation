@@ -2,7 +2,7 @@
 
 Channel: **Kwento: Kilabot** — short Tagalog horror stories from Filipino folklore, always ending on a twist. Dark foggy night scenes, one low, tired, almost calm male narrator (the Flow **Narrator** character).
 
-Claude writes the stories. The owner approves every finished video before anything is posted.
+Claude writes the stories. Every finished video must pass the quality check (RUNBOOK step 4b); the owner posts it.
 
 ## Story rules
 - **Short but interesting: 45–60 seconds**, 5–7 clips, about 80–110 spoken words in total. One idea, one creature, one twist.
@@ -52,7 +52,7 @@ Recurring non-narrator characters: write one character sheet sentence and paste 
   "caption_full": "<the Facebook caption, exactly as it will be posted>",
   "caption_text": "<line 1 of the caption>",
   "hashtags": [],
-  "captions": {"facebook": "…", "instagram": "…", "tiktok": "…", "pinned_comment": "…", "replies": ["…", "…"]},
+  "captions": {"facebook": "…", "instagram": "…", "tiktok": "…", "youtube": {"title": "…", "description": "…", "tags": ["…"]}, "pinned_comment": "…", "replies": ["…", "…"]},
   "end_card": "<short question for the last card, ≤ 2 lines of ~30 chars>",
   "characters": {"<name>": "<sheet>"}
 }
