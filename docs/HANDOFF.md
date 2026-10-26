@@ -28,6 +28,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 - 2026-10-27 04:17: owner **will post all videos manually**. Claude reverted the access it had set up for posting (closed the Facebook tab, released computer use) and removed the posting step; Claude sends a ready-to-post kit after approval instead. Kilabot #1 is `approved`, waiting for the owner to post it.
 
+- 2026-10-27 04:30: owner: runs must continue on their own without asking (including after usage limits). Added: resume-first rule (`reels.py next` returns unfinished topics before new ones), never-ask rule, and a second daily **catch-up** scheduled task at 2:45 PM that only finishes interrupted work. Video generation still needs the owner's Mac awake with the Claude app open (Flow has no API).
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.

@@ -131,12 +131,18 @@ def word_count(text: str) -> int:
 def cmd_next() -> None:
     cfg = load_yaml(CONFIG)
     topics = load_topics()
-    busy = [t["id"] for t in topics if t.get("status") == "in_progress"]
-    if busy:
-        print(f"WARNING: still in_progress from an earlier run: {', '.join(busy)}", file=sys.stderr)
-    topic = next((t for t in topics if t.get("status") == "ready"), None)
+    # resume unfinished work first (earlier runs that stopped midway), then new topics
+    topic = next((t for t in topics if t.get("status") in ("in_progress", "prompts_only")), None) \
+        or next((t for t in topics if t.get("status") == "ready"), None)
     if topic is None:
         print("NO_READY_TOPIC")
+        return
+    existing = sorted(OUTPUT.glob(f"*-{topic['id']}"))
+    if topic.get("status") in ("in_progress", "prompts_only") and existing:
+        run_dir = existing[-1]  # resume in the original run folder
+        log(run_dir, f"Resumed topic '{topic['id']}' (was {topic.get('status')}).")
+        set_status(topic["id"], "in_progress")
+        print(run_dir.relative_to(ROOT))
         return
     today = dt.datetime.now(MANILA).strftime("%Y-%m-%d")
     run_dir = OUTPUT / f"{today}-{topic['id']}"

@@ -7,6 +7,8 @@ Times are Asia/Manila. Work from the repo root.
 
 ## Daily run: at least 1 (up to 3) new stories → videos for approval
 This is the default for the scheduled task and for "make today's videos".
+0. **Unattended — never ask the owner anything.** Runs are scheduled and the owner may be away. Make the reasonable choice, note it in the run log and the final message, and keep going. The only things that wait for the owner are approvals of finished videos.
+0b. **Resume unfinished work first.** Earlier runs may have stopped midway (usage limit reached, computer asleep or off, Flow down). Before writing anything new, run `python scripts/reels.py status` and finish every topic in `in_progress` or `prompts_only`, oldest first. Reuse its committed `prompts.json` (don't rewrite the story), open its Flow project (named `<title> <date>`) and **reuse clips that already exist there — never pay twice for the same clip**; download/assemble/send as usual. Resumed videos count toward today's videos.
 1. **Setup** (step 0). Note any topics still `awaiting_approval` / `approved` (not posted) and list them in the final message.
 2. **Credit check → how many videos.** Open Flow (step 3) and read the balance from the PRO badge menu ("N Google Flow credits"). The owner wants **at least 1 video every day**:
    - **Video 1 (always):** standard 45–60 s story (~90 credits) if the balance is ≥ `flow.lean_below` (300); otherwise a **lean** story: 4–5 clips, ~35–45 s, ≤ `flow.lean_video_max_credits` (50) credits, e.g. 8+8+8+6 s. The plan adds 50 credits a day, so lean videos can continue indefinitely.
@@ -45,7 +47,7 @@ Committing before generation means the script and prompts are saved even if Flow
 
 ## 3. Generate in Google Flow (built-in browser on the owner's computer)
 - Load the `built-in-browser` skill, then its tools (ToolSearch query `mcp__remote-devices__Claude_Browser__`).
-- If the browser can't be reached (desktop app closed, computer asleep): run
+- If the browser can't be reached (desktop app closed, computer asleep or off): don't ask, don't wait; run
   `python scripts/reels.py finish <topic_id> prompts_only "computer offline"`, commit, push, notify the owner, stop.
 - Open `brief.flow_url` with `preview_start`. If a site isn't allowed, call `request_access` for
   `https://flow.google.com` (and `https://labs.google`) with scope `site`, then retry.
