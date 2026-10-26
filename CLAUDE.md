@@ -4,6 +4,7 @@ This repo turns a queue of topics into short vertical videos (Reels / TikTok / S
 
 - Queue: `queue/topics.yaml` (status `ready` = produce next)
 - Defaults: `config.yaml`
+- **Setup status, decisions and next steps: `docs/HANDOFF.md`. Read it first when continuing setup.**
 - Procedure: `docs/RUNBOOK.md`. Follow it exactly for "run the pipeline", "make the next Reel", or a scheduled run.
 - Prompt rules: `docs/PROMPT_GUIDE.md`
 - Helper CLI: `python scripts/reels.py next | validate | render | finish | status`
