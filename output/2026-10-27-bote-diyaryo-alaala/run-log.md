@@ -5,3 +5,4 @@
 - 2026-10-27 01:33 — Edited with scripts/assemble.py: trims per edit.json, faint cart-creak bed (lifted from clip 22) under clips 1–17, silence before the twist (18–20), end card "Kung kayo ang nasa lugar ko, ibebenta niyo ba?". 187.4s, -14 LUFS. Delivery copy 720×1280 two-pass.
 - 2026-10-27 02:07 — Delivery copy 720×1280, 23 MB, saved to Downloads/Kwento Kilabot/bote-diyaryo-alaala-final.mp4 and sent to the owner for approval. Nothing posted.
 - 2026-10-27 02:08 — Finished with status 'awaiting_approval'.
+- 2026-10-27 02:26 — Owner: voice-over out of sync. Cause: per-segment loudnorm in assemble.py dropped the last ~3s of audio in the 17 clips with the wheel bed. Rebuilt with frame-locked audio and static gain; sync check worst lag 10 ms. New file replaced the old one in Downloads/Kwento Kilabot and re-sent. Still awaiting approval.

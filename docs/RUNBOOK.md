@@ -58,10 +58,9 @@ If any clip is missing, do not join a partial story: mark `failed` with the reas
   ```bash
   python scripts/assemble.py <run_dir>
   ```
-  It trims, scales to 1080×1920, evens out loudness per clip, mixes the bed under the listed clips, adds the end card, and normalizes to about -14 LUFS → `<run_dir>/<topic_id>-final.mp4`.
+  It trims each clip to whole frames, locks every segment's audio to exactly its video length, levels each clip with a static gain (no look-ahead filters — `loudnorm` per segment dropped ~3s of narration and broke sync in the first cut of Kilabot #1), mixes the bed, adds the end card, normalizes to about -14 LUFS and writes a 720×1280 file under 30 MB.
+  It ends with a **sync check**: each segment of the final is cross-correlated with its source clip, and it fails if any lag is over 60 ms. Don't deliver a video that didn't pass.
   Trim rule of thumb: start ~0.6s before speech, end ~0.7s after (longer after a reveal); keep any pause the script asks for.
-- The device bridge writes files up to 30 MB: make the delivery copy 720×1280 with a two-pass x264 encode at a bitrate that fits (e.g. ~1050 kb/s for 3 minutes) and keep the 1080p master in the workspace.
-- If two-pass x264 hangs or reports "Incomplete MB-tree stats", use one pass: `-preset veryfast -crf 22 -maxrate 1100k -bufsize 2200k` (3:07 → 23 MB), and always pass `-nostdin`.
 - Write the final video back to the owner's computer: `Downloads/Kwento Kilabot/<topic_id>-final.mp4` (`device_commit_files` from `/mnt/user-data/outputs/`).
 
 ## 5. Ask for approval (nothing is posted)
