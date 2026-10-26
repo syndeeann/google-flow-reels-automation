@@ -7,3 +7,4 @@
 - 2026-10-27 02:08 — Finished with status 'awaiting_approval'.
 - 2026-10-27 02:26 — Owner: voice-over out of sync. Cause: per-segment loudnorm in assemble.py dropped the last ~3s of audio in the 17 clips with the wheel bed. Rebuilt with frame-locked audio and static gain; sync check worst lag 10 ms. New file replaced the old one in Downloads/Kwento Kilabot and re-sent. Still awaiting approval.
 - 2026-10-27 03:08 — Finished with status 'approved'. owner approved 2026-10-27 03:07
+- 2026-10-27 04:28 — Finished with status 'posted'. posted by owner 2026-10-27
