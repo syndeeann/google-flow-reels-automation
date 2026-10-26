@@ -15,6 +15,17 @@
 # Every story: Tagalog, Filipino folklore, dark foggy night, slow eerie male narrator, ends on a twist.
 
 topics:
+  - id: bote-diyaryo-alaala
+    status: in_progress
+    topic: "Kilabot #1: Bote, Diyaryo, at Alaala — a 3 AM junk buyer who pays cash for painful memories"
+    folklore: "Original urban legend (magbobote / junk buyer at 3 AM)"
+    source: "Kwento: Kilabot — Story #1 + Facebook Growth Kit (Oct 26, 2026)"
+    clip_count: 23            # full ~2:20 story, owner-approved 2026-10-27
+    max_clips: 26             # owner-approved credit cap for this video (includes a few redos)
+    max_words_per_clip: 17
+    length_seconds: 140
+    notes: "Use the script from the growth kit nearly verbatim. Narrator = Flow character (low, tired, almost calm Tagalog male). Faint squeaky cart wheel under the video, distant 'Bote! Diyaryo!' call, silence before the twist, 1s pause after 'Sinong Papa, anak?'. On-screen last card: Kung kayo ang nasa lugar ko, ibebenta niyo ba? Caption A."
+
   - id: aswang-sa-kabilang-bahay
     status: draft             # change to "ready" to produce it
     topic: "Isang dalaga sa probinsya ang napapansing laging gising sa gabi ang bagong kapitbahay — aswang pala"

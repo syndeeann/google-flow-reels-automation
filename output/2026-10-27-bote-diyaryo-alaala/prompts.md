@@ -1,0 +1,187 @@
+# Kilabot #1: Bote, Diyaryo, at Alaala
+
+- Topic id: `bote-diyaryo-alaala`
+- Format: 9:16, 140s, 23 clips
+- Narrator: low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting
+
+## Script
+
+| Clip | Voice-over | Visual |
+|---|---|---|
+| 1 | May dumadaan sa amin tuwing alas-tres ng madaling-araw. Bumibili ng bote, diyaryo… at alaala. | Empty foggy street at 3 AM, a cart silhouette far away |
+| 2 | Tuwing alas-tres, may sumisigaw sa kalye namin. Normal lang 'yan dito sa Pilipinas, 'di ba? | Wall clock at 3:00, street through window bars |
+| 3 | Pero sabi ni Lola noon: kapag lampas alas-tres at may sumigaw n'yan, huwag kang sasagot. | Old grandmother's hands on a rosary, lit by a candle (memory) |
+| 4 | Huwag mong bubuksan ang gate. Kahit gaano kataas ang alok. Akala ko pamahiin lang. | Closed steel gate in fog, padlocked |
+| 5 | Night shift ako sa call center, kaya ako ang laging nakakarinig. Masaya ang boses niya. | Narrator walking home from night shift at 3 AM |
+| 6 | Parang pagod na kuyang sanay na sa kalsada. Pero may mali. | The cart silhouette pauses under a flickering streetlight |
+| 7 | Pag-uwi ko, walang bakas ng gulong ng kariton. At walang kapitbahay na nakakarinig sa kanya. | Wet empty road with no cart tracks; dark silent houses |
+| 8 | Isang gabi, iba ang isinigaw niya. Napatigil ako sa labas ng gate. | Narrator freezes outside his gate as the new call comes |
+| 9 | Nung sumunod na linggo, nakita ko si Aling Cora. Namatayan siya ng anak noong isang taon. | Aling Cora's house by day-dusk: she sweeps, smiling |
+| 10 | Dati, hindi siya makalabas ng bahay sa sobrang lungkot. Pero ngayon, nakangiti siya. Nagwawalis. Humuhuni pa. | Cora humming, too happy |
+| 11 | Pagdaan ko sa bintana niya, may dalawang plato sa mesa. Dalawang baso. | Through her window: two plates, two glasses on the table |
+| 12 | Tinanong ko kung sino ang kasabay niyang kumain. Natigilan siya. Tumingin sa pangalawang plato. | Cora stares at the second plate |
+| 13 | *Ewan ko ba, iho… pero gabi-gabi, dalawa ang hinahanda ko.* | Cora answers, confused |
+| 14 | Hindi siya gumaling. Nakalimutan lang niyang nagkaanak siya. | Empty chair; child's slippers under it |
+| 15 | Isang taon na mula nang mamatay si Papa. Ako 'yung hindi umabot sa huling araw niya. | Narrator alone at home, a framed photo of his father |
+| 16 | Araw-araw ko 'yong dala. Kaya aaminin ko… nung gabing 'yon, muntik ko nang buksan ang gate. | Narrator's hand on the gate latch at night |
+| 17 | Hindi ko binuksan. | He lets go and steps back |
+| 18 | Pero kagabi, habang nagluluto si Mama, tinanong ko siya. *Ma, ano nga ulit ang paboritong ulam ni Papa?* | Mama cooking; he asks from the doorway |
+| 19 | *Sinong Papa, anak?* | Mama turns, smiling, no tears: 'Sinong Papa, anak?' then silence |
+| 20 | Sa ilalim ng bigasan, may nakatuping pera. Pitong libong piso. Bago pa ang tupi. | Under the rice container: folded new bills |
+| 21 | Ako na lang ang natitirang nakakaalala sa Papa ko. | He sits alone with the photo; the only one who remembers |
+| 22 | At ngayong gabi, narinig ko ulit ang gulong ng kariton. Hindi na siya sumisigaw sa kalsada. | He lies awake in bed; the cart wheel returns |
+| 23 | Nasa tapat na siya ng bintana ko. *Sir… dagdagan ko na po ang presyo.* | The vendor's silhouette right outside his window |
+
+## Flow prompts (paste one per generation)
+
+### Clip 1
+
+```
+Vertical 9:16 video. Slow push-in down an empty street toward a faceless dark silhouette of a junk buyer in a wide woven hat pushing a wooden cart, barely visible at the far end in the fog. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "May dumadaan sa amin tuwing alas-tres ng madaling-araw. Bumibili ng bote, diyaryo… at alaala." A faint, slow squeaky cart wheel creaking far away, distant dog howl, low droning tone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 2
+
+```
+Vertical 9:16 video. Slow push-in on an old wall clock with both hands at three o'clock, then tilt to a barred window showing the foggy street. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Tuwing alas-tres, may sumisigaw sa kalye namin. Normal lang 'yan dito sa Pilipinas, 'di ba?" A man's cheerful call echoing far away down the street, "Bote! Diyaryo! Bakal!", a faint, slow squeaky cart wheel creaking far away, clock ticking. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 3
+
+```
+Vertical 9:16 video. Slow close-up of an old Filipina grandmother's wrinkled hands holding a wooden rosary beside a small candle, warm faded flashback tones. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Pero sabi ni Lola noon: kapag lampas alas-tres at may sumigaw n'yan, huwag kang sasagot." Candle flicker, soft wind outside, faint crickets. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 4
+
+```
+Vertical 9:16 video. Static shot of a closed, padlocked green steel gate, mist crawling under it, the street beyond barely visible. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Huwag mong bubuksan ang gate. Kahit gaano kataas ang alok. Akala ko pamahiin lang." A faint, slow squeaky cart wheel creaking far away, wind, metal gate creaking slightly. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 5
+
+```
+Vertical 9:16 video. Slow tracking shot of a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard walking home alone with a backpack, earphones around his neck, glancing back over his shoulder. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Night shift ako sa call center, kaya ako ang laging nakakarinig. Masaya ang boses niya." Footsteps on wet pavement, a faint, slow squeaky cart wheel creaking far away, the faint call "Bote! Diyaryo!" far away. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 6
+
+```
+Vertical 9:16 video. Slow push-in toward a faceless dark silhouette of a junk buyer in a wide woven hat pushing a wooden cart, standing still under a flickering streetlight far down the street, face never visible. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Parang pagod na kuyang sanay na sa kalsada. Pero may mali." A faint, slow squeaky cart wheel creaking far away that suddenly stops, streetlight buzzing. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 7
+
+```
+Vertical 9:16 video. Low angle slow dolly along a wet, empty asphalt road with no tire marks, past dark houses with every window unlit. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Pag-uwi ko, walang bakas ng gulong ng kariton. At walang kapitbahay na nakakarinig sa kanya." Dead silence except a dripping gutter and a low droning tone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 8
+
+```
+Vertical 9:16 video. Medium shot from behind of a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard stopped outside a closed green steel gate, keys in hand, slowly turning his head toward the fog. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Isang gabi, iba ang isinigaw niya. Napatigil ako sa labas ng gate." A man's cheerful voice calling far away in the fog, "Bili po ng masasakit na alaala! Mataas ang presyo!", a faint, slow squeaky cart wheel creaking far away, keys jingling then going still. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 9
+
+```
+Vertical 9:16 video. Slow push-in on a thin Filipina woman in her 60s, short gray hair, pale blue house dress sweeping the front step of her small house, smiling and humming, at dusk with mist rolling in. dusk turning to night, thin mist, cold blue light, deep shadows, small Metro Manila house with potted plants, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Nung sumunod na linggo, nakita ko si Aling Cora. Namatayan siya ng anak noong isang taon." Broom sweeping, a soft hummed tune, distant traffic. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 10
+
+```
+Vertical 9:16 video. Close-up of a thin Filipina woman in her 60s, short gray hair, pale blue house dress humming as she sweeps, her smile a little too wide, eyes empty. dusk turning to night, thin mist, cold blue light, deep shadows, small Metro Manila house with potted plants, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Dati, hindi siya makalabas ng bahay sa sobrang lungkot. Pero ngayon, nakangiti siya. Nagwawalis. Humuhuni pa." Soft humming, broom strokes, low uneasy drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 11
+
+```
+Vertical 9:16 video. Slow push-in through a window with lace curtains onto a small dining table set with two plates and two glasses, one chair empty. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Pagdaan ko sa bintana niya, may dalawang plato sa mesa. Dalawang baso." Clock ticking, faint wind, low drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 12
+
+```
+Vertical 9:16 video. Medium shot of a thin Filipina woman in her 60s, short gray hair, pale blue house dress at the table, slowly turning her head to stare at the untouched second plate, her smile fading. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Tinanong ko kung sino ang kasabay niyang kumain. Natigilan siya. Tumingin sa pangalawang plato." Silence, a spoon set down on a plate, clock ticking. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 13
+
+```
+Vertical 9:16 video. Close-up of a thin Filipina woman in her 60s, short gray hair, pale blue house dress looking up toward the camera, gently confused, then glancing back at the empty chair. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. The old woman says quietly in Tagalog: "Ewan ko ba, iho… pero gabi-gabi, dalawa ang hinahanda ko." Clock ticking, faint wind. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 14
+
+```
+Vertical 9:16 video. Very slow push-in on the empty chair at the table, a small pair of child's slippers under it, covered in dust. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Hindi siya gumaling. Nakalimutan lang niyang nagkaanak siya." Near silence, a single low piano note, faint wind. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 15
+
+```
+Vertical 9:16 video. Slow push-in on a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard sitting alone in a dark room holding a framed photo of an older man, staring at it. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Isang taon na mula nang mamatay si Papa. Ako 'yung hindi umabot sa huling araw niya." A faint, slow squeaky cart wheel creaking far away, clock ticking. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 16
+
+```
+Vertical 9:16 video. Close-up of a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard's hand trembling on the latch of the closed green steel gate at night, fog beyond it. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Araw-araw ko 'yong dala. Kaya aaminin ko… nung gabing 'yon, muntik ko nang buksan ang gate." A faint, slow squeaky cart wheel creaking far away coming closer, the latch rattling softly. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 17
+
+```
+Vertical 9:16 video. Medium shot of a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard letting go of the latch and stepping back from the gate, breathing hard, the fog outside still. dark foggy night, thick low mist, dim orange streetlight and cold blue moonlight, deep shadows, narrow Metro Manila residential street lined with closed steel gates, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Hindi ko binuksan." A faint, slow squeaky cart wheel creaking far away slowly fading away, then quiet. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 18
+
+```
+Vertical 9:16 video. Medium shot of a Filipina woman in her late 50s, graying hair in a low bun, faded floral house dress cooking at a small gas stove, her back to a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard who stands in the kitchen doorway. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Pero kagabi, habang nagluluto si Mama, tinanong ko siya." Then the young man asks softly in Tagalog: "Ma, ano nga ulit ang paboritong ulam ni Papa?" Oil sizzling softly in a pan, otherwise quiet. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 19
+
+```
+Vertical 9:16 video. Close-up of a Filipina woman in her late 50s, graying hair in a low bun, faded floral house dress turning from the stove with a calm, gentle smile and dry eyes, then holding perfectly still. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. The mother says quietly in Tagalog: "Sinong Papa, anak?" Complete silence after her line, no music, no ambience for the last two seconds. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 20
+
+```
+Vertical 9:16 video. Slow close-up of a hand lifting a plastic rice container in a dim kitchen, revealing crisp, freshly folded Philippine peso bills underneath. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Sa ilalim ng bigasan, may nakatuping pera. Pitong libong piso. Bago pa ang tupi." Very quiet, a faint low drone, plastic container scraping. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 21
+
+```
+Vertical 9:16 video. Slow pull-back from a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard sitting alone on the kitchen floor in the dark, holding his father's framed photo against his chest. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Ako na lang ang natitirang nakakaalala sa Papa ko." Silence, then very faintly, a squeaky cart wheel begins again far away. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 22
+
+```
+Vertical 9:16 video. Slow push-in on a tired Filipino man in his late 20s, short messy black hair, light stubble, dark circles under his eyes, gray hoodie with a call-center ID lanyard lying awake in bed in a dark bedroom, eyes open, slowly turning toward the curtained window. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "At ngayong gabi, narinig ko ulit ang gulong ng kariton. Hindi na siya sumisigaw sa kalsada." A squeaky cart wheel creaking closer and closer, then stopping. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+### Clip 23
+
+```
+Vertical 9:16 video. Slow push-in on a dark bedroom window with iron bars, fog pressed against the glass; a faceless dark silhouette of a junk buyer in a wide woven hat pushing a wooden cart slowly rises into view right outside, face hidden. dark night, faint mist drifting past the window, a single dim yellow bulb, deep shadows, small Filipino home interior, cinematic, realistic, slow ominous camera movement, subtle film grain. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Nasa tapat na siya ng bintana ko." A soft knock on the glass, then the man outside whispers politely in Tagalog: "Sir… dagdagan ko na po ang presyo." Then total silence. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+```
+
+## Facebook caption
+
+```
+Tagalog horror story: may bumibili ng alaala sa amin tuwing alas-tres ng madaling-araw.
+
+Sabi ni Lola, huwag kang sasagot. Ako, muntik na.
+
+Kung kayo ang nasa lugar ko, ibebenta niyo ba ang pinakamasakit na alaala niyo?
+
+Sundan ang Kwento: Kilabot para sa Part 2.
+
+#KwentongKilabot #TagalogHorrorStories #HorrorStoryPH #KwentongKatatakutan #FilipinoHorror
+```

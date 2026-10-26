@@ -89,9 +89,10 @@ def build_brief(topic: dict, cfg: dict) -> dict:
     v, voice, style, flow = cfg["video"], cfg["voice"], cfg["style"], cfg["flow"]
     cap, fb = cfg.get("caption", {}), cfg.get("facebook", {})
     length = int(topic.get("length_seconds", v["length_seconds"]))
-    n = clips_for(length, v["clip_seconds"])
-    if n > flow["max_clips_per_run"]:
-        n = flow["max_clips_per_run"]
+    n = int(topic.get("clip_count", clips_for(length, v["clip_seconds"])))
+    cap_clips = int(topic.get("max_clips", flow["max_clips_per_run"]))  # per-topic override, owner-approved only
+    if n > cap_clips:
+        n = cap_clips
     return {
         "topic_id": topic["id"],
         "topic": topic["topic"],
@@ -108,7 +109,8 @@ def build_brief(topic: dict, cfg: dict) -> dict:
         "length_seconds": length,
         "clip_count": n,
         "clip_seconds": v["clip_seconds"],
-        "max_words_per_clip": v["max_words_per_clip"],
+        "max_words_per_clip": int(topic.get("max_words_per_clip", v["max_words_per_clip"])),
+        "max_clips": cap_clips,
         "language": topic.get("language", voice["language"]),
         "narrator": topic.get("narrator", voice["narrator"]),
         "look": topic.get("look", style["look"]),
@@ -159,8 +161,11 @@ def cmd_validate(run_dir: Path) -> None:
     for i, c in enumerate(clips, 1):
         tag = f"clip {i}"
         vo, prompt = (c.get("voiceover") or "").strip(), (c.get("prompt") or "").strip()
-        if not vo:
-            problems.append(f"{tag}: missing voiceover line")
+        dialogue = (c.get("dialogue") or "").strip()  # on-camera line by another character
+        if not vo and not dialogue:
+            problems.append(f"{tag}: missing voiceover line (or dialogue)")
+        if dialogue and dialogue not in prompt:
+            problems.append(f"{tag}: prompt doesn't contain the exact dialogue line")
         elif word_count(vo) > brief["max_words_per_clip"]:
             problems.append(f"{tag}: voiceover has {word_count(vo)} words (max {brief['max_words_per_clip']}) — won't fit in {brief['clip_seconds']}s")
         if not prompt:
@@ -172,7 +177,7 @@ def cmd_validate(run_dir: Path) -> None:
             problems.append(f"{tag}: prompt doesn't contain the exact voiceover line in quotes")
         if character and character not in prompt:
             problems.append(f"{tag}: character sheet isn't repeated word-for-word (hurts consistency)")
-        if narrator and narrator not in prompt:
+        if vo and narrator and narrator not in prompt:
             problems.append(f"{tag}: narrator description isn't repeated word-for-word")
         if "no on-screen text" not in prompt.lower() and "no subtitles" not in prompt.lower():
             problems.append(f"{tag}: missing negatives (no subtitles / no on-screen text)")
@@ -182,7 +187,10 @@ def cmd_validate(run_dir: Path) -> None:
             problems.append("last clip doesn't seem to carry the CTA")
 
     caption_text = (data.get("caption_text") or "").strip()
-    if not caption_text:
+    if data.get("caption_full"):
+        if len(data["caption_full"]) > brief.get("caption_max_chars", 2200):
+            problems.append("caption_full is too long")
+    elif not caption_text:
         problems.append("missing caption_text (hook + teaser for the Facebook caption, no twist spoiler)")
     else:
         full = compose_caption(brief, data)
@@ -210,7 +218,8 @@ def cmd_render(run_dir: Path) -> None:
         out += ["**Character sheet** (repeated in every prompt):", "", f"> {data['character']}", ""]
     out += ["## Script", "", "| Clip | Voice-over | Visual |", "|---|---|---|"]
     for i, c in enumerate(data["clips"], 1):
-        out.append(f"| {i} | {c['voiceover']} | {c.get('visual', '')} |")
+        spoken = " ".join(x for x in [c.get("voiceover", ""), c.get("dialogue", "") and f"*{c['dialogue']}*"] if x)
+        out.append(f"| {i} | {spoken} | {c.get('visual', '')} |")
     out += ["", "## Flow prompts (paste one per generation)", ""]
     for i, c in enumerate(data["clips"], 1):
         out += [f"### Clip {i}", "", "```", c["prompt"], "```", ""]
@@ -223,6 +232,8 @@ def cmd_render(run_dir: Path) -> None:
 
 def compose_caption(brief: dict, data: dict) -> str:
     """caption_text + channel CTA + hashtags (topic-specific first, then channel defaults, no duplicates)."""
+    if (data.get("caption_full") or "").strip():  # owner-supplied caption, used verbatim
+        return data["caption_full"].strip()
     parts = [(data.get("caption_text") or "").strip()]
     if brief.get("caption_cta"):
         parts.append(brief["caption_cta"])
