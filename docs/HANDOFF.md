@@ -22,6 +22,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 - 2026-10-27 03:07: owner **approved Kilabot #1** (status `approved`; posting pending Facebook access). First cut had the voice-over out of sync (per-clip `loudnorm` dropped ~3s of audio); fixed in `assemble.py` with frame-locked audio + a sync check.
 - 2026-10-27: owner made this a **daily task**: Claude writes 3 short (45–60 s) Filipino horror stories with twists (aswang and other elementals), generates them in Flow, edits them, writes Facebook/Instagram/TikTok captions per `docs/CAPTION_GUIDE.md`, and sends all for approval. Nothing is posted without approval; ask the owner when Facebook access is needed.
 
+- 2026-10-27: scheduled task **"Kwento: Kilabot daily videos"** created: daily 8:45 AM Asia/Manila, on the owner's Mac (needs the Claude desktop app open and online), Downloads folder attached, push notifications on. Each run makes up to 3 videos and sends them for approval; it never posts.
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.
