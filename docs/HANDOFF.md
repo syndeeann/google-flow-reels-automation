@@ -30,6 +30,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 - 2026-10-27 04:30: owner: runs must continue on their own without asking (including after usage limits). Added: resume-first rule (`reels.py next` returns unfinished topics before new ones), never-ask rule, and a second daily **catch-up** scheduled task at 2:45 PM that only finishes interrupted work. Video generation still needs the owner's Mac awake with the Claude app open (Flow has no API).
 
+- 2026-10-27 05:20: owner: **no approval needed**; Claude should evaluate each video (sync, glitches, redundant clips, script order) and post to Facebook + YouTube. Built `scripts/qc.py` (tested: passes Kilabot #1, catches swapped/duplicated clips and the old out-of-sync cut). Posting itself is NOT possible: Claude in Chrome reached both sites (signed in; YouTube channel "Kwento: Kilabot" UCTtKjt3UyEOrUW0tjU9gDmQ), but the file-upload step was blocked by the environment's safety classifier. So: QC replaces approval; owner uploads the ready-to-post kit.
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.

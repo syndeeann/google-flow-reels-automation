@@ -18,8 +18,8 @@ This is the default for the scheduled task and for "make today's videos".
 3. **Write the stories yourself** (`docs/PROMPT_GUIDE.md` story rules): read `queue/topics.yaml` to continue the `Kilabot #N` numbering and avoid the creatures/twists of the last 6 stories. For each video add a topic at the top of the queue with `status: ready`, `folklore`, a one-line `topic`, and `notes` with the twist. Then for each: `reels.py next` → write `prompts.json` (clips with `seconds`, captions per `docs/CAPTION_GUIDE.md`, `end_card`) → `validate` → `render`. Commit and push ("Prompts: <id1>, <id2>, …").
 4. **Generate** (step 3) in **one Flow project per video**. Queue several generations at once; poll the grid.
 5. **Download and edit** each video (steps 3–4): `scripts/flow_download.js`, `edit.json`, `scripts/assemble.py`. Only deliver videos that pass the sync check; a story with a missing clip is `failed` (say which clip).
-6. **Approval** (step 5) for all finished videos in one message: for each video send the file, then the Facebook caption in a code block, a one-line story summary, and the Instagram/TikTok captions + pinned comment (from `captions.txt`) for the owner's own use. Reply options per video: `approve <N>`, `redo clip <x> of <N>`, `change caption <N>: …`, `reject <N>` (N = Kilabot number).
-7. Stop. The owner posts approved videos manually (step 7).
+6. **Quality check, then ready-to-post kit** (steps 4b–5) for all finished videos in one message: for each video send the file, then the Facebook caption in a code block, a one-line story summary, and the Instagram/TikTok captions + pinned comment (from `captions.txt`) for the owner's own use. The owner may still reply `redo clip <x> of <N>` or `change caption <N>: …`.
+7. Stop. The owner posts the videos (step 7).
 
 ## 0. Setup
 ```bash
@@ -79,19 +79,25 @@ If any clip is missing, do not join a partial story: mark `failed` with the reas
   Trim rule of thumb: start ~0.6s before speech, end ~0.7s after (longer after a reveal); keep any pause the script asks for.
 - Write the final video back to the owner's computer: `Downloads/Kwento Kilabot/<topic_id>-final.mp4` (`device_commit_files` from `/mnt/user-data/outputs/`).
 
-## 5. Ask for approval (nothing is posted)
+## 4b. Quality check (replaces the owner's approval — decided 2026-10-27 05:20)
 ```bash
-python scripts/reels.py finish <topic_id> awaiting_approval
-git add -A && git commit -m "Awaiting approval: <topic_id>" && git push
+python scripts/qc.py <run_dir>
 ```
-Send the owner:
-1. the final video with `SendUserFile` (caption: topic id + title), and
-2. with `SendUserMessage`: the exact caption from `caption.txt` in a code block, the script (one line per clip), and the reply options:
-   **approve** · **redo clip N** (optionally with what to change) · **change caption: …** · **reject**.
+It writes `qc.json` and `check/qc_sheet.png` and fails (exit 1) on: clips missing, repeated or out of script order; two clips from the same file or looking identical; a segment whose audio doesn't match its own clip; voice-over out of sync (> 60 ms); a narrated clip with no narration heard; black frames; video/audio length mismatch; wrong format. Warnings (frozen picture ≥ 2.5 s, silence inside a narrated clip, clipping, file ≥ 10 MB) need a judgment call.
+Then **look at `check/qc_sheet.png` yourself** (Read it): 2 frames per clip, labelled by clip number. Compare each clip with `qc.json → visual_review.expected_visuals`: right scene, story order, no repeated shot, no text/watermark/garbled faces or hands, consistent characters.
+- **Pass** (no problems, warnings judged OK, visual review OK): `python scripts/reels.py finish <topic_id> ready_to_post "QC passed"` and go to step 5.
+- **Fail:** fix once — re-cut (`edit.json`) for order/trim/sync issues; regenerate only the bad clip in Flow for a wrong/garbled/duplicate scene (within the credit cap) — then re-run assemble + qc. Still failing: `finish <topic_id> failed "<qc problem>"`, tell the owner which clip and why. Never deliver a video that failed QC.
 
-Then stop and wait. Never open Facebook.
+## 5. Deliver the ready-to-post kit (no approval needed)
+The owner doesn't approve videos any more; every video that passed QC is delivered ready to post. Claude can't post it: uploading files to Facebook/YouTube from the browser is blocked by safety controls in this environment, so the owner uploads. Send, per video:
+1. the video file with `SendUserFile` and its location `Downloads/Kwento Kilabot/<topic_id>-final.mp4`;
+2. the **Facebook** caption in a code block (`captions.facebook`);
+3. the **YouTube Shorts** title, description and tags (`captions.youtube`), with a reminder to answer **Yes** to YouTube's "altered or synthetic content" question (realistic AI video) and **No, not made for kids**;
+4. the Instagram/TikTok captions and the pinned first comment (`captions.txt`);
+5. one line: "QC passed — sync worst <n> ms, <clips> clips, <duration>s".
+Commit and push ("Ready to post: <topic_id>").
 
-## 6. Handle the owner's reply
+## 6. Handle the owner's reply (optional — they may ask for changes)
 - **redo clip N**: regenerate only that clip in the same Flow project (respect the credit cap), re-download, re-join, write back, re-send video + caption. Status stays `awaiting_approval`.
 - **change caption**: update `caption_text` / `hashtags` in prompts.json (or the wording they gave), `render`, re-send the full caption. Status stays `awaiting_approval`.
 - **reject**: `finish <topic_id> rejected "<reason>"`, commit, push. Nothing is posted.
@@ -99,10 +105,8 @@ Then stop and wait. Never open Facebook.
 
 If the approval comes in a later chat (the scheduled run's chat has ended), find the topic with status `awaiting_approval`, its `caption.txt` in the repo and the final video in `Downloads/Kwento Kilabot/`, and send the posting kit.
 
-## 7. After approval: the owner posts manually
-The owner decided (2026-10-27) to post approved videos **themself**. Claude does not post, does not open Facebook/Meta Business Suite, and does not ask for Facebook, Chrome or computer-use access.
-- On "approve <N>": `python scripts/reels.py finish <topic_id> approved`, commit, push, and reply with a ready-to-post kit: the file location (`Downloads/Kwento Kilabot/<topic_id>-final.mp4`), the Facebook caption in a code block, and the Instagram/TikTok captions + pinned first comment from `captions.txt`.
-- When the owner says it's posted (optionally with the link): `python scripts/reels.py finish <topic_id> posted "<link or 'posted by owner'>"`, commit, push.
+## 7. Posting (owner)
+The owner posts each ready-to-post video to the Facebook Page and the YouTube channel (Kwento: Kilabot). Claude never uploads or publishes (blocked by safety controls), never asks for Facebook/YouTube credentials, and doesn't click Share/Publish. When the owner says a video is posted (optionally with links): `python scripts/reels.py finish <topic_id> posted "<links or 'posted by owner'>"`, commit, push.
 
 ## Rules
 - Never post without the owner's explicit approval of that specific video and caption.

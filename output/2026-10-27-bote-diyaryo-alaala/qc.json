@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "problems": [],
+  "warnings": [
+    "file is 26.1 MB — over the 10 MB browser upload limit; the posting step can't upload it"
+  ],
+  "info": {
+    "worst_lag_ms": 10.0,
+    "duration": 187.21,
+    "size_mb": 26.06
+  },
+  "visual_review": {
+    "sheet": "check/qc_sheet.png",
+    "expected_visuals": {
+      "1": "Empty foggy street at 3 AM, a cart silhouette far away",
+      "2": "Wall clock at 3:00, street through window bars",
+      "3": "Old grandmother's hands on a rosary, lit by a candle (memory)",
+      "4": "Closed steel gate in fog, padlocked",
+      "5": "Narrator walking home from night shift at 3 AM",
+      "6": "The cart silhouette pauses under a flickering streetlight",
+      "7": "Wet empty road with no cart tracks; dark silent houses",
+      "8": "Foggy empty street toward a closed green gate (v3; narrator quotes the call)",
+      "9": "Aling Cora's house by day-dusk: she sweeps, smiling",
+      "10": "Cora humming, too happy",
+      "11": "Through her window: two plates, two glasses on the table",
+      "12": "Cora stares at the second plate",
+      "13": "Cora answers, confused",
+      "14": "Empty chair; child's slippers under it",
+      "15": "Narrator alone at home, a framed photo of his father",
+      "16": "Narrator's hand on the gate latch at night",
+      "17": "He lets go and steps back",
+      "18": "Mama cooking; he asks from the doorway",
+      "19": "Mama turns, smiling, no tears: 'Sinong Papa, anak?' then silence",
+      "20": "Under the rice container: folded new bills",
+      "21": "He sits alone with the photo; the only one who remembers",
+      "22": "He lies awake in bed; the cart wheel returns",
+      "23": "The vendor's silhouette right outside his window"
+    },
+    "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its expected visual, clips are in story order, no clip repeats, no text/watermark/garbled faces, characters stay consistent."
+  }
+}

@@ -37,7 +37,8 @@ MANILA = dt.timezone(dt.timedelta(hours=8))
 
 VALID_STATUSES = {
     "draft", "ready", "in_progress", "prompts_only", "failed",
-    "awaiting_approval",  # final video + caption sent to the owner; nothing posted
+    "ready_to_post",      # passed QC; waiting to be posted (e.g. Chrome wasn't connected)
+    "awaiting_approval",  # legacy: final video + caption sent to the owner; nothing posted
     "approved",           # owner approved this exact video + caption; posting in progress
     "posted",             # live on the Facebook Page
     "rejected",           # owner rejected it; not posted
@@ -218,6 +219,13 @@ def cmd_validate(run_dir: Path) -> None:
 
     caps = data.get("captions")
     if caps is not None:
+        yt = caps.get("youtube") or {}
+        if not (yt.get("title") or "").strip() or len(yt.get("title", "")) > 100:
+            problems.append("captions.youtube.title missing or over 100 characters")
+        if not (yt.get("description") or "").strip():
+            problems.append("captions.youtube.description missing")
+        if any(ch in (yt.get("title", "") + yt.get("description", "")) for ch in "<>"):
+            problems.append("captions.youtube: YouTube rejects < and > in titles/descriptions")
         for k in ("facebook", "instagram", "tiktok", "pinned_comment"):
             if not (caps.get(k) or "").strip():
                 problems.append(f"captions.{k} missing")
@@ -262,6 +270,9 @@ def cmd_render(run_dir: Path) -> None:
         c = data["captions"]
         txt = [f"=== Facebook (posted on the Page) ===\n{c['facebook']}", f"=== Instagram ===\n{c['instagram']}",
                f"=== TikTok ===\n{c['tiktok']}", f"=== Pinned first comment ===\n{c['pinned_comment']}"]
+        if c.get("youtube"):
+            y = c["youtube"]
+            txt.append(f"=== YouTube Shorts ===\nTitle: {y['title']}\n\n{y['description']}\n\nTags: {', '.join(y.get('tags', []))}")
         if c.get("replies"):
             txt.append("=== Reply templates ===\n" + "\n".join("- " + r for r in c["replies"]))
         (run_dir / "captions.txt").write_text("\n\n".join(txt) + "\n", encoding="utf-8")

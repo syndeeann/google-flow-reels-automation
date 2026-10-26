@@ -45,8 +45,16 @@ delivery:
 
 facebook:
   page_name: "Kwento: Kilabot"
-  posting: "manual"             # owner posts approved videos themself (decided 2026-10-27 04:17); Claude never posts and needs no Facebook access
+  posting: "owner_after_qc"     # owner (05:20): no approval needed. Claude can't upload (browser file upload blocked by safety controls), so the owner posts QC-passed videos
+  url: "https://business.facebook.com"
+
+youtube:
+  channel_name: "Kwento: Kilabot"
+  channel_id: "UCTtKjt3UyEOrUW0tjU9gDmQ"
+  studio_url: "https://studio.youtube.com/channel/UCTtKjt3UyEOrUW0tjU9gDmQ"
+  posting: "owner_after_qc"     # as a Short (vertical, under 3 min), Public, not made for kids
+  altered_content: true         # realistic AI-generated video -> answer "Yes" to YouTube's altered/synthetic content question
 
 schedule:
   # Informational: the actual schedule is the Claude scheduled task "Kwento: Kilabot daily videos" (created 2026-10-27, runs on the owner's computer, auto-approved actions; never posts).
-  description: "Daily 8:45 AM Asia/Manila: at least 1 video, up to 3 when credits allow; each sent for approval"
+  description: "Daily 8:45 AM Asia/Manila (+ 2:45 PM catch-up): at least 1 video, up to 3 when credits allow; QC, then a ready-to-post kit for Facebook + YouTube"
