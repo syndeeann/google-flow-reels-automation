@@ -40,14 +40,12 @@ flow:
 delivery:
   width: 720
   height: 1280
-  max_mb: 9.5                   # Claude in Chrome uploads files < 10 MB
+  max_mb: 9.5                   # small files are easier to upload from a phone
   folder: "~/Downloads/Kwento Kilabot"
 
 facebook:
   page_name: "Kwento: Kilabot"
-  post_timing: "immediately_after_approval"   # post as soon as the owner approves; no scheduled post time
-  method: "Claude in Chrome (owner's Chrome, already signed in) -> Meta Business Suite -> Create Reel"
-  url: "https://business.facebook.com"
+  posting: "manual"             # owner posts approved videos themself (decided 2026-10-27 04:17); Claude never posts and needs no Facebook access
 
 schedule:
   # Informational: the actual schedule is the Claude scheduled task "Kwento: Kilabot daily videos" (created 2026-10-27, runs on the owner's computer, auto-approved actions; never posts).
