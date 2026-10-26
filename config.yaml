@@ -1,25 +1,39 @@
-# Defaults for every video. A topic in queue/topics.yaml can override any of these.
+# Defaults for every video. A topic in queue/topics.yaml can override video length, narrator, look, language and notes.
+# Channel: Kwento: Kilabot — Tagalog horror stories based on Filipino folklore.
 
 video:
   aspect_ratio: "9:16"          # vertical for Reels / TikTok / Shorts
-  length_seconds: 30            # 15, 30, 45 or 60 -> 2, 4, 6 or 8 clips of ~8s
+  length_seconds: 32            # 16, 24, 32, 40 ... -> 2, 3, 4, 5 ... clips of ~8s
   clip_seconds: 8               # Veo clip length
-  max_words_per_clip: 20        # voice-over words that fit in one 8s clip
+  max_words_per_clip: 15        # slow, eerie narration: ~15 Tagalog words fit in 8s
+  cta_in_last_clip: false       # last clip is the twist; the call to action goes in the caption instead
 
 voice:
-  language: "English"
-  narrator: "warm adult female, Filipino-English accent, friendly and calm"
+  language: "Tagalog"
+  narrator: "slow, deep, eerie adult Filipino male voice, hushed Tagalog storytelling with long pauses"
 
 style:
-  look: "cinematic, realistic, soft natural light, shallow depth of field"
-  negatives: "no subtitles, no on-screen text, no watermark, no logos"
+  look: "dark foggy night, thick low mist, cold blue moonlight, deep shadows, rural Philippine province, cinematic, realistic, slow ominous camera movement, subtle film grain"
+  negatives: "no subtitles, no on-screen text, no watermark, no logos, no gore, no blood"
+
+caption:
+  # Final caption = caption_text (from prompts.json) + cta + hashtags (topic hashtags first, then these).
+  cta: "I-follow ang Kwento: Kilabot para sa susunod na kwento ng lagim."
+  hashtags: "#KwentoKilabot #PinoyHorror #TagalogHorror #FilipinoFolklore #Kababalaghan"
+  max_chars: 2200
 
 flow:
   url: "https://flow.google.com"
   outputs_per_prompt: 1         # variants per clip (each one costs credits)
-  max_clips_per_run: 8          # safety cap on credits per scheduled run
+  max_clips_per_run: 8          # safety cap on credits per run (redos count too)
   download_clips: true          # download finished clips to the computer's Downloads folder
 
+facebook:
+  page_name: "Kwento: Kilabot"
+  post_timing: "immediately_after_approval"   # post as soon as the owner approves; no scheduled post time
+  method: "Claude in Chrome (owner's Chrome, already signed in) -> Meta Business Suite -> Create Reel"
+  url: "https://business.facebook.com"
+
 schedule:
-  # Informational: the actual schedule is the Claude scheduled task.
+  # Informational: the actual schedule is the Claude scheduled task (not created yet; owner reviews it first).
   description: "Weekdays 8:45 AM Asia/Manila, one video per run"

@@ -1,38 +1,41 @@
 # google-flow-reels-automation
 
-Automated short vertical videos (Reels / TikTok / Shorts) made with **Google Flow** (Veo) and written by **Claude**.
+Automated vertical Reels for the Facebook Page **Kwento: Kilabot** — Tagalog horror stories based on Filipino folklore — made with **Google Flow** (Veo) and written by **Claude**.
 
 On a schedule, Claude takes the next topic from the queue and does the following:
-1. writes a hook-first script in 8-second beats
-2. writes one 9:16 Veo prompt per clip, with the voice-over line inside, so Veo generates the narration as native audio
-3. validates and commits the script and prompts here
+1. writes a Tagalog horror script in 8-second beats: hook, build, twist ending
+2. writes one 9:16 Veo prompt per clip (dark foggy night, slow eerie male narrator as Veo native audio) and a Facebook caption
+3. validates and commits the script, prompts and caption here
 4. opens Google Flow in the Claude desktop app's browser (signed in to your account), generates the clips, and downloads them
-5. marks the topic done and pushes a run log
+5. joins the clips into one video and sends it to you with the caption — **nothing is posted yet**
+6. when you reply **approve**, posts that exact video + caption to the Page via Meta Business Suite in your Chrome, and sends you the link (or: redo clip N / change caption / reject)
 
 ## How to use
 
 **Add a video:** edit `queue/topics.yaml` and add a topic with `status: ready`:
 
 ```yaml
-  - id: rainy-day-promo
+  - id: duwende-sa-punso
     status: ready
-    topic: "Rainy-day 2-for-1 on hot drinks"
-    cta: "Show this video at the counter"
-    length_seconds: 15
+    topic: "Isang batang nakatapak sa punso at simula noon may kasama na siyang hindi nakikita"
+    folklore: "Duwende"
+    notes: "Twist idea: ..."
+    length_seconds: 32
 ```
 
-You can also just tell Claude: "add a Reel about … to the queue".
+You can also just tell Claude: "add a story about the white lady to the queue".
 
-**Change defaults:** edit `config.yaml` (length, narrator voice, visual style, credit cap).
+**Change defaults:** edit `config.yaml` (length, narrator voice, visual style, caption CTA/hashtags, credit cap, Facebook Page).
 
 **Check the queue:** `python scripts/reels.py status`
 
-**Results:** `output/<date>-<topic_id>/prompts.md` has the script and every prompt (handy for pasting into Flow manually). The video clips are saved to your computer's Downloads folder.
+**Results:** `output/<date>-<topic_id>/prompts.md` has the script and every prompt (handy for pasting into Flow manually). `caption.txt` has the caption. Clips go to your Downloads folder; the joined video to `Downloads/Kwento Kilabot/`.
 
 ## Requirements
 - Google AI Pro/Ultra with access to Flow at flow.google.com
 - The Claude desktop app open on your computer at schedule time, with flow.google.com allowed in its browser
-- Python 3.9+ and `pip install -r requirements.txt` (only for the helper script)
+- Claude in Chrome connected, with your Chrome signed in to Facebook (for posting after approval)
+- Python 3.9+ and `pip install -r requirements.txt` (only for the helper script); ffmpeg for joining clips
 
 If the computer is off at schedule time, the run still writes and commits the script and prompts, and marks the topic `prompts_only`. Set it back to `ready` to generate later.
 

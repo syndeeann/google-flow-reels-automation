@@ -1,20 +1,46 @@
-# Video queue. Each scheduled run takes the FIRST topic with status: ready.
+# Video queue for Kwento: Kilabot. Each run takes the FIRST topic with status: ready.
 #
 # status values:
-#   draft        - not ready yet, skipped
-#   ready        - will be produced on the next run
-#   in_progress  - a run picked it up (set automatically)
-#   prompts_only - script + prompts written, Flow generation not done (e.g. computer offline)
-#   done         - clips generated
-#   failed       - see the run log in output/
+#   draft             - not ready yet, skipped
+#   ready             - will be produced on the next run
+#   in_progress       - a run picked it up (set automatically)
+#   prompts_only      - script + prompts written, Flow generation not done (e.g. computer offline)
+#   awaiting_approval - final video + caption sent to the owner; NOTHING is posted yet
+#   approved          - owner approved that exact video + caption; posting in progress
+#   posted            - live on the Facebook Page (post link in the run log)
+#   rejected          - owner rejected it; not posted
+#   failed            - see the run log in output/
 #
-# Optional per-topic overrides: length_seconds, narrator, look, language, cta, notes
+# Optional per-topic overrides: length_seconds, narrator, look, language, notes
+# Every story: Tagalog, Filipino folklore, dark foggy night, slow eerie male narrator, ends on a twist.
 
 topics:
-  - id: example-ube-latte
+  - id: aswang-sa-kabilang-bahay
     status: draft             # change to "ready" to produce it
-    topic: "Our café's new ube latte: creamy, purple, made with real ube halaya"
-    audience: "young professionals in Metro Manila"
-    cta: "Visit us this week and get 10% off your first ube latte"
-    length_seconds: 30
-    notes: "Cozy café vibe, rainy afternoon, Taglish narration"
+    topic: "Isang dalaga sa probinsya ang napapansing laging gising sa gabi ang bagong kapitbahay — aswang pala"
+    folklore: "Aswang"
+    notes: "Twist: ang tagapagsalaysay mismo ang aswang na nagbabantay sa dalaga."
+
+  - id: tikbalang-sa-daan
+    status: draft
+    topic: "Isang binatang naliligaw sa maulap na daan pauwi, paikot-ikot sa iisang puno"
+    folklore: "Tikbalang"
+    notes: "Twist: nakauwi siya, pero ang sumalubong sa kanya sa bahay ay hindi niya tunay na ina."
+
+  - id: kapre-sa-balete
+    status: draft
+    topic: "Mga batang naglalaro malapit sa lumang puno ng balete; amoy tabako tuwing hatinggabi"
+    folklore: "Kapre"
+    notes: "Twist: ang batang nawawala ay matagal nang patay — siya ang nag-aaya sa mga kalaro."
+
+  - id: manananggal-sa-bubong
+    status: draft
+    topic: "Isang buntis na nakakarinig ng pagaspas ng pakpak sa bubong tuwing kabilugan ng buwan"
+    folklore: "Manananggal"
+    notes: "Walang dugo o gore. Twist: ang kalahating katawan sa kubo ay sa kumadronang nag-aalaga sa kanya."
+
+  - id: tiyanak-sa-gubat
+    status: draft
+    topic: "Isang mag-asawang nakarinig ng iyak ng sanggol sa gitna ng gubat at iniuwi ito"
+    folklore: "Tiyanak"
+    notes: "Twist: kinabukasan, dalawa na ang sanggol na umiiyak sa labas ng pinto."

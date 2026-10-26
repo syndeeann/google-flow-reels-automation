@@ -6,3 +6,6 @@
 *.mp3
 __pycache__/
 .DS_Store
+
+# Frame grabs used to check a joined video
+output/**/*.png
