@@ -45,16 +45,27 @@ delivery:
 
 facebook:
   page_name: "Kwento: Kilabot"
-  posting: "owner_after_qc"     # owner (05:20): no approval needed. Claude can't upload (browser file upload blocked by safety controls), so the owner posts QC-passed videos
+  posting: "auto_after_qc"      # owner (2026-10-27 05:32): Claude checks, fixes and posts automatically; no approval
+  page_asset_id: "1348335788368328"
+  reel_composer: "https://business.facebook.com/latest/reels_composer/?asset_id=1348335788368328"
   url: "https://business.facebook.com"
 
 youtube:
   channel_name: "Kwento: Kilabot"
   channel_id: "UCTtKjt3UyEOrUW0tjU9gDmQ"
   studio_url: "https://studio.youtube.com/channel/UCTtKjt3UyEOrUW0tjU9gDmQ"
-  posting: "owner_after_qc"     # as a Short (vertical, under 3 min), Public, not made for kids
+  posting: "auto_after_qc"      # as a Short (vertical, under 3 min), Public, not made for kids
+  upload_url: "https://studio.youtube.com/channel/UCTtKjt3UyEOrUW0tjU9gDmQ/videos/upload?d=ud"
   altered_content: true         # realistic AI-generated video -> answer "Yes" to YouTube's altered/synthetic content question
 
+posting:
+  browser: "Claude in Chrome"   # owner's Chrome with the Claude extension, signed in to Facebook + YouTube
+  max_upload_mb: 9.5            # Claude in Chrome file_upload limit is < 10 MB; file must be inside the session's working directory
+
+library:
+  url: "https://claude.ai/artifact/TR7wReRavWzur9tUqbKfu7"   # "Kwento: Kilabot Video Log" artifact: db collection videos/<topic_id>, fix requests in fixes/<topic_id>
+  max_asset_mb: 19              # artifact asset cap is 20 MiB
+
 schedule:
-  # Informational: the actual schedule is the Claude scheduled task "Kwento: Kilabot daily videos" (created 2026-10-27, runs on the owner's computer, auto-approved actions; never posts).
-  description: "Daily 8:45 AM Asia/Manila (+ 2:45 PM catch-up): at least 1 video, up to 3 when credits allow; QC, then a ready-to-post kit for Facebook + YouTube"
+  # Informational: the actual schedule is the Claude scheduled task "Kwento: Kilabot daily videos" (created 2026-10-27, runs on the owner's computer, auto-approved actions; posts QC-passed videos).
+  description: "Daily 8:45 AM Asia/Manila (+ 2:45 PM catch-up): at least 1 video, up to 3 when credits allow; QC + auto-fix, then posted to Facebook + YouTube and logged"

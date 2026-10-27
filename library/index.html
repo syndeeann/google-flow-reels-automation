@@ -1,0 +1,207 @@
+<title>Kwento: Kilabot Videos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a night-shift logbook — one entry per story, film strip on the left, the record on the right */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2127; --muted:#5c6873; --line:#d6dde2;
+  --moon:#3f6f8f; --ok:#2f7d4f; --warn:#a46a12; --bad:#a3363a; --chip:#e4eaee;
+  --display:"Special Elite","Courier New",monospace;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1216; --panel:#151b21; --ink:#dfe6ea; --muted:#8d9aa5; --line:#26313a;
+  --moon:#9cc0d8; --ok:#6cc08f; --warn:#e0a94a; --bad:#e2787b; --chip:#1d262e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1216; --panel:#151b21; --ink:#dfe6ea; --muted:#8d9aa5; --line:#26313a;
+  --moon:#9cc0d8; --ok:#6cc08f; --warn:#e0a94a; --bad:#e2787b; --chip:#1d262e; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:22px}
+header{display:grid;gap:6px}
+h1{font:400 clamp(28px,5vw,40px)/1.1 var(--display);margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);max-width:62ch}
+.summary{display:flex;flex-wrap:wrap;gap:8px 18px;font:13px var(--mono);color:var(--muted)}
+.summary b{color:var(--ink);font-weight:500}
+.entry{background:var(--panel);border:1px solid var(--line);border-radius:10px;display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:22px;padding:18px}
+@media (max-width:720px){.entry{grid-template-columns:1fr}}
+.player{display:grid;gap:8px;align-content:start}
+video{width:100%;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:6px;display:block}
+.novideo{aspect-ratio:9/16;display:grid;place-items:center;border:1px dashed var(--line);border-radius:6px;color:var(--muted);font-size:13px;text-align:center;padding:12px}
+.meta{font:12px var(--mono);color:var(--muted);display:grid;gap:2px}
+.body{display:grid;gap:14px;min-width:0;align-content:start}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.num{font:400 13px var(--mono);color:var(--moon);letter-spacing:.06em;text-transform:uppercase}
+h2{font:400 22px/1.2 var(--display);margin:0;text-wrap:balance}
+.pill{font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:5px 8px;border-radius:99px;background:var(--chip);color:var(--muted)}
+.pill.posted{color:var(--ok)} .pill.failed{color:var(--bad)} .pill.ready_to_post,.pill.in_progress{color:var(--warn)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{font:500 13px var(--body);color:var(--moon);text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.links a:hover,.links a:focus-visible{border-color:var(--moon);outline:none}
+.qc{font:13px var(--mono);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.qc .ok{color:var(--ok)} .qc .bad{color:var(--bad)} .qc .warn{color:var(--warn)}
+.qclist{margin:4px 0 0;padding-left:18px;font-size:13px;color:var(--muted)}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font:500 13px var(--body);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+summary:focus-visible{outline:2px solid var(--moon);outline-offset:3px}
+.script{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top}
+td:first-child{font:12px var(--mono);color:var(--muted);width:3ch;white-space:nowrap}
+td .dlg{font-style:italic;color:var(--muted)}
+.caps{display:grid;gap:12px;margin-top:10px}
+.cap{display:grid;gap:6px;min-width:0}
+.caphead{display:flex;justify-content:space-between;align-items:center;gap:8px;font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;font:13px/1.5 var(--body);background:var(--chip);border-radius:6px;padding:10px 12px}
+button{font:500 12px var(--body);color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+button:hover{border-color:var(--moon)} button:focus-visible{outline:2px solid var(--moon);outline-offset:2px}
+button:disabled{opacity:.55;cursor:default}
+.fix{display:grid;gap:8px;margin-top:10px}
+.fix label{font-size:13px;color:var(--muted)}
+textarea{width:100%;min-height:84px;resize:vertical;font:14px/1.5 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px}
+textarea:focus-visible{outline:2px solid var(--moon);outline-offset:1px}
+.fixrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:28px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Kwento: Kilabot — Video Log</h1>
+    <p class="sub">Every story Claude makes for the page, with the final video, the script, the quality check and the captions it posted. If a video isn't quite right, write what to fix under it and the next run will make a corrected version.</p>
+    <div class="summary" id="summary">Loading the log…</div>
+  </header>
+  <main id="list" class="wrap" style="gap:18px"></main>
+</div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const STATUS = { posted: "Posted", ready_to_post: "Ready to post", in_progress: "In progress", failed: "Needs fixing", prompts_only: "Script only" };
+let db = null, rows = [], fixes = {};
+
+function copyBtn(text) {
+  const b = el("button", "", "Copy");
+  b.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; }
+    catch { b.textContent = "Select the text to copy"; }
+    setTimeout(() => (b.textContent = "Copy"), 1600);
+  });
+  return b;
+}
+function capBlock(label, text) {
+  const c = el("div", "cap"), h = el("div", "caphead");
+  h.append(el("span", "", label), copyBtn(text));
+  c.append(h, el("pre", "", text));
+  return c;
+}
+function fmtDate(s) { try { return new Date(s).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch { return s || ""; } }
+
+function render() {
+  const list = $("#list"); list.textContent = "";
+  const posted = rows.filter(r => r.status === "posted").length;
+  const s = $("#summary"); s.textContent = "";
+  const add = (k, v) => { const span = el("span"); span.append(k + " "); span.append(el("b", "", v)); s.append(span); };
+  add("Videos", String(rows.length)); add("Posted", String(posted));
+  const open = Object.values(fixes).filter(f => f && f.status === "open").length;
+  add("Fix requests open", String(open));
+  if (!rows.length) {
+    list.append(el("div", "empty", db ? "No videos logged yet. Each daily run adds its videos here after posting." : "Open this page in claude.ai to see the video log."));
+    return;
+  }
+  for (const r of rows) {
+    const art = el("article", "entry"); art.id = r.topic_id;
+    // player
+    const pl = el("div", "player");
+    if (r.asset_id) {
+      const v = el("video"); v.controls = true; v.preload = "metadata"; v.playsInline = true;
+      v.src = r.video_url || ("/_blob/" + r.asset_id);
+      v.setAttribute("aria-label", "Video: " + (r.title || r.topic_id));
+      pl.append(v);
+    } else pl.append(el("div", "novideo", "Video file not stored"));
+    const m = el("div", "meta");
+    m.append(el("span", "", fmtDate(r.created)));
+    if (r.duration_s) m.append(el("span", "", Math.round(r.duration_s) + " s · " + (r.clip_count || (r.clips || []).length) + " clips"));
+    m.append(el("span", "", r.topic_id));
+    pl.append(m);
+    // body
+    const b = el("div", "body");
+    const top = el("div", "top");
+    if (r.kilabot) top.append(el("span", "num", "Kilabot #" + r.kilabot));
+    top.append(el("span", "pill " + (r.status || ""), STATUS[r.status] || r.status || ""));
+    b.append(top, el("h2", "", (r.title || "").replace(/^Kilabot #\d+:\s*/, "")));
+    if (r.summary) b.append(el("p", "", r.summary));
+    const L = el("div", "links");
+    const li = r.links || {};
+    if (li.facebook) { const a = el("a", "", "Facebook Reel ↗"); a.href = li.facebook; a.target = "_blank"; a.rel = "noopener"; L.append(a); }
+    if (li.youtube) { const a = el("a", "", "YouTube Short ↗"); a.href = li.youtube; a.target = "_blank"; a.rel = "noopener"; L.append(a); }
+    if (L.childNodes.length) b.append(L);
+    // QC
+    const q = r.qc || {};
+    const qc = el("div", "qc");
+    qc.append(el("span", q.passed ? "ok" : "bad", q.passed ? "Quality check passed" : (q.passed === false ? "Quality check failed" : "Not checked")));
+    if (q.worst_lag_ms != null) qc.append(el("span", "", "voice sync ±" + q.worst_lag_ms + " ms"));
+    if (q.attempts) qc.append(el("span", "", q.attempts + (q.attempts === 1 ? " pass" : " passes")));
+    b.append(qc);
+    const notes = [...(q.problems || []).map(t => ["bad", t]), ...(q.warnings || []).map(t => ["warn", t]), ...(q.fixed || []).map(t => ["ok", "Fixed: " + t])];
+    if (notes.length) { const ul = el("ul", "qclist"); for (const [c, t] of notes) { const li2 = el("li", "", t); li2.style.color = `var(--${c === "bad" ? "bad" : c === "warn" ? "warn" : "ok"})`; ul.append(li2); } b.append(ul); }
+    // script
+    if ((r.clips || []).length) {
+      const d = el("details"); d.append(el("summary", "", "Script (" + r.clips.length + " clips)"));
+      const wrap = el("div", "script"), t = el("table");
+      for (const c of r.clips) {
+        const tr = el("tr"); tr.append(el("td", "", String(c.n)));
+        const td = el("td"); if (c.voiceover) td.append(el("div", "", c.voiceover)); if (c.dialogue) td.append(el("div", "dlg", "“" + c.dialogue + "”"));
+        tr.append(td); t.append(tr);
+      }
+      wrap.append(t); d.append(wrap); b.append(d);
+    }
+    // captions
+    const cap = r.captions || {};
+    if (Object.keys(cap).length) {
+      const d = el("details"); d.append(el("summary", "", "Captions"));
+      const box = el("div", "caps");
+      if (cap.facebook) box.append(capBlock("Facebook", cap.facebook));
+      if (cap.youtube) { const y = cap.youtube; box.append(capBlock("YouTube title", y.title || "")); box.append(capBlock("YouTube description", (y.description || "") + (y.tags && y.tags.length ? "\n\nTags: " + y.tags.join(", ") : ""))); }
+      if (cap.instagram) box.append(capBlock("Instagram", cap.instagram));
+      if (cap.tiktok) box.append(capBlock("TikTok", cap.tiktok));
+      if (cap.pinned_comment) box.append(capBlock("Pinned first comment", cap.pinned_comment));
+      d.append(box); b.append(d);
+    }
+    // fix request
+    const f = fixes[r.topic_id];
+    const d = el("details"); if (f && f.status === "open") d.open = true;
+    d.append(el("summary", "", f && f.status === "open" ? "Fix requested" : "Request a fix"));
+    const fx = el("div", "fix");
+    const id = "fix-" + r.topic_id;
+    const lab = el("label", "", "What should change? (e.g. “clip 3 voice is cut off”, “use a different ending card”)"); lab.htmlFor = id;
+    const ta = el("textarea"); ta.id = id; ta.value = f && f.status === "open" ? (f.text || "") : "";
+    const row = el("div", "fixrow");
+    const save = el("button", "", f && f.status === "open" ? "Update request" : "Save request");
+    const msg = el("span", "", f ? (f.status === "open" ? "Open — the next run will fix it." : f.status === "done" ? ("Done: " + (f.result || "")) : "") : "");
+    save.disabled = !db;
+    save.addEventListener("click", async () => {
+      const text = ta.value.trim(); if (!text) { msg.textContent = "Write what to fix first."; return; }
+      save.disabled = true; msg.textContent = "Saving…";
+      try { await db.doc("fixes/" + r.topic_id).set({ topic_id: r.topic_id, text, status: "open", requested_at: new Date().toISOString() }); msg.textContent = "Saved. The next run will make a corrected version."; }
+      catch (e) { msg.textContent = "Couldn't save (" + (e && e.code || "error") + "). Try again in a moment."; }
+      save.disabled = false;
+    });
+    row.append(save, msg);
+    if (!db) row.append(el("span", "", "Open in claude.ai to request fixes."));
+    fx.append(lab, ta, row); d.append(fx); b.append(d);
+    art.append(pl, b); list.append(art);
+  }
+}
+
+render();
+(async () => {
+  db = await claude.use("db");
+  if (!db) { render(); return; }
+  db.collection("videos").orderBy("created", "desc").onSnapshot(s => { rows = s.docs.map(d => d.data()); render(); }, () => render());
+  db.collection("fixes").onSnapshot(s => { fixes = {}; for (const d of s.docs) fixes[d.id] = d.data(); render(); });
+})();
+</script>
