@@ -12,7 +12,7 @@ Reads <run_dir>/edit.json:
   "end_card": {"text": "Line one\\nline two", "sub": "Kwento: Kilabot", "seconds": 3.5}
 }
 Writes <run_dir>/<topic_id>-final.mp4: 720x1280 (Flow's native size), 24 fps, H.264/AAC, about -14 LUFS,
-small enough (~1.1 Mb/s cap) to write back to the owner's computer.
+under 9.5 MB (two-pass, bitrate from the size budget) so Claude in Chrome can upload it, even for ~2 min stories.
 
 Sync rules (learned the hard way): every segment's audio is cut/padded to EXACTLY its video frame count
 before joining, and no look-ahead filters (loudnorm) are used per segment — they drop the last seconds of
@@ -180,14 +180,20 @@ def main(run_dir: Path) -> None:
     whole = loudness(tmp / "audio.wav", 0, nsamp / SR)
     g = -14.0 - whole
     final = run_dir / f"{tid}-final.mp4"
-    # size cap: Claude in Chrome uploads files < 10 MB; long videos fall back to ~1.1 Mb/s (owner drags the file in)
+    # size cap: Claude in Chrome uploads files < 10 MB, so every video (up to ~2 min) is fitted under max_mb
+    # with a two-pass encode (bitrate from the size budget; preset slow keeps dark scenes clean at low rates)
     max_mb = float(edit.get("max_mb", 9.5))
     secs = nframes / FPS
-    vkbps = int(min(1400, max(1100 if secs > 75 else 500, max_mb * 8000 / secs * 0.93 - 128)))
-    run(["-i", str(tmp / "video.mkv"), "-i", str(tmp / "audio.wav"), "-map", "0:v", "-map", "1:a",
-         "-c:v", "libx264", "-preset", "veryfast", "-crf", "22", "-maxrate", f"{vkbps}k", "-bufsize", f"{2*vkbps}k",
+    abr = 96
+    vkbps = int(min(1400, max(300, max_mb * 8000 / secs * 0.94 - abr)))
+    common = ["-i", str(tmp / "video.mkv"), "-i", str(tmp / "audio.wav"), "-map", "0:v", "-map", "1:a",
+              "-c:v", "libx264", "-preset", "slow", "-b:v", f"{vkbps}k", "-maxrate", f"{int(vkbps*1.5)}k",
+              "-bufsize", f"{3*vkbps}k"]
+    passlog = str(tmp / "x264pass")
+    run(common + ["-pass", "1", "-passlogfile", passlog, "-an", "-f", "mp4", "/dev/null"])
+    run(common + ["-pass", "2", "-passlogfile", passlog,
          "-af", f"volume={g:.2f}dB,alimiter=limit=0.85:attack=5:release=50:level=disabled",
-         "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(final)])
+         "-c:a", "aac", "-b:a", f"{abr}k", "-movflags", "+faststart", str(final)])
 
     # sync check: each segment of the final vs its source clip
     worst = 0.0

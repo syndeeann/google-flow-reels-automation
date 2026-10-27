@@ -163,8 +163,8 @@ def cmd_validate(run_dir: Path) -> None:
 
     if brief.get("clip_count_fixed", True) and len(clips) != brief["clip_count"]:
         problems.append(f"expected {brief['clip_count']} clips, found {len(clips)}")
-    if not brief.get("clip_count_fixed", True) and not (4 <= len(clips) <= 8):
-        problems.append(f"short stories need 4-8 clips, found {len(clips)}")
+    if not brief.get("clip_count_fixed", True) and not (4 <= len(clips) <= 16):
+        problems.append(f"stories need 4-16 clips, found {len(clips)}")
     word_cap = {6: 9, 8: 14, 10: 18}
 
     character = (data.get("character") or "").strip()

@@ -3,7 +3,7 @@
 Research summary, 2026-10-27. Sources at the bottom; most are marketing sites summarizing Meta and TikTok statements, so treat numbers as guidance and let Page Insights decide.
 
 ## What the platforms reward (all three agree)
-- **Watching to the end.** Completion and rewatches are the strongest signals on all three. A short video people finish beats a long one they abandon. → Keep stories **45–60 seconds**, hook in the first 2–3 seconds, twist as the last line.
+- **Watching to the end.** Completion and rewatches are the strongest signals on all three. A short video people finish beats a long one they abandon. → Owner (2026-10-27) chose stories up to **~2 minutes**; that only works if every clip escalates (PROMPT_GUIDE). Hook in the first 2 seconds, open a loop, twist as the last line. Facebook shows Reels under 90 s in more places, so lean/medium days are not a loss.
 - **Shares and sends** (DMs) push a video to non-followers, especially on Instagram. Saves and real comments also count. Likes matter least.
 - **Originality.** Meta demotes reposts and accounts that mostly repost; Instagram flags reused visuals/audio. Our videos are generated from our own scripts — upload the original file, never a re-download with another app's watermark.
 - **Fresh and consistent.** Facebook says it surfaces far more same-day Reels and that posting more often helps; consistency also helps TikTok learn who the account is for.
@@ -23,7 +23,9 @@ Research summary, 2026-10-27. Sources at the bottom; most are marketing sites su
 - **Instagram:** same text, ≤5 hashtags (hard limit), keywords in the first line (Instagram leans on keywords over hashtags). Instagram's non-follower ceiling is 3 min, so 1-minute stories are fine.
 - **TikTok:** shorter: hook line + question + 3–5 hashtags. TikTok transcribes audio and reads on-screen text, so the spoken hook should contain the search words too (e.g. the narrator says "aswang" early).
 
-- **YouTube Shorts:** a **title** (≤ 100 chars, aim for ≤ 60) that leads with the hook + a search phrase and the series number, e.g. `May bumibili ng alaala tuwing 3AM 😨 | Tagalog Horror Story | Kilabot #1`; a **description**: the Facebook caption's lines 1–3 + "Kwento: Kilabot — Tagalog horror stories mula sa Filipino folklore. Kathang-isip lamang." + 3–5 hashtags (#Shorts can be one of them); **tags**: 5–10 search phrases (kwentong kilabot, tagalog horror story, aswang, …). No `<` or `>`. Mark the video as altered/synthetic content (realistic AI video) and not made for kids.
+- **YouTube Shorts:** a **title** (≤ 100 chars, aim for ≤ 60) that leads with the hook + a search phrase and the series number, e.g. `May bumibili ng alaala tuwing 3AM 😨 | Tagalog Horror Story | Kilabot #1`; a **description**: the Facebook caption's lines 1–3 + "Kwento: Kilabot — Tagalog horror stories mula sa Filipino folklore. Kathang-isip lamang." + 3–5 hashtags (#Shorts can be one of them); **tags**: 5–10 search phrases (kwentong kilabot, tagalog horror story, aswang, …). No `<` or `>`. Mark the video as altered/synthetic content (realistic AI video). Audience: "No, it's not made for kids" — EXCEPT `audience: kids` stories (kwentong pambata), which must be "Yes, it's made for kids" (YouTube/COPPA requirement; comments get turned off automatically).
+- **Kids stories (kwentong pambata):** gentle, playful wording, no gore/fear-bait words; hashtags like `#KwentongPambata #KwentongKatatakutan #PinoyKids #FilipinoFolklore`.
+- **Search words per theme:** abandoned buildings → *abandoned building horror, urban exploration, haunted hospital*; call center → *call center horror story, BPO horror, graveyard shift*; school → *school horror story, kwentong eskwelahan*; kids → *kwentong pambata, horror for kids Tagalog*.
 
 ## Hook formulas (Tagalog) for the spoken first line and caption line 1
 - **The rule:** "Sa probinsya namin, may isang patakaran: huwag kang sasagot kapag may tumawag sa pangalan mo pagkalampas ng hatinggabi."

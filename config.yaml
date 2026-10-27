@@ -3,7 +3,7 @@
 
 video:
   aspect_ratio: "9:16"          # vertical for Reels / TikTok / Shorts
-  length_seconds: 54            # short stories: 45-60s, 5-7 clips of 6/8/10s (see PROMPT_GUIDE clip timing)
+  length_seconds: 110           # owner 2026-10-27: stories up to ~2 min (100-120 s, 11-14 clips); shorter when credits are low (PROMPT_GUIDE)
   clip_seconds: 9               # average clip length used to estimate clip count
   max_words_per_clip: 18        # hard cap for a 10s clip; 8s = 14, 6s = 9
   cta_in_last_clip: false       # last clip is the twist; the call to action goes in the caption instead
@@ -27,20 +27,22 @@ flow:
   url: "https://flow.google.com"
   model: "Omni 1.1 Flash"       # 720p, 9:16, Ingredients mode; 6s=10, 8s=12, 10s=15 credits
   outputs_per_prompt: 1         # variants per clip (each one costs credits)
-  max_clips_per_run: 8          # per VIDEO (redos count too)
+  max_clips_per_run: 16         # per VIDEO (redos count too); a 2-min story is 11-14 clips
   min_videos_per_run: 1         # owner: at least 1 video every day (always made first)
   videos_per_run: 3             # up to 3 when credits allow
-  credits_per_video_estimate: 90   # standard 45-60s story (6-7 clips)
+  credits_per_video_estimate: 170  # full ~2-min story (11-14 clips); medium ~90 s = ~110; lean ~45 s <= 50
+  full_from: 400                # balance >= this -> full ~2-min story; 200-399 -> medium ~90 s; below 200 -> lean
+  medium_from: 200
   lean_video_max_credits: 50    # lean story (4-5 clips, ~35-45s) fits the +50 credits/day allowance
   extras_reserve: 300           # make videos 2-3 only if the balance stays above this afterwards
-  lean_below: 300               # below this balance, video 1 is a lean story so the daily video never stops
+  lean_below: 200               # below this balance, video 1 is a lean story so the daily video never stops
   credit_reserve: 0             # absolute floor
   download_clips: true          # download finished clips to the computer's Downloads folder
 
 delivery:
   width: 720
   height: 1280
-  max_mb: 9.5                   # small files are easier to upload from a phone
+  max_mb: 9.5                   # assemble.py fits every video (even 2 min) under this with a two-pass encode
   folder: "~/Downloads/Kwento Kilabot"
 
 facebook:

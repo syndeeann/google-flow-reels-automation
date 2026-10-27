@@ -2,20 +2,27 @@
 
 Channel: **Kwento: Kilabot** — short Tagalog horror stories from Filipino folklore, always ending on a twist. Dark foggy night scenes, one low, tired, almost calm male narrator (the Flow **Narrator** character).
 
-Claude writes the stories. Every finished video must pass the quality check (RUNBOOK step 4b); the owner posts it.
+Claude writes the stories. Every finished video must pass the quality check (RUNBOOK step 4b); Claude posts it to Facebook + YouTube.
 
-## Story rules
-- **Short but interesting: 45–60 seconds**, 5–7 clips, about 80–110 spoken words in total. One idea, one creature, one twist.
-- **Lean story** (when credits are low, see RUNBOOK Daily run): 4–5 clips, ~35–45 s, 55–75 words, ≤ 50 credits — hook, two beats, twist.
-- **First person**, told by the Narrator as something that happened to him or his family. Relatable modern Filipino life (night shift, tricycle, sari-sari store, lamay, probinsya visit, OFW, group chat) colliding with old folklore.
-- **Creatures and elementals:** aswang, manananggal, tiktik, wakwak, tikbalang, kapre, duwende, nuno sa punso, engkanto, diwata, tiyanak, sigbin, santelmo, white lady, berberoka, bungisngis, mangkukulam / barang, kambal-tuko, multo sa lumang bahay. Use authentic details (tiktik sound gets louder when it's far, aswang reflection upside down in the eyes, asin at bawang, "tabi-tabi po").
-- **Variety:** don't reuse the creature or the twist type of the last 6 stories in `queue/topics.yaml`. Each day's 3 stories should use 3 different creatures and 3 different settings.
-- **Shape:**
-  1. **Hook (clip 1, first 2–3 s spoken):** a rule, a confession, an impossible detail, or a price (see `docs/CAPTION_GUIDE.md`). Say a searchable word early (e.g. "aswang").
-  2. **Build (2–4 clips):** one escalating beat per clip. Show, don't explain.
-  3. **Twist (last clip):** one line that flips everything (the narrator is the creature; the "rescuer" was the monster; the date shows he died years ago…). End on the twist line. No moral, no outro, no CTA spoken.
-- Keep it horror, not gore: imply violence (shadows, sounds, aftermath off screen). No children harmed on screen, no real people, no real crimes, no brands.
-- **Second voices are risky:** Flow refused a clip twice when another character shouted a line. Keep other characters' lines short and quiet (on-camera, spoken softly), or have the narrator quote them.
+## Story rules (owner, 2026-10-27: up to 2 minutes, more themes, never boring)
+- **Length by credits** (RUNBOOK Daily run): **full ~2 min** (100–120 s, 11–14 clips, ~170–200 spoken words) when the Flow balance is ≥ 400; **medium ~90 s** (8–9 clips) at 200–399; **lean ~45 s** (4–5 clips, ≤ 50 credits) below 200. One story, one threat, one twist — a long story gets more beats, not more ideas.
+- **First person**, told by the Narrator as something that happened to him, his family or his co-workers/classmates. Relatable modern Filipino life.
+- **Rotate the theme family** (look at the last 6 stories in `queue/topics.yaml`; don't repeat the family twice in a row, and use different families on the same day):
+  1. **Filipino folklore** — aswang, manananggal, tiktik, wakwak, tikbalang, kapre, duwende, nuno sa punso, engkanto, diwata, tiyanak, sigbin, santelmo, white lady, berberoka, bungisngis, mangkukulam / barang, kambal-tuko. Authentic details (tiktik louder when far, upside-down reflection in an aswang's eyes, asin at bawang, "tabi-tabi po").
+  2. **Abandoned buildings** — the half-built mall, the closed hospital wing, the old hotel in Baguio, the burned cinema, the empty resort, the condemned ancestral house. Urban explorers, a security guard on graveyard shift, a vlogger filming "for content". Fear from space: corridors, stairwells, a door that is open now but was closed.
+  3. **Call center horrors** — BPO graveyard shift in Ortigas/Makati/IT Park: the 3 AM caller who knows your name, the 13th floor that the elevator skips, the seat nobody takes, the headset that whispers between calls, the night-shift team lead who isn't on the roster. Ground it in real details (AHT, queue, "Thank you for calling…", pantry, smoke break, sleeping pods).
+  4. **School horrors** — the old building's CR, the music room piano, the class picture with an extra student, the night before the exam in the library, the retreat house, the guard who says the school has no 4th floor. Narrator is a teacher, a guard, or an adult remembering high school (keep child characters off-screen or in non-threatening shots — Flow refuses children in horror shots).
+  5. **Kwentong pambata (horror for kids)** — spooky but SAFE, ~6–12 years old: mischievous duwende, a kapre who is lonely, a ghost who just wants his lost toy back, the monster under the bed who is scared of the kid. Rules: no blood, no death of children, no screaming jump-scares, no harm to animals; scary-fun tension that ends warm, funny or clever (the twist can be sweet). Narrator stays the same voice but gentle ("Lola style"). Mark these `audience: kids` in the queue — on YouTube they must be set to **"Yes, it's made for kids"** (law, not optional), and the caption skips adult hashtags.
+- **Make it interesting, never boring:**
+  - **Hook in the first 2 s** with a specific, strange detail (rule, confession, impossible detail, price, warning — CAPTION_GUIDE). Never open with setting description.
+  - **Open a loop early** ("Hanggang ngayon, hindi ko alam kung sino ang sumagot sa tawag na 'yon.") and pay it off only at the end.
+  - **Escalate every clip**: each beat must be worse, closer or stranger than the last; a long story gets a **midpoint turn** (~60 s: the narrator realizes the rule was wrong / the helper is lying / it already happened before).
+  - **Specific beats over summary**: one concrete sound or object per clip (the cold coffee left on desk 13, the sapatos lined up outside the CR).
+  - **Vary the shots**: wide establishing, close-ups of objects/hands, POV down a corridor, over-the-shoulder, a static "something moves in the background" shot. Never two similar shots in a row.
+  - **Breathing room**: one near-silent beat before the twist (a short line or 6 s clip).
+  - **Twist that re-reads the story** in the last line (the narrator is the ghost; the caller was calling from the future; the abandoned building was never abandoned; the kid saved the monster). No moral, no outro, no CTA spoken.
+- Keep it horror, not gore: imply violence (shadows, sounds, aftermath off screen). No children harmed or in danger on screen, no real people, no real crimes, no real company/school/building names, no brands.
+- **Second voices are risky:** Flow refused a clip twice when another character shouted a line. Keep other characters' lines short and quiet, or have the narrator quote them. Also refused: a covered body; a child on screen in a horror shot.
 - Title format: `Kilabot #N: <Tagalog title>`; N continues from the last number in the queue.
 
 ## Clip timing (Flow Omni 1.1 Flash: 4/6/8/10 s)
