@@ -15,6 +15,27 @@
 # Every story: Tagalog, Filipino folklore, dark foggy night, slow eerie male narrator, ends on a twist.
 
 topics:
+  - id: tiktik-sa-palayan
+    status: in_progress
+    topic: "Kilabot #2: Mahina ang Tiktik — a night-patrol tanod relieved the tiktik sounds far away"
+    folklore: "Tiktik (aswang) — loud call = far, faint call = near"
+    clip_count: 6
+    notes: "Twist: the faint tik-tik comes from his own wife's throat as she leans close. Setting: rice fields, probinsya."
+
+  - id: santelmo-sa-laot
+    status: in_progress
+    topic: "Kilabot #3: Ang Ilaw sa Laot — a capsized fisherman follows a santelmo to shore"
+    folklore: "Santelmo (ball of fire, soul of the drowned)"
+    clip_count: 6
+    notes: "Twist: on the beach his mother cries over a covered body; the light on the water is gone — he is the santelmo now. Setting: coastal fishing village."
+
+  - id: nuno-sa-punso-cavite
+    status: in_progress
+    topic: "Kilabot #4: Tabi-tabi Po — a family flattens a punso to build their new house in Cavite"
+    folklore: "Nuno sa punso"
+    clip_count: 6
+    notes: "Twist: the daughter relays the nuno's thanks — their new house is his bigger new punso. Setting: new subdivision house, Cavite."
+
   - id: bote-diyaryo-alaala
     status: posted
     topic: "Kilabot #1: Bote, Diyaryo, at Alaala — a 3 AM junk buyer who pays cash for painful memories"
