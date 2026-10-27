@@ -1,1 +1,6 @@
 - 2026-10-27 08:07 — Claimed topic 'santelmo-sa-laot' (6 clips, 9:16).
+- 2026-10-27 09:14 — Clip 5 refused by Flow's policy filter (covered body on the beach; refunded). Softened: mother hugs his slippers instead; 8s.
+- 2026-10-27 09:34 — Finished with status 'ready_to_post'. QC passed (worst lag 10 ms, 49.0s; clip 5 softened after refusal, clip 3 regenerated for continuity)
+- 2026-10-27 09:44 — Owner approved posting in chat. YouTube Short published (Public, not for kids, AI use: Yes): https://youtube.com/shorts/rXdRtgvImKk
+- 2026-10-27 09:50 — Finished with status 'posted'. FB Reel 9:47 AM | https://youtube.com/shorts/rXdRtgvImKk
+- 2026-10-27 09:50 — Facebook Reel published on Kwento: Kilabot via Business Suite (Share now). Business Suite offered no AI-label option. Link not shown: https://www.facebook.com/1348335788368328/reels (Reel link not shown in Business Suite)

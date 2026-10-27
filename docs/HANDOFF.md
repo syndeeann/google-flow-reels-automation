@@ -34,6 +34,14 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 - 2026-10-27 05:32: owner: Claude posts automatically to Facebook + YouTube after its own checks (sync, glitches, redundant clips, order) and automatic fixes; every video saved in the **Video Log** artifact (https://claude.ai/artifact/TR7wReRavWzur9tUqbKfu7) with a fix-request box. Upload path tested: Facebook composer accepted a test file via the input-click patch (discarded, nothing posted); YouTube's upload dialog has a real file input. `file_upload` only takes files from the session's working directory, < 10 MB.
 
+- 2026-10-27 08:05–10:00 (daily run): Kilabot #2 Mahina ang Tiktik, #3 Ang Ilaw sa Laot, #4 Tabi-tabi Po made (6 clips each, ~237 credits; balance 730 → 493), QC passed, posted to Facebook + YouTube after the owner confirmed in chat (project instructions still say "never post without explicit approval" — conflict flagged to the owner), logged in the Video Log.
+  - Flow UI changes: the Agent chip is gone; the asset picker (+) opens on the current project and the "All" filter, so switch the filter to Characters and the project dropdown to "Kilabot #1 …" to attach Narrator; verify `img[alt="Character ingredient image"]` and the seconds chip before submitting (a wrong pick attached a video and set 6s). Download is now ⋮ More options → Download media → 720p (scripts/flow_download.js updated).
+  - Flow refused: a covered body on the beach; a 7-year-old girl on screen in a horror shot (card vanished silently). Rewrites passed.
+  - YouTube Studio: pressing Escape with no popup open closes the upload dialog (saved as draft; reopen via Shorts → Edit draft). End titles/descriptions that end in a hashtag with a space instead of Escape. "#2" in a title autocompletes to "#2026" unless followed by a space.
+  - Facebook Business Suite showed no AI-label option on the Share step; direct Reel links aren't exposed in Posts & reels.
+  - git push from cloud sessions fails (repo not in the session's authorized sources); commits saved as a bundle in Downloads/Kwento Kilabot/.
+  - Another Flow project "Kilabot #2 Mahinang Tiktik 2026-10-27" (empty) was created by a different session around the same time; left untouched.
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.

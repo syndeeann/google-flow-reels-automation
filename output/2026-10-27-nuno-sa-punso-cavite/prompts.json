@@ -42,8 +42,8 @@
    "seconds": 10,
    "voiceover": "Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.”",
    "dialogue": "",
-   "visual": "Daughter stands in her doorway, silent, small muddy footprints lead past her into the house",
-   "prompt": "Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in down the hallway toward the girl standing silently in her bedroom doorway, looking at the camera; behind her on the floor, a trail of tiny muddy footprints leads deeper into the house. His daughter: a Filipino girl about 7 years old, short black hair with bangs, yellow pajamas. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, newly built two-storey house in a quiet Cavite subdivision, empty lot with tall grass beside it, inside the house hallway. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): \"Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.”\" The tiny footsteps resume overhead, slowly, then a faint old man's chuckle, low drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood."
+   "visual": "Hallway toward the daughter's half-open door; a trail of tiny muddy footprints leads into the house and up the stairs",
+   "prompt": "Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in down a dim hallway toward a half-open bedroom door with soft lamplight inside; on the floor, a trail of tiny muddy footprints, each smaller than a coin, leads from the front door, past the camera and up the stairs. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, newly built two-storey house in a quiet Cavite subdivision, empty lot with tall grass beside it, inside the house hallway. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): \"Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.”\" The tiny footsteps resume overhead, slowly, then a faint old man's chuckle, low drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood."
   }
  ],
  "caption_full": "Tabi-tabi po. Isang beses ko lang nakalimutan… nung pinatag namin ang punso. 😨 Kwentong nuno sa punso.\n\nBagong bahay sa Cavite, namagang paa, at maliliit na yabag sa kisame tuwing gabi.\n\nNagsasabi pa ba kayo ng \"tabi-tabi po\" hanggang ngayon?\n\nKilabot No. 4 · Sundan ang Kwento: Kilabot para sa susunod na kwento.\n\n#KwentongKilabot #NunoSaPunso #FilipinoHorror #TagalogHorrorStories #HorrorStoryPH",
@@ -74,7 +74,5 @@
   ]
  },
  "end_card": "Nagsasabi pa ba kayo\nng 'tabi-tabi po'?",
- "characters": {
-  "Anak": "His daughter: a Filipino girl about 7 years old, short black hair with bangs, yellow pajamas."
- }
+ "characters": {}
 }

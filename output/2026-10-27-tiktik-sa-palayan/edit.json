@@ -1,0 +1,11 @@
+{
+ "clips": [
+  {"n": 1, "start": 1.4, "end": 10.0},
+  {"n": 2, "start": 0.0, "end": 7.5},
+  {"n": 3, "start": 0.0, "end": 8.0},
+  {"n": 4, "start": 0.0, "end": 7.1},
+  {"n": 5, "start": 0.6, "end": 8.0},
+  {"n": 6, "start": 0.0, "end": 8.0}
+ ],
+ "end_card": {"text": "Sa inyo, malakas o mahina\nang tik-tik?", "sub": "Kwento: Kilabot", "seconds": 3.5}
+}

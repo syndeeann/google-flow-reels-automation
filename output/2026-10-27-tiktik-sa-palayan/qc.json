@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "problems": [],
+  "warnings": [],
+  "info": {
+    "worst_lag_ms": 10.0,
+    "duration": 50.08,
+    "size_mb": 7.07
+  },
+  "visual_review": {
+    "sheet": "check/qc_sheet.png",
+    "expected_visuals": {
+      "1": "Slow push-in over foggy rice fields at night toward a lone house",
+      "2": "Narrator as a barangay tanod walking the paddy dike with a flashlight",
+      "3": "He stops and listens toward the far fields, then exhales",
+      "4": "Wife seated at the open window, back to camera, staring outside",
+      "5": "Wife slowly turns her head and smiles faintly; lamp flickers",
+      "6": "Wife leans in to his shoulder; he freezes, eyes wide"
+    },
+    "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its expected visual, clips are in story order, no clip repeats, no text/watermark/garbled faces, characters stay consistent."
+  }
+}

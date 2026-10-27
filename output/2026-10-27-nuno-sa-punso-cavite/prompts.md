@@ -13,7 +13,7 @@
 | 3 | Tuwing gabi, may maliliit na yabag sa kisame. Parang may nagbibilang ng hakbang. | Low angle up at a dark ceiling; a faint shadow crosses the light |
 | 4 | Nag-alay kami ng kanin, itlog at tabako sa dating punso. Humingi ako ng tawad. | He kneels at the flattened mound offering rice, an egg and tobacco on a banana leaf |
 | 5 | Gumaling ang paa ko. Tumahimik ang kisame. Akala ko tapos na. | Calm morning-blue light in the quiet house, the hallway empty |
-| 6 | Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.” | Daughter stands in her doorway, silent, small muddy footprints lead past her into the house |
+| 6 | Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.” | Hallway toward the daughter's half-open door; a trail of tiny muddy footprints leads into the house and up the stairs |
 
 ## Flow prompts (paste one per generation)
 
@@ -50,7 +50,7 @@ Vertical 9:16 video. The attached Narrator character is off-screen and does not 
 ### Clip 6
 
 ```
-Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in down the hallway toward the girl standing silently in her bedroom doorway, looking at the camera; behind her on the floor, a trail of tiny muddy footprints leads deeper into the house. His daughter: a Filipino girl about 7 years old, short black hair with bangs, yellow pajamas. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, newly built two-storey house in a quiet Cavite subdivision, empty lot with tall grass beside it, inside the house hallway. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.”" The tiny footsteps resume overhead, slowly, then a faint old man's chuckle, low drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in down a dim hallway toward a half-open bedroom door with soft lamplight inside; on the floor, a trail of tiny muddy footprints, each smaller than a coin, leads from the front door, past the camera and up the stairs. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, newly built two-storey house in a quiet Cavite subdivision, empty lot with tall grass beside it, inside the house hallway. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Hanggang sinabi ng anak ko: “Pa, salamat daw sabi ni Lolo. Mas malaki raw ang bago niyang punso.”" The tiny footsteps resume overhead, slowly, then a faint old man's chuckle, low drone. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
 ```
 
 ## Facebook caption

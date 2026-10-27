@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "problems": [],
+  "warnings": [],
+  "info": {
+    "worst_lag_ms": 10.0,
+    "duration": 52.33,
+    "size_mb": 7.02
+  },
+  "visual_review": {
+    "sheet": "check/qc_sheet.png",
+    "expected_visuals": {
+      "1": "A backhoe bucket resting on a flattened earth mound beside a new house at night",
+      "2": "Narrator sits on a bed under a lamp, staring at his swollen foot",
+      "3": "Low angle up at a dark ceiling; a faint shadow crosses the light",
+      "4": "He kneels at the flattened mound offering rice, an egg and tobacco on a banana leaf",
+      "5": "Calm morning-blue light in the quiet house, the hallway empty",
+      "6": "Hallway toward the daughter's half-open door; a trail of tiny muddy footprints leads into the house and up the stairs"
+    },
+    "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its expected visual, clips are in story order, no clip repeats, no text/watermark/garbled faces, characters stay consistent."
+  }
+}

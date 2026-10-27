@@ -1,1 +1,6 @@
 - 2026-10-27 08:07 — Claimed topic 'nuno-sa-punso-cavite' (6 clips, 9:16).
+- 2026-10-27 09:24 — Clip 6 generation disappeared from the project (likely refused: child on screen in a horror scene). Rewritten without the girl on screen (tiny muddy footprints in the hallway); same voice-over.
+- 2026-10-27 09:34 — Finished with status 'ready_to_post'. QC passed (worst lag 10 ms, 52.3s; clip 6 rewritten without child on screen)
+- 2026-10-27 09:44 — Owner approved posting in chat. YouTube Short published (Public, not for kids, AI use: Yes): https://youtube.com/shorts/nJJ29cWjPDo
+- 2026-10-27 09:50 — Finished with status 'posted'. FB Reel 9:48 AM | https://youtube.com/shorts/nJJ29cWjPDo
+- 2026-10-27 09:50 — Facebook Reel published on Kwento: Kilabot via Business Suite (Share now). Business Suite offered no AI-label option. Link not shown: https://www.facebook.com/1348335788368328/reels (Reel link not shown in Business Suite)

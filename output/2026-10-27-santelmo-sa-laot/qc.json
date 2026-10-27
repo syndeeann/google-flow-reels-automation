@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "problems": [],
+  "warnings": [],
+  "info": {
+    "worst_lag_ms": 10.0,
+    "duration": 48.96,
+    "size_mb": 8.36
+  },
+  "visual_review": {
+    "sheet": "check/qc_sheet.png",
+    "expected_visuals": {
+      "1": "A small glowing orange ball of light floats over a foggy dark sea",
+      "2": "Narrator in the dark water clinging to a capsized bangka",
+      "3": "An orange light appears in the fog ahead, hovering",
+      "4": "He swims after the light; it drifts slowly toward the shore",
+      "5": "Villagers with lanterns on the beach; mother kneels on the sand hugging a pair of worn rubber slippers, crying softly",
+      "6": "The narrator's hands begin to glow orange; the villagers don't see him"
+    },
+    "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its expected visual, clips are in story order, no clip repeats, no text/watermark/garbled faces, characters stay consistent."
+  }
+}

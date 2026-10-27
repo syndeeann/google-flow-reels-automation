@@ -12,7 +12,7 @@
 | 2 | Kagabi, inabot ako ng unos sa laot. Tumaob ang bangka. Wala akong makita. | Narrator in the dark water clinging to a capsized bangka |
 | 3 | Tapos may lumitaw na ilaw sa ibabaw ng tubig. Kulay kahel. Lumulutang. Naghihintay. | An orange light appears in the fog ahead, hovering |
 | 4 | Wala na akong pakialam sa pamahiin. Lumangoy ako papunta sa kanya, hanggang sa pampang. | He swims after the light; it drifts slowly toward the shore |
-| 5 | Sa dalampasigan, nagkukumpulan ang mga kapitbahay. Umiiyak si Nanay sa tabi ng isang nakatakip na katawan. | Villagers with lanterns around a shape covered by a blanket; mother kneels crying |
+| 5 | Sa dalampasigan, nagkukumpulan ang mga kapitbahay. Umiiyak si Nanay, yakap ang tsinelas ko. | Villagers with lanterns on the beach; mother kneels on the sand hugging a pair of worn rubber slippers, crying softly |
 | 6 | Tinawag ko siya. Hindi siya lumingon. Saka ko napansin: ako na ang nagliliwanag. | The narrator's hands begin to glow orange; the villagers don't see him |
 
 ## Flow prompts (paste one per generation)
@@ -32,7 +32,7 @@ Vertical 9:16 video. The attached Narrator character is the young man in this sc
 ### Clip 3
 
 ```
-Vertical 9:16 video. The attached Narrator character is the young man in this scene (use his look); his voice is the voice-over. Over-the-shoulder shot from behind the young man in the water: ahead in the fog an orange ball of light appears and hovers motionless above the waves, glowing softly. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, small Philippine coastal fishing village, dark sea, wooden outrigger bangka boats, open sea. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Tapos may lumitaw na ilaw sa ibabaw ng tubig. Kulay kahel. Lumulutang. Naghihintay." The rain fades away, a soft crackle, waves calming. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+Vertical 9:16 video. The attached Narrator character is the young man in this scene (use his look); his voice is the voice-over. Over-the-shoulder shot from behind the young man, who is in the water up to his shoulders, clinging to the hull of his overturned outrigger boat (no upright boat, he is not sitting in a boat): ahead in the fog an orange ball of light appears and hovers motionless above the waves, glowing softly. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, small Philippine coastal fishing village, dark sea, wooden outrigger bangka boats, open sea. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Tapos may lumitaw na ilaw sa ibabaw ng tubig. Kulay kahel. Lumulutang. Naghihintay." The rain fades away, a soft crackle, waves calming. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
 ```
 
 ### Clip 4
@@ -44,7 +44,7 @@ Vertical 9:16 video. The attached Narrator character is the young man in this sc
 ### Clip 5
 
 ```
-Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in on a foggy beach: villagers holding kerosene lanterns stand in a quiet circle; a woman kneels and weeps beside a still shape lying on the sand fully covered by a patterned blanket. Nothing under the blanket is visible. His mother: a Filipino woman in her late 50s, gray hair in a low bun, faded floral blouse, a white towel over her shoulder. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, small Philippine coastal fishing village, dark sea, wooden outrigger bangka boats, beach at night. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Sa dalampasigan, nagkukumpulan ang mga kapitbahay. Umiiyak si Nanay sa tabi ng isang nakatakip na katawan." Soft sobbing, murmuring villagers, waves on sand. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
+Vertical 9:16 video. The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Slow push-in on a foggy beach: villagers holding kerosene lanterns stand in a quiet circle; a woman kneels on the wet sand hugging a pair of worn rubber slippers to her chest, crying softly, as the tide comes in. His mother: a Filipino woman in her late 50s, gray hair in a low bun, faded floral blouse, a white towel over her shoulder. dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain, small Philippine coastal fishing village, dark sea, wooden outrigger bangka boats, beach at night. Narrator voice-over in Tagalog (low, tired, almost calm adult Filipino male voice, hushed Tagalog storytelling, never shouting): "Sa dalampasigan, nagkukumpulan ang mga kapitbahay. Umiiyak si Nanay, yakap ang tsinelas ko." Soft crying, murmuring villagers, waves on sand. No subtitles, no on-screen text, no watermark, no logos, no gore, no blood.
 ```
 
 ### Clip 6
