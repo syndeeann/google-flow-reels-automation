@@ -21,6 +21,7 @@ Claude writes the stories. Every finished video must pass the quality check (RUN
   - **Vary the shots**: wide establishing, close-ups of objects/hands, POV down a corridor, over-the-shoulder, a static "something moves in the background" shot. Never two similar shots in a row.
   - **Breathing room**: one near-silent beat before the twist (a short line or 6 s clip).
   - **Twist that re-reads the story** in the last line (the narrator is the ghost; the caller was calling from the future; the abandoned building was never abandoned; the kid saved the monster). No moral, no outro, no CTA spoken.
+- **No repeated words in the narration** (owner, 2026-10-28): never the same word twice in a row or twice in one clip's line ("papalapit nang papalapit", "Walang gumagalaw. Walang tumitingin." → rewrite), never the same two-word phrase in two clips, and vary any word that would show up in 3+ clips. `reels.py validate` and `qc.py` enforce this with `scripts/repeats.py`.
 - Keep it horror, not gore: imply violence (shadows, sounds, aftermath off screen). No children harmed or in danger on screen, no real people, no real crimes, no real company/school/building names, no brands.
 - **Second voices are risky:** Flow refused a clip twice when another character shouted a line. Keep other characters' lines short and quiet, or have the narrator quote them. Also refused: a covered body; a child on screen in a horror shot.
 - Title format: `Kilabot #N: <Tagalog title>`; N continues from the last number in the queue.

@@ -206,6 +206,13 @@ def main(run_dir: Path) -> int:
         "-vf", f"tile={cols}x{rows}:padding=4", "-frames:v", "1", str(chk / "qc_sheet.png")])
     visuals = {str(n): (script[n - 1].get("visual", "") if n <= len(script) else "") for n, _, _ in seg_times}
 
+    # Repeated words in the narrator's script (owner, 2026-10-28)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from repeats import check as _repeat_check
+    rep_p, rep_w = _repeat_check(script)
+    problems += [f"repeated words in script: {m}" for m in rep_p]
+    warnings += [f"repeated words in script: {m}" for m in rep_w]
+
     result = {"passed": not problems, "problems": problems, "warnings": warnings, "info": info,
               "visual_review": {"sheet": "check/qc_sheet.png", "expected_visuals": visuals,
                                 "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its "

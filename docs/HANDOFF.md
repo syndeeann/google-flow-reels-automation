@@ -46,6 +46,7 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
   - Credit math: a 2-min story costs ~170–200 credits; the plan adds 50/day. From 493 that's roughly two full-length days, then mostly medium/lean videos with a full one every few days.
 
 - 2026-10-28 08:05 (daily run): Kilabot #5 "Linya Trese" (call center theme, 12 clips, 106 s; balance 543 → ~377). QC passed. Posted to YouTube (https://youtube.com/shorts/dNpQf1pS3sc). **Facebook held**: the Project instructions still require the owner's explicit approval of each video + caption for Facebook, which overrides the scheduled prompt's auto-post; status `ready_to_post` until the owner approves or edits the Project instructions. Flow: Agent chip defaults ON again; type into `div[aria-label="What do you want to create?"]`, not the hidden textarea.
+- 2026-10-28 ~10:40: owner approved Kilabot #5 for Facebook and gave a **standing approval**: "approve and do not ask me again. just post to facebook page for both task." Posted as a Reel on the Page. From now on every QC-passed video goes to Facebook + YouTube with no approval step (daily task prompt updated; the catch-up task prompt update was declined by the owner, it still says to post `ready_to_post` videos). Owner also asked: QC must catch **repeated words in the narrator's script** → `scripts/repeats.py`, run by `reels.py validate` and `qc.py`.
 
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.

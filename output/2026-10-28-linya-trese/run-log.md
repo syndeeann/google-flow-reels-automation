@@ -10,3 +10,4 @@
 - YouTube: https://youtube.com/shorts/dNpQf1pS3sc (Public, not made for kids, AI use = Yes).
 - Facebook: NOT posted. The Project instructions still say "Never post to my Facebook Page without my explicit approval of that specific video and caption"; that conflicts with the scheduled prompt, so the stricter rule wins until the owner approves this video or updates the Project instructions.
 - Video Log: videos/linya-trese (asset 1c13655a1eee06288888f1b3f6a7360c).
+- 2026-10-28 10:39 — Finished with status 'posted'. facebook: Kwento: Kilabot Reels (posted 2026-10-28 ~10:40 AM, direct link not shown) | https://youtube.com/shorts/dNpQf1pS3sc

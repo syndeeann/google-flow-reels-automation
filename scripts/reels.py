@@ -238,6 +238,13 @@ def cmd_validate(run_dir: Path) -> None:
             if bait.search(caps.get(k) or ""):
                 problems.append(f"captions.{k}: engagement bait (like/share/tag demands get demoted)")
 
+    # Owner 2026-10-28: no repeated words in the narrator's script
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from repeats import check as _repeat_check
+    rep_problems, rep_warnings = _repeat_check(clips)
+    problems += [f"repeated words: {m}" for m in rep_problems]
+    for w in rep_warnings:
+        print(" warning (repeated words):", w)
     if problems:
         print("INVALID")
         for p in problems:
