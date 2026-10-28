@@ -2,12 +2,13 @@
 
 This repo turns a queue of topics into short vertical videos made in Google Flow for the Facebook Page **Kwento: Kilabot** (Tagalog horror stories based on Filipino folklore).
 
-**No owner approval.** Every video must pass the quality check (`scripts/qc.py` + Claude's look at the contact sheet; failures are fixed automatically, RUNBOOK 4b). Then Claude **posts it to the Facebook Page and the YouTube channel** (Claude in Chrome, RUNBOOK 5) and **saves it in the Video Log artifact** (RUNBOOK 5b), where the owner can request corrections. Never post a video that failed QC.
+**Six specialists make every video (owner, 2026-10-29): `docs/PIPELINE.md`.** Marites (`storyteller`) writes the story and script → Senyorita (`ai-prompt-expert`) writes the Flow prompts → Claude generates the clips in Flow → Perpekto (`flow-clip-qa`) checks every clip against the story → Jaiman (`video-editor`) compiles them in story order → Perpekto checks the finished video → only on a Perpekto PASS does Claude post to **YouTube and Facebook** → Chelsea (`portfolio-updater`) updates the portfolio. Skills come from https://github.com/syndeeann/custom-claude-skills; tell each one the project concept (PIPELINE.md has the brief and a role block per skill). No Perpekto PASS = no post, on either platform. No other owner approval step (standing approval, owner 2026-10-28). Then Claude **saves it in the Video Log artifact** (RUNBOOK 5b), where the owner can request corrections.
 
 - Queue: `queue/topics.yaml` (status `ready` = produce next)
 - Defaults: `config.yaml`
 - **Setup status, decisions and next steps: `docs/HANDOFF.md`. Read it first when continuing setup.**
 - Procedure: `docs/RUNBOOK.md`. Follow it exactly for "run the pipeline", "make the next Reel", or a scheduled run.
+- **Pipeline and roles: `docs/PIPELINE.md`** (who owns each stage, the horror-story brief to give each skill, hand-offs, loops). Bridge: `python scripts/skills_bridge.py import <run_dir> --script … --prompts …`.
 - Story + prompt rules: `docs/PROMPT_GUIDE.md` (Claude writes the stories: short 45–60 s Filipino horror with a twist)
 - Captions/hooks for Facebook, Instagram, TikTok: `docs/CAPTION_GUIDE.md`
 - Daily job: up to 3 videos per run, each quality-checked, posted to Facebook + YouTube, and saved in the Video Log (`docs/RUNBOOK.md` → Daily run)
