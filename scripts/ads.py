@@ -301,6 +301,16 @@ def cmd_validate(run_dir: Path) -> None:
         warns.append(f"only {spoken} spoken words; a 62-75 s ad usually has 70-90")
     if clips and not (clips[0].get("voiceover") or "").strip():
         errs.append("clip 1 must be the spoken hook")
+    # Shared quality rules (owner, 2026-10-28 — same as Kwento: Kilabot)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from repeats import check as _repeat_check
+    rp, rw = _repeat_check(clips)
+    errs += [f"repeated words: {m}" for m in rp]
+    warns += [f"repeated words: {m}" for m in rw]
+    for i, c in enumerate(clips, 1):
+        if (c.get("voiceover") or "").strip() and not c.get("hero") and "lips" not in (c.get("prompt") or "").lower():
+            errs.append(f"clip {i}: say who may move their lips (host on screen: only she speaks, anyone else keeps lips closed; "
+                        f"host off screen: nobody on screen moves their lips) — no dubbing")
     last_vo = next((c.get("voiceover") or "" for c in reversed(clips) if (c.get("voiceover") or "").strip()), "")
     if "basket" not in last_vo.lower():
         warns.append("last narrated line should point to the yellow basket")

@@ -36,6 +36,10 @@ Choose the angle that shows the product's use most clearly, and don't repeat the
 - Children may appear only incidentally and fully clothed in a family setting; never as the focus of a beauty/body product.
 - Restricted/unsafe categories (weapons, adult products, supplements with health claims, vapes): mark the product `skip` with a note instead of making an ad.
 
+### Shared quality rules (owner, 2026-10-28 — same as Kwento: Kilabot)
+- **No repeated words** in the voice-over: never the same word twice in a row or twice in one clip's line, never the same two-word phrase in two clips; vary any word used in 3+ clips. `ads.py validate` and `qc.py` enforce it (`scripts/repeats.py`).
+- **No dubbing:** only the person who is actually speaking may move their lips — the on-screen host, in sync. Bystanders, and anyone on screen while the host is off-screen, keep their lips closed. `ads.py validate` requires a lips sentence in every narrated prompt; in QC look at `check/lip_sheet.png` and fail any clip where the wrong person's mouth moves or the host's lips don't match the words.
+
 ## 4. Clip plan and timing
 - **Narrated clips (Omni 1.1 Flash, Ingredients mode, Ate Host character attached), with a safety margin so lines are never cut off:** ≤ 8 words → 6 s, 9–12 → 8 s, 13–16 → 10 s. Never more than 16 words.
 - **Hero clips (Veo 3.1 Fast, 8 s):** `"hero": true`, `"voiceover": ""`. No narration, so the narrator's voice never changes model mid-ad.
@@ -47,8 +51,8 @@ The quality check (`qc.py` + the visual review) rejects: lines cut off or missin
 
 **Prompt order** (every prompt stands alone; the model doesn't remember other clips):
 1. `Vertical 9:16 video.` + the host line:
-   - host on screen: `The attached Ate Host character is <ads.host_sheet>; her voice is the voice-over, speaking to camera like a friend.`
-   - host off screen (hands-only demo): `The attached Ate Host character is off-screen; only her voice is heard as the voice-over. Only her hands appear.`
+   - host on screen: `The attached Ate Host character is <ads.host_sheet>; her voice is the voice-over, speaking to camera like a friend. Only her lips move, in sync with her words; anyone else on screen keeps their lips closed.`
+   - host off screen (hands-only demo): `The attached Ate Host character is off-screen; only her voice is heard as the voice-over. Only her hands appear. Nobody on screen moves their lips.`
    - hero clip: no host line, nothing attached.
 2. **Product sheet** word for word in every clip that shows the product, + `exactly as in the attached product photo` when the photo is attached.
 3. **One shot, one action** for these seconds: the clip's `shot` (close-up, medium, wide, overhead, macro, POV, over-the-shoulder) + one simple, slow, physically plausible action. No "then … then …" chains.

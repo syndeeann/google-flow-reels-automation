@@ -76,12 +76,14 @@ Every ad goes through the **same two-part quality check as the Kilabot videos** 
 ```bash
 python scripts/ads.py qc <run_dir>            # runs scripts/qc.py + the 60 s rule; exit 1 = failed
 ```
-It writes `qc.json` and `check/qc_sheet.png` and fails on (from `qc.py`): clips missing, repeated or out of script order; two clips from the same file or looking identical; a segment whose audio doesn't match its own clip; voice-over out of sync (> 60 ms); a narrated clip with no narration heard; black frames; video/audio length mismatch; wrong format — and (ads) content under 60 s without the end card.
+It writes `qc.json` and `check/qc_sheet.png` and fails on (from `qc.py`): clips missing, repeated or out of script order; two clips from the same file or looking identical; a segment whose audio doesn't match its own clip; voice-over out of sync (> 60 ms); a narrated clip with no narration heard; black frames; video/audio length mismatch; wrong format; repeated words in the voice-over script (`scripts/repeats.py`) — and (ads) content under 60 s without the end card.
 **Warnings need a judgment call**, recorded in the visual review notes:
 - frozen picture ≥ 2.5 s → OK only for a deliberate still product shot; otherwise trim or regenerate
 - silence inside a narrated clip → listen for a dropped word; regenerate if a line is broken
 - audio peaks/clipping → re-assemble (assemble.py's limiter normally prevents it)
 - file ≥ 10 MB → can't be uploaded by the browser; re-assemble with a lower `max_mb` in edit.json
+
+**7b0. Lip check (Claude reads `check/lip_sheet.png`, owner 2026-10-28 — no dubbing)** — 4 frames per clip that shows a person. Fail a clip when anyone other than the speaking on-screen host moves their lips, when someone mouths the words while the host is off-screen, or when the host's lips clearly don't match her words. Fix: regenerate that clip with the lips sentence from AD_GUIDE §5.
 
 **7b. Visual review (Claude reads `check/qc_sheet.png`)** — 2 frames per clip, labelled by clip number. Compare each clip with `qc.json → visual_review.expected_visuals`:
 - right scene for each clip, in script order, no repeated shot
