@@ -1,0 +1,18 @@
+# Product ledger, synced from the owner's TikTok Shop showcase on every run (RUNBOOK step 1).
+# One entry per showcase product. Claude adds new products, updates price/commission, and never deletes entries.
+#
+# status:
+#   new                 in the showcase, no ad yet
+#   in_progress         ad being produced (a run stopped midway; resume it first)
+#   prompts_only        script/prompts committed, clips not generated (computer offline, out of credits)
+#   awaiting_approval   finished, QC passed, sent to the owner; NOTHING posted
+#   approved            owner approved this exact video + caption; post it
+#   posted              live on TikTok with the product in the yellow basket
+#   rejected            owner rejected it (see note); may be redone with a new angle only if the owner asks
+#   failed              could not finish (see note)
+#   skip                not suitable for an ad (see note), e.g. no usable photos, restricted category
+#
+# Fields: id (kebab-case), name, product_id (TikTok product id from the link), url, price, commission,
+#         sold (if shown), category, status, ads [{date, run_dir, angle, status, link}], note
+
+products: []

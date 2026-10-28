@@ -1,0 +1,46 @@
+# TikTok Shop affiliate ads — defaults for every ad. Separate from the Kwento: Kilabot config (../config.yaml).
+# The owner's decisions are dated so later runs know where each rule came from.
+
+tiktok:
+  handle: ""                    # filled in by the first run from the owner's TikTok profile (Claude in Chrome)
+  showcase_urls:                # tried in order to read the showcase product list (owner's Chrome, signed in)
+    - "https://affiliate.tiktok.com/"          # TikTok Shop Creator / Affiliate Center → Showcase
+    - "https://www.tiktok.com/tiktokstudio"     # TikTok Studio (fallback: profile → Showcase tab)
+  upload_url: "https://www.tiktok.com/tiktokstudio/upload"
+  posting: "after_owner_approval"  # owner 2026-10-27: dry run first; post only after the owner approves that exact video
+  ai_label: true                # turn on TikTok's "AI-generated content" label on every post
+  max_upload_mb: 9.5            # Claude in Chrome file_upload limit is < 10 MB, file inside the session's working dir
+
+ads:
+  per_run: 2                    # owner 2026-10-27: at least 2 ads (2 products) per run, daily
+  length_seconds_min: 60        # owner: at least 1 minute (hard rule, checked by ads.py validate)
+  length_seconds_target: 68     # 62-75 s; above ~75 s the file can't stay under the upload limit at good quality
+  length_seconds_max: 75
+  language: "Taglish"           # owner 2026-10-27: natural Taglish voice-over
+  narrator: "warm, friendly, conversational Filipina woman in her late 20s, natural Taglish, upbeat but not shouty, like a friend recommending something she really uses"
+  flow_character: "Ate Host"    # Flow character used for every narrated clip so the voice stays the same
+  flow_character_voice: ""      # stock voice picked on the first run (RUNBOOK 5); reuse it every run
+  look: "bright natural daylight, real Filipino home or everyday location, handheld smartphone-style UGC camera, realistic skin and hands, true-to-life product colors and scale, shallow depth of field, crisp detail"
+  negatives: "no subtitles, no on-screen text, no watermark, no logos other than what is printed on the product itself, no distorted hands, no extra fingers, no morphing product"
+  end_card:
+    text: "Tap the yellow basket\npara makita ang presyo"
+    sub: ""
+    seconds: 2.5
+
+flow:
+  url: "https://flow.google.com"
+  # owner 2026-10-27: "Veo for hero shots only" — Veo 3.1 Fast for product close-ups, Omni for the rest
+  hero_model: "Veo 3.1 Fast"    # 8 s ≈ 20 credits; hero clips carry NO voice-over (keeps one consistent narrator voice)
+  base_model: "Omni 1.1 Flash"  # 6 s = 10, 8 s = 12, 10 s = 15 credits; narrated clips with the Ate Host character
+  hero_clips_per_ad: 2          # 1-3; the product in close-up, used, working
+  max_clips_per_ad: 11          # generations per ad including redos
+  credits_per_ad_estimate: 120  # e.g. 6 Omni narrated clips (~80) + 2 Veo hero clips (~40)
+  kilabot_floor: 60             # never spend below this, so the Kwento: Kilabot daily video never stops
+  outputs_per_prompt: 1
+  download_clips: true
+
+delivery:
+  width: 720
+  height: 1280
+  max_mb: 9.5
+  folder: "~/Downloads/TikTok Shop Ads"

@@ -16,4 +16,7 @@ This repo turns a queue of topics into short vertical videos made in Google Flow
 
 Flow has no API; generation happens by operating flow.google.com in the built-in browser of the Claude desktop app on the user's computer, signed in to the user's Google account (Google AI Pro). Clips are joined with ffmpeg in the workspace. Posting: Claude in Chrome (owner's Chrome) → Meta Business Suite + YouTube Studio.
 
+## Second pipeline: TikTok Shop affiliate ads (`tiktok-shop/`)
+Separate from Kwento: Kilabot — different rules. Daily: 2 products from the owner's TikTok Shop showcase → 60–75 s Taglish UGC ads made in Flow (Omni + Ate Host for narration, Veo 3.1 Fast hero shots) → `assemble.py` + `qc.py` → sent to the owner. **Posting needs the owner's approval of each ad** (`approve <ad_id>`), then it's posted to TikTok with the product in the yellow basket. Procedure: `tiktok-shop/RUNBOOK.md`; writing rules: `tiktok-shop/AD_GUIDE.md`; helper: `python scripts/ads.py`; skill: `.claude/skills/tiktok-shop-ad`. Both pipelines share Flow credits; ads never spend below `tiktok-shop/config.yaml → flow.kilabot_floor`.
+
 Commit messages: short, imperative ("Prompts: aswang-sa-kabilang-bahay", "Awaiting approval: …", "Posted: …").

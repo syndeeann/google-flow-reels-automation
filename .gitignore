@@ -13,3 +13,10 @@ output/**/*.png
 output/**/assemble-*/
 output/**/check/
 *.log
+
+# TikTok Shop ads: frames, temp edit folders and product photos stay out of git
+tiktok-shop/output/**/*.png
+tiktok-shop/output/**/*.jpg
+tiktok-shop/output/**/*.webp
+tiktok-shop/output/**/assemble-*/
+tiktok-shop/output/**/check/
