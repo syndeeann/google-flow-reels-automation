@@ -15,6 +15,14 @@
 # Every story: Tagalog, Filipino folklore, dark foggy night, slow eerie male narrator, ends on a twist.
 
 topics:
+  - id: linya-trese
+    status: in_progress
+    theme: call_center
+    topic: "Kilabot #5: Linya Trese — a BPO graveyard-shift agent watches the forbidden 3 AM line ring one desk closer each night"
+    folklore: "Call center (BPO) graveyard-shift horror (original)"
+    clip_count: 12
+    notes: "Twist: when he finally answers, the voice is his own and says 'Salamat. Ikaw na.' — now he is the one who calls the new agent at 3 AM. Setting: call center floor in Ortigas (no company names)."
+
   - id: tiktik-sa-palayan
     status: posted
     topic: "Kilabot #2: Mahina ang Tiktik — a night-patrol tanod relieved the tiktik sounds far away"
