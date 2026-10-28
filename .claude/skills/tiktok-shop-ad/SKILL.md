@@ -7,10 +7,11 @@ description: Make TikTok Shop affiliate video ads (2 showcase products per run, 
 
 1. Read `tiktok-shop/RUNBOOK.md` and follow it step by step. Defaults: `tiktok-shop/config.yaml`. Ledger: `tiktok-shop/products.yaml`.
 2. Analyze each product and write scripts, prompts and captions by `tiktok-shop/AD_GUIDE.md` (honest claims only, Ate Host narrator, Veo 3.1 Fast hero clips without voice-over).
-3. Reuse the shared tools unchanged: `scripts/assemble.py` (sync-locked edit), `scripts/qc.py` (quality gate); ad bookkeeping with `scripts/ads.py`; Flow downloads with `scripts/flow_download_ads.js`.
-4. **Never post without the owner's approval of that exact video and caption.** Owner replies:
+3. Quality check exactly like Kwento: Kilabot (RUNBOOK step 7): `ads.py qc` (runs `scripts/qc.py` + the 60 s rule) and `ads.py review` (your look at the contact sheet, incl. product accuracy); fix automatically up to 2 rounds. `ads.py finish` refuses awaiting_approval/approved/posted unless both passed on the exact file.
+4. Reuse the shared tools unchanged: `scripts/assemble.py` (sync-locked edit), `scripts/qc.py` (quality gate); ad bookkeeping with `scripts/ads.py`; Flow downloads with `scripts/flow_download_ads.js`.
+5. **Never post without the owner's approval of that exact video and caption.** Owner replies:
    - `approve <ad_id>` / `approve both` → `ads.py finish <ad_id> approved "…"`, then RUNBOOK step 8 (post with the product in the yellow basket).
-   - `redo clip <n> of <ad_id>: …` → regenerate that clip in the ad's Flow project, re-edit, QC, send again (status `awaiting_approval`).
+   - `redo clip <n> of <ad_id>: …` → regenerate that clip in the ad's Flow project, re-edit, full QC again (step 7), send again (status `awaiting_approval`).
    - `change caption <ad_id>: …` → update `captions.tiktok`, `ads.py render`, send the new caption for approval.
    - `reject <ad_id>: …` → `ads.py finish <ad_id> rejected "<reason>"`.
-5. Kwento: Kilabot replies (`approve`, `redo clip x of N` about a Kilabot story) belong to the `flow-reel` skill, not this one. Ad ids look like `<product-id>-<n>`.
+6. Kwento: Kilabot replies (`approve`, `redo clip x of N` about a Kilabot story) belong to the `flow-reel` skill, not this one. Ad ids look like `<product-id>-<n>`.

@@ -65,25 +65,48 @@ Same mechanics as the Kilabot pipeline (`docs/RUNBOOK.md` step 3): load the `bui
 - Stage the clips from `~/Downloads` with the device bridge and copy them to `<run_dir>/clips/<ad_id>-clipNN.mp4` (git-ignored).
 - Per clip: duration, labelled contact sheet (Read it), where speech starts/ends. Hero clips: pick the best 5–7 s.
 - Write `<run_dir>/edit.json` (no sound bed; end card from `brief.json → end_card`), then `python scripts/assemble.py <run_dir>`. It locks every segment's audio to its video length and fails if any voice-over drifts > 60 ms — never deliver a video that didn't pass.
-- **Length:** `python scripts/ads.py length <run_dir>` must say ≥ 60 s (end card excluded). If short: loosen trims first; otherwise generate one more hero clip (within the cap) and re-assemble.
+- **Length:** `python scripts/ads.py length <run_dir>` must say ≥ 60 s (end card excluded; `ads.py qc` enforces it too). If short: loosen trims first; otherwise generate one more hero clip (within the cap) and re-assemble.
 - Trim rule of thumb: start ~0.4 s before speech, end ~0.5 s after; keep the product's payoff moment whole.
 
-## 7. Quality check, then send for approval
+## 7. Quality check (same check as Kwento: Kilabot, `docs/RUNBOOK.md` 4b), then send for approval
+Every ad goes through the **same two-part quality check as the Kilabot videos** — the automatic `scripts/qc.py` gate and Claude's own look at the contact sheet — plus the ad rules (≥ 60 s, product accuracy). `ads.py` refuses to mark an ad `awaiting_approval`, `approved` or `posted` unless both parts passed on the exact file.
+
+**7a. Automatic checks**
 ```bash
-python scripts/qc.py <run_dir>
+python scripts/ads.py qc <run_dir>            # runs scripts/qc.py + the 60 s rule; exit 1 = failed
 ```
-Then Read `<run_dir>/check/qc_sheet.png` and compare each clip with `qc.json → visual_review.expected_visuals`, **plus the product check**: the product's shape, color, size, logo and parts match the listing photos in every clip it appears; hands look natural (5 fingers, plausible grip); no text/watermark; the host looks the same across clips.
-- **Fail → fix automatically** (up to 2 rounds, within the clip cap), as in `docs/RUNBOOK.md` 4b: re-cut for order/sync problems; re-download for mix-ups; regenerate a clip for a wrong-looking product, garbled hands, missing narration or cut-off line. Re-run `qc.py` after each fix. Still failing → `ads.py finish <ad_id> failed "<problem>"`, say which clip and why.
-- **Pass:**
-  1. Write the final to the owner's computer: `~/Downloads/TikTok Shop Ads/<ad_id>-final.mp4` (device bridge).
-  2. `python scripts/ads.py finish <ad_id> awaiting_approval "QC passed"`; commit and push ("Awaiting approval: <ad_id>").
-  3. Send the owner (SendUserFile, status proactive) each video, then in one message per ad: product name + link, the angle and a one-line summary of the analysis, length, QC result (worst lag, fixes), the TikTok caption in a code block, and how to reply.
+It writes `qc.json` and `check/qc_sheet.png` and fails on (from `qc.py`): clips missing, repeated or out of script order; two clips from the same file or looking identical; a segment whose audio doesn't match its own clip; voice-over out of sync (> 60 ms); a narrated clip with no narration heard; black frames; video/audio length mismatch; wrong format — and (ads) content under 60 s without the end card.
+**Warnings need a judgment call**, recorded in the visual review notes:
+- frozen picture ≥ 2.5 s → OK only for a deliberate still product shot; otherwise trim or regenerate
+- silence inside a narrated clip → listen for a dropped word; regenerate if a line is broken
+- audio peaks/clipping → re-assemble (assemble.py's limiter normally prevents it)
+- file ≥ 10 MB → can't be uploaded by the browser; re-assemble with a lower `max_mb` in edit.json
+
+**7b. Visual review (Claude reads `check/qc_sheet.png`)** — 2 frames per clip, labelled by clip number. Compare each clip with `qc.json → visual_review.expected_visuals`:
+- right scene for each clip, in script order, no repeated shot
+- no text, subtitles, watermark or stray logos; no garbled faces or hands (5 fingers, plausible grip)
+- the Ate Host looks the same across clips
+- **the product matches the listing photos** (shape, colour, size vs. hands, logo, parts) in every clip it appears — a wrong-looking product is a fail, it misrepresents what the buyer gets
+Record it: `python scripts/ads.py review <run_dir> pass "<what you checked, warnings judged>"` (or `fail "<clip + problem>"`).
+
+**7c. Fail → fix automatically, then check again** (up to 2 fix rounds, within `flow.max_clips_per_ad` and the credit floor):
+- out of sync / audio doesn't match its clip / clips out of order / extra or missing clip → re-cut: fix `edit.json` (order, trims, clip mapping), re-run `assemble.py`
+- same file twice / identical-looking clips → a download mix-up: re-download the right clip from the ad's Flow project (`flow_download_ads.js`), re-assemble
+- no narration heard / line cut off / garbled face or hands / wrong scene / text in the picture / **wrong-looking product** → regenerate only that clip (same prompt, softened if refused), re-download, re-assemble
+- black or frozen frames → trim them out if they're at a clip edge, otherwise regenerate the clip
+- under 60 s → loosen trims, else one more hero clip
+After every fix: `python scripts/ads.py qc <run_dir> "<what you fixed>"` (keeps the fix history and attempt count in `qc.json → fixed / attempts` and the ledger), then the visual review again. Still failing after 2 rounds → `ads.py finish <ad_id> failed "<qc problem>"`, don't send it as finished, and say which clip and why in the final message. **Never send for approval, or post, a video that failed QC.**
+
+**7d. Pass → send for approval**
+1. Write the final to the owner's computer: `~/Downloads/TikTok Shop Ads/<ad_id>-final.mp4` (device bridge).
+2. `python scripts/ads.py finish <ad_id> awaiting_approval "QC passed"` (refused unless 7a + 7b passed on this exact file); commit and push ("Awaiting approval: <ad_id>").
+3. Send the owner (SendUserFile, status proactive) each video, then in one message per ad: product name + link, the angle and a one-line summary of the analysis, length, **QC result** (automatic checks passed, worst voice-over lag in ms, warnings and how they were judged, fixes made and attempts, visual review notes), the TikTok caption in a code block, and how to reply.
 - Final message of the run: both ads, credit balance before/after, anything that failed or is still waiting, and the reply options:
   - `approve <ad_id>` (or `approve both`) → Claude posts it (step 8)
   - `redo clip <n> of <ad_id>: <what to change>` / `change caption <ad_id>: <text>` / `reject <ad_id>: <reason>`
 
 ## 8. Post after approval (Claude in Chrome → TikTok Studio)
-Only for an ad whose exact video and caption the owner approved (`approve …` in chat, then `ads.py finish <ad_id> approved "owner approved <time>"`). If the video or caption changed after approval, it needs a new approval.
+Only for an ad whose exact video and caption the owner approved (`approve …` in chat, then `ads.py finish <ad_id> approved "owner approved <time>"`, which records the approved file's fingerprint). If the video or caption changed after approval, it needs a new QC pass and a new approval. In a later run, first stage `<ad_id>-final.mp4` from `~/Downloads/TikTok Shop Ads/` back into its run folder — `ads.py finish … posted` refuses any file that isn't the QC-passed, approved one.
 1. Copy `<ad_id>-final.mp4` into the session's working directory (file_upload only takes files from there, < 10 MB).
 2. Open `tiktok.upload_url` in a new tab. `find` the file input and `file_upload` the video (if there's no input until a button is clicked, use the hidden-input + click-patch method from `docs/RUNBOOK.md` step 5). Wait for the upload to finish.
 3. Caption: type `captions.tiktok` exactly; read it back.
@@ -94,7 +117,7 @@ Only for an ad whose exact video and caption the owner approved (`approve …` i
 
 ## Rules
 - Never post a video the owner hasn't approved, and never post without the product in the yellow basket.
-- Never post a video that failed QC or is under 60 s.
+- Never send for approval or post a video that failed QC (automatic checks or visual review) or is under 60 s — the same rule as Kwento: Kilabot.
 - Never spend Flow credits below `flow.kilabot_floor`, and never more than `flow.max_clips_per_ad` generations per ad.
 - Only claims the product listing supports (AD_GUIDE honesty rules).
 - Downloads: only this run's generated clips. No purchases, no account or settings changes, no sign-ins.

@@ -5,7 +5,9 @@
   python scripts/ads.py validate <run_dir>       # check prompts.json before spending Flow credits
   python scripts/ads.py render <run_dir>         # write prompts.md and caption.txt
   python scripts/ads.py length <run_dir>         # final video length without the end card (must be >= 60 s)
-  python scripts/ads.py finish <ad_id> <status> [note]
+  python scripts/ads.py qc <run_dir> [fix note]   # Kilabot quality gate (scripts/qc.py) + 60 s rule; keeps fix history
+  python scripts/ads.py review <run_dir> pass|fail [notes]   # record the visual review of check/qc_sheet.png
+  python scripts/ads.py finish <ad_id> <status> [note]   # awaiting_approval/approved/posted are QC-gated
   python scripts/ads.py status                   # the product ledger
 
 <product> is the ledger id or the TikTok product_id. Run folders contain brief.json with "topic_id" = ad id,
@@ -14,6 +16,7 @@ so scripts/assemble.py and scripts/qc.py work on them unchanged.
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import json
 import re
 import subprocess
@@ -310,11 +313,131 @@ def cmd_length(run_dir: Path) -> None:
     print("LENGTH OK")
 
 
+def md5(path: Path) -> str:
+    return hashlib.md5(path.read_bytes()).hexdigest()
+
+
+def content_seconds(run_dir: Path, brief: dict) -> float | None:
+    final = run_dir / f"{brief['ad_id']}-final.mp4"
+    if not final.exists():
+        return None
+    dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                                str(final)], capture_output=True, text=True).stdout.strip() or 0)
+    ep = run_dir / "edit.json"
+    card = float((json.loads(ep.read_text(encoding="utf-8")).get("end_card") or {}).get("seconds", 0) or 0) \
+        if ep.exists() else 0.0
+    return dur - card
+
+
+def set_ad_qc(ad_id: str, summary: dict) -> None:
+    header, products = load_ledger()
+    for p in products:
+        for a in p.get("ads") or []:
+            if a.get("ad_id") == ad_id:
+                a["qc"] = summary
+    save_ledger(header, products)
+
+
+def qc_summary(q: dict) -> dict:
+    vr = q.get("visual_review") or {}
+    return {"passed": q.get("passed"), "visual": vr.get("result", "pending"),
+            "worst_lag_ms": (q.get("info") or {}).get("worst_lag_ms"),
+            "content_s": q.get("content_s"), "problems": q.get("problems") or [],
+            "warnings": q.get("warnings") or [], "fixed": q.get("fixed") or [], "attempts": q.get("attempts", 0)}
+
+
+def cmd_qc(run_dir: Path, fixed: str = "") -> None:
+    """Same automatic quality gate as Kwento: Kilabot (scripts/qc.py), plus the ads' 60 s minimum.
+    Keeps the fix history and attempt count across re-runs (qc.py rewrites qc.json each time)."""
+    brief = json.loads((run_dir / "brief.json").read_text(encoding="utf-8"))
+    qp = run_dir / "qc.json"
+    prev = json.loads(qp.read_text(encoding="utf-8")) if qp.exists() else {}
+    hist = list(prev.get("fixed") or [])
+    if fixed:
+        hist.append(f"{now():%Y-%m-%d %H:%M} {fixed}")
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "qc.py"), str(run_dir)])
+    if not qp.exists():
+        sys.exit("qc.py wrote no qc.json")
+    q = json.loads(qp.read_text(encoding="utf-8"))
+    secs = content_seconds(run_dir, brief)
+    lo = brief.get("length_seconds_min", 60)
+    if secs is not None and secs < lo:
+        q.setdefault("problems", []).append(f"ad content is {secs:.1f}s (end card excluded); must be >= {lo}s")
+        q["passed"] = False
+    q["content_s"] = round(secs, 2) if secs is not None else None
+    q["fixed"] = hist
+    q["attempts"] = int(prev.get("attempts", 0)) + 1
+    final = run_dir / f"{brief['ad_id']}-final.mp4"
+    q["final_md5"] = md5(final) if final.exists() else None
+    q.setdefault("visual_review", {})["result"] = "pending"   # a new check always needs a new visual review
+    q["visual_review"]["instructions"] = (q["visual_review"].get("instructions", "") +
+        " Ads also: the product's shape, colour, size, logo and parts match the listing photos in every clip it "
+        "appears; hands look natural (5 fingers, plausible grip); the Ate Host looks the same across clips.").strip()
+    qp.write_text(json.dumps(q, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    set_ad_qc(brief["ad_id"], qc_summary(q))
+    log(run_dir, f"QC attempt {q['attempts']}: {'PASS' if q['passed'] else 'FAIL'}"
+                 + (f" — {'; '.join(q['problems'])}" if q.get("problems") else "") + (f" (fix: {fixed})" if fixed else ""))
+    print(f"QC attempt {q['attempts']}: {'PASSED automatic checks — now do the visual review (ads.py review)' if q['passed'] else 'FAILED'}")
+    sys.exit(0 if q["passed"] and r.returncode == 0 else 1)
+
+
+def cmd_review(run_dir: Path, result: str, notes: str = "") -> None:
+    """Record Claude's own look at check/qc_sheet.png (the second half of the Kilabot QC)."""
+    if result not in ("pass", "fail"):
+        sys.exit("review result must be pass or fail")
+    brief = json.loads((run_dir / "brief.json").read_text(encoding="utf-8"))
+    qp = run_dir / "qc.json"
+    if not qp.exists():
+        sys.exit("Run `ads.py qc <run_dir>` first")
+    q = json.loads(qp.read_text(encoding="utf-8"))
+    final = run_dir / f"{brief['ad_id']}-final.mp4"
+    if not final.exists() or md5(final) != q.get("final_md5"):
+        sys.exit("The final video changed since the last QC run — run `ads.py qc` again before reviewing")
+    if result == "pass" and not q.get("passed"):
+        sys.exit("Automatic checks failed — fix and re-run `ads.py qc`; the visual review can't override them")
+    q["visual_review"]["result"] = result
+    q["visual_review"]["notes"] = notes
+    q["visual_review"]["at"] = f"{now():%Y-%m-%d %H:%M}"
+    qp.write_text(json.dumps(q, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    set_ad_qc(brief["ad_id"], qc_summary(q))
+    log(run_dir, f"visual review: {result}" + (f" — {notes}" if notes else ""))
+    print(f"visual review: {result}")
+
+
+def qc_gate(ad: dict, status: str) -> None:
+    """awaiting_approval / approved / posted need: automatic QC passed, visual review passed, and the final
+    video on disk is the exact file that was checked (and, for posting, the exact file the owner approved)."""
+    rd = ROOT / ad["run_dir"]
+    brief = json.loads((rd / "brief.json").read_text(encoding="utf-8"))
+    qp, final = rd / "qc.json", rd / f"{brief['ad_id']}-final.mp4"
+    if not qp.exists():
+        sys.exit(f"QC GATE: no qc.json — run `ads.py qc {ad['run_dir']}` first")
+    q = json.loads(qp.read_text(encoding="utf-8"))
+    if not q.get("passed"):
+        sys.exit("QC GATE: automatic checks failed: " + "; ".join(q.get("problems") or []))
+    if (q.get("visual_review") or {}).get("result") != "pass":
+        sys.exit("QC GATE: visual review not passed (`ads.py review <run_dir> pass \"notes\"`)")
+    if not final.exists():
+        sys.exit(f"QC GATE: {brief['ad_id']}-final.mp4 is not in the run folder — stage it from "
+                 "~/Downloads/TikTok Shop Ads/ first")
+    h = md5(final)
+    if h != q.get("final_md5"):
+        sys.exit("QC GATE: the final video is not the file that passed QC — re-run QC and the visual review")
+    if status == "posted" and ad.get("approved_md5") and h != ad["approved_md5"]:
+        sys.exit("QC GATE: this file is not the version the owner approved — send it for approval again")
+    if status == "posted" and not ad.get("approved_md5"):
+        sys.exit("QC GATE: the owner hasn't approved this ad (`ads.py finish <ad_id> approved …` first)")
+    if status == "approved":
+        ad["approved_md5"] = h
+
+
 def cmd_finish(ad_id: str, status: str, note: str = "") -> None:
     if status not in STATUSES:
         sys.exit(f"Unknown status '{status}'. Use one of: {', '.join(sorted(STATUSES))}")
     header, products = load_ledger()
     p, a = find_ad(products, ad_id)
+    if status in ("awaiting_approval", "approved", "posted"):
+        qc_gate(a, status)
     a["status"] = status
     if note:
         a["note"] = note
@@ -348,6 +471,10 @@ def main(argv: list[str]) -> None:
         cmd_new(args[0])
     elif cmd in ("validate", "render", "length") and len(args) == 1:
         {"validate": cmd_validate, "render": cmd_render, "length": cmd_length}[cmd](resolve(args[0]))
+    elif cmd == "qc" and len(args) >= 1:
+        cmd_qc(resolve(args[0]), " ".join(args[1:]))
+    elif cmd == "review" and len(args) >= 2:
+        cmd_review(resolve(args[0]), args[1], " ".join(args[2:]))
     elif cmd == "finish" and len(args) >= 2:
         cmd_finish(args[0], args[1], " ".join(args[2:]))
     elif cmd == "status" and not args:
