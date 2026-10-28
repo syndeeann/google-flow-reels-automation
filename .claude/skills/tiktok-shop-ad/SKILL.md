@@ -1,10 +1,11 @@
 ---
 name: tiktok-shop-ad
-description: Make TikTok Shop affiliate video ads (2 showcase products per run, 60s+, Taglish, Google Flow), send them for approval, and post an approved ad to TikTok with the product in the yellow basket. Use for "make today's ads", the "TikTok Shop daily ads" scheduled run, or the owner's approve / redo / change caption / reject replies about an ad id.
+description: Make TikTok Shop affiliate video ads (products the owner gives — photo, name, affiliate link asked first; 60s+, Taglish, Google Flow), send them for approval, and post an approved ad to TikTok with the product in the yellow basket. Use for "make today's ads", the "TikTok Shop daily ads" scheduled run, or the owner's approve / redo / change caption / reject replies about an ad id.
 ---
 
 # TikTok Shop affiliate ads
 
+0. **Ask the owner first** for each product's photo, name and affiliate link (RUNBOOK "Product input"); don't read the showcase.
 1. Read `tiktok-shop/RUNBOOK.md` and follow it step by step. Defaults: `tiktok-shop/config.yaml`. Ledger: `tiktok-shop/products.yaml`.
 2. Analyze each product and write scripts, prompts and captions by `tiktok-shop/AD_GUIDE.md` (honest claims only, Ate Host narrator, Veo 3.1 Fast hero clips without voice-over). **Write the QC rules into every prompt (AD_GUIDE §5) and apply `tiktok-shop/PROMPT_LESSONS.md`, so Flow's clips pass QC the first time** — recreations cost credits. Generate the 2-clip pilot first (RUNBOOK 5).
 3. Quality check exactly like Kwento: Kilabot (RUNBOOK step 7): `ads.py qc` (runs `scripts/qc.py` + the 60 s rule) and `ads.py review` (your look at the contact sheet, incl. product accuracy); fix the cheapest way first (re-cut, re-download, trim); recreate a clip only when its generation is flawed, via `ads.py recreate` (capped, records a lesson). `ads.py finish` refuses awaiting_approval/approved/posted unless both passed on the exact file.
