@@ -21,7 +21,7 @@ Choose the angle that shows the product's use most clearly, and don't repeat the
 - **"3 reasons why"**: three use cases, one per beat.
 - **Gift idea / budget find:** who to give it to and why it's worth the price.
 
-## 3. Script shape (62–75 s, about 80–105 spoken words in total — the per-clip caps in §4 set the ceiling; hero clips carry no words)
+## 3. Script shape (62–75 s, about 70–90 spoken words in total — the per-clip caps in §4 set the ceiling; hero clips carry no words)
 1. **Hook (clip 1, first 2 s spoken + a moving visual):** a relatable pain or curiosity — "Sino dito ang laging naiinis kapag…", "Hindi ko alam na kailangan ko pala 'to hanggang…", "Ito na yung pinaka-useful na nabili ko for under ₱300." Name the product category early (TikTok transcribes audio for search).
 2. **Problem / context (1 clip).**
 3. **Demo (2–4 clips):** the real usage steps from the analysis, one action per clip, hands and product clearly visible.
@@ -37,22 +37,43 @@ Choose the angle that shows the product's use most clearly, and don't repeat the
 - Restricted/unsafe categories (weapons, adult products, supplements with health claims, vapes): mark the product `skip` with a note instead of making an ad.
 
 ## 4. Clip plan and timing
-- **Narrated clips (Omni 1.1 Flash, Ingredients mode, Ate Host character attached):** ≤ 9 words → 6 s, 10–14 → 8 s, 15–18 → 10 s. Never more than 18 words (the end gets cut off). Taglish is spoken a little faster, but keep to these caps.
-- **Hero clips (Veo 3.1 Fast, 8 s):** `"hero": true`, `"voiceover": ""`. They carry no narration so the narrator's voice never changes model mid-ad.
-- Typical 68 s ad: 6 narrated clips (8/8/10/8/10/8 s ≈ 52 s) + 2 hero clips (8 s each) ≈ 68 s before trims; trims usually take ~0.5–1 s per clip, so plan **≥ 66 s of raw clips** to stay above 60 s after editing.
+- **Narrated clips (Omni 1.1 Flash, Ingredients mode, Ate Host character attached), with a safety margin so lines are never cut off:** ≤ 8 words → 6 s, 9–12 → 8 s, 13–16 → 10 s. Never more than 16 words.
+- **Hero clips (Veo 3.1 Fast, 8 s):** `"hero": true`, `"voiceover": ""`. No narration, so the narrator's voice never changes model mid-ad.
+- Typical 68 s ad: 6 narrated clips (8/8/10/8/10/8 s ≈ 52 s) + 2 hero clips (8 s each) ≈ 68 s before trims; plan **≥ 66 s of raw clips** so the edit stays above 60 s. That is about 70–90 spoken words in total.
 - Put hero clips where the product is first shown working and right before the close.
 
-## 5. Flow prompts
-Every prompt stands alone (the model doesn't remember other clips). Order:
+## 5. Flow prompts — QC built in, right the first time
+The quality check (`qc.py` + the visual review) rejects: lines cut off or missing, out-of-sync or mismatched audio, garbled hands or faces, a product that looks wrong or morphs, text/watermarks, black or frozen frames, wrong scenes, and clips that look like another clip. **Every prompt is written to prevent each of these before any credit is spent** — recreating a clip costs credits, so a clip that needs recreating is a prompt that was written wrong. Before writing, read `tiktok-shop/PROMPT_LESSONS.md` and apply every lesson.
+
+**Prompt order** (every prompt stands alone; the model doesn't remember other clips):
 1. `Vertical 9:16 video.` + the host line:
-   - host on screen: `The attached Ate Host character is the woman in this scene (use her look); her voice is the voice-over, speaking to camera like a friend.`
+   - host on screen: `The attached Ate Host character is <ads.host_sheet>; her voice is the voice-over, speaking to camera like a friend.`
    - host off screen (hands-only demo): `The attached Ate Host character is off-screen; only her voice is heard as the voice-over. Only her hands appear.`
    - hero clip: no host line, nothing attached.
-2. **Product sheet** (word for word, every clip that shows the product) + "exactly as in the attached product photo" when the photo is attached.
-3. Camera + action for these seconds: one clear action (handheld close-up of hands opening the lid; slow push-in on the drawer as it slides shut…). Hands must be doing simple, physically plausible things.
-4. Setting/light: `ads.look` + the scene (small condo kitchen, sari-sari store counter, jeep stop on a rainy afternoon, bedroom desk…).
-5. Audio: `Voice-over in Taglish (<ads.narrator>): "<exact line>"` + 1–2 natural sounds (click of the lid, rain outside, kitchen sizzle). Hero clips: sounds only, `no speech, no voice-over`.
-6. Negatives last: `ads.negatives`.
+2. **Product sheet** word for word in every clip that shows the product, + `exactly as in the attached product photo` when the photo is attached.
+3. **One shot, one action** for these seconds: the clip's `shot` (close-up, medium, wide, overhead, macro, POV, over-the-shoulder) + one simple, slow, physically plausible action. No "then … then …" chains.
+4. Setting/light: `ads.look` + the scene.
+5. Audio: `Voice-over in Taglish (<ads.narrator>): "<exact line>"` + 1–2 natural sounds. Hero clips: sounds only.
+6. **Quality clauses** from `config.yaml → ads.quality`, word for word:
+   - every clip: `all` + `text`
+   - narrated: `speech`; hero: `hero`
+   - clip shows the product: `product`; hands visible: `hands`; host on screen: `face`
+7. Negatives last: `ads.negatives`.
+
+**Rules that prevent each QC failure:**
+| QC failure | Prevented in the prompt by |
+|---|---|
+| line cut off / no narration heard | safety-margin word caps (§4); the `speech` clause (half-second lead-in, finish 1 s early); short sentences; numbers written as words |
+| voice-over out of sync / wrong voice | one speaker only (`no other voices`); host always via the attached character; no dialogue from other people |
+| garbled hands | hands do one simple, slow action (hold, slide, press, pour, place, wipe); `hands` clause. Avoid typing, writing, tying, sewing, threading, knitting, shuffling, counting money, playing instruments, and fingers interlocking with small parts |
+| garbled or changing face | host on screen only in medium/close shots facing camera, `host_sheet` word for word, `face` clause; hands-only demos when possible |
+| product looks wrong / morphs | product photo attached + product sheet word for word + `product` clause; the product stays whole and in view; no transforming actions the listing doesn't show (folding, unfolding, assembling) unless they are the product's real feature, shown slowly |
+| text or watermark | `text` clause; never ask for signs, labels that read, screens, menus, posters, newspapers, price tags, packaging close-ups with writing |
+| black / frozen frames, jump cuts | `all` clause (one continuous shot); a moving camera or subject in every clip (slow push-in, slow pan, gentle handheld) |
+| wrong scene | the visual described concretely (place, light, object positions), not as a mood |
+| redundant clip | every clip gets a different `shot` from the clip before it and a different action; no two clips share the same shot + visual |
+
+`python scripts/ads.py validate <run_dir>` refuses prompts that break these rules (missing clauses, words over the cap, risky actions or text-prone objects, repeated shots, missing product sheet or host sheet) — fix and re-validate until OK before generating anything.
 
 **Product look must match reality:** attach the product's main listing photo as an ingredient in Flow whenever possible (RUNBOOK step 4) and describe it exactly. Reject any clip where the product's shape, color, logo or size is wrong — that misrepresents what the buyer gets.
 
@@ -74,16 +95,18 @@ Every prompt stands alone (the model doesn't remember other clips). Order:
   "angle": "problem-solution",
   "narrator": "<exactly config ads.narrator>",
   "clips": [
-    {"seconds": 8, "hero": false, "voiceover": "…", "dialogue": "", "visual": "…", "prompt": "…"},
-    {"seconds": 8, "hero": true,  "voiceover": "",  "dialogue": "", "visual": "…", "prompt": "…"}
+    {"seconds": 8, "hero": false, "host": "off_screen", "shows_product": true, "hands": true,
+     "shot": "close-up", "voiceover": "…", "dialogue": "", "visual": "…", "prompt": "…"},
+    {"seconds": 8, "hero": true,  "host": "none", "shows_product": true, "hands": false,
+     "shot": "macro", "voiceover": "",  "dialogue": "", "visual": "…", "prompt": "…"}
   ],
   "captions": {"tiktok": "<full caption exactly as posted>", "pinned_comment": "<optional, a question>"},
   "end_card": "Tap the yellow basket\npara makita ang presyo"
 }
 ```
-`python scripts/ads.py validate <run_dir>` checks length, word caps, hero clips, prompt structure and captions before any credits are spent.
+Per clip: `host` = `on_screen` | `off_screen` | `none`; `shows_product`, `hands` (hands visible) and `shot` drive which quality clauses `validate` requires. `python scripts/ads.py validate <run_dir>` checks length, word caps, hero clips, prompt structure, the quality clauses and captions before any credits are spent.
 
 ## Example narrated clip (demo, hands only)
 ```
-Vertical 9:16 video. The attached Ate Host character is off-screen; only her voice is heard as the voice-over. Only her hands appear. A compact white 3-tier plastic spice rack with pull-out drawers and rounded edges, about the width of two hands, exactly as in the attached product photo. Handheld close-up: her hand slides the middle drawer out, sets a small jar of garlic powder inside, and pushes it shut with a soft click. Bright natural daylight, small Filipino condo kitchen with a tiled backsplash, handheld smartphone-style UGC camera, realistic skin and hands, true-to-life product colors and scale, shallow depth of field, crisp detail. Voice-over in Taglish (warm, friendly, conversational Filipina woman in her late 20s, natural Taglish, upbeat but not shouty): "Dati, kalat-kalat yung spices ko. Ngayon, isang hila lang, kita mo na lahat." Soft click of the drawer, faint kitchen ambience. No subtitles, no on-screen text, no watermark, no logos other than what is printed on the product itself, no distorted hands, no extra fingers, no morphing product.
+Vertical 9:16 video. The attached Ate Host character is off-screen; only her voice is heard as the voice-over. Only her hands appear. A compact white 3-tier plastic spice rack with pull-out drawers and rounded edges, about the width of two hands, exactly as in the attached product photo. Close-up, gentle handheld: her hand slowly slides the middle drawer out, showing neat rows of small spice jars inside. Bright natural daylight, real Filipino home or everyday location, handheld smartphone-style UGC camera, realistic skin and hands, true-to-life product colors and scale, shallow depth of field, crisp detail, small Filipino condo kitchen with a plain tiled backsplash. Voice-over in Taglish (warm, friendly, conversational Filipina woman in her late 20s, natural Taglish, upbeat but not shouty, like a friend recommending something she really uses): "Dati, kalat-kalat yung spices ko. Ngayon, isang hila lang, kita mo na lahat." Soft slide of the drawer, faint kitchen ambience. One continuous shot with no cuts, no transitions and no sudden zooms. Absolutely no text, letters, numbers, captions or watermarks appear anywhere in the frame. She begins speaking after a brief half-second pause and finishes the whole line at a calm, natural pace about one second before the clip ends; no other voices. The product keeps exactly the same shape, colour, size and markings for the whole clip and never morphs, bends, melts or changes. Natural, anatomically correct hands with five fingers each, moving slowly and simply with a realistic grip. No subtitles, no on-screen text, no watermark, no logos other than what is printed on the product itself, no distorted hands, no extra fingers, no morphing product.
 ```

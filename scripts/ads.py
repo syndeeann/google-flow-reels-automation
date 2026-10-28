@@ -6,6 +6,7 @@
   python scripts/ads.py render <run_dir>         # write prompts.md and caption.txt
   python scripts/ads.py length <run_dir>         # final video length without the end card (must be >= 60 s)
   python scripts/ads.py qc <run_dir> [fix note]   # Kilabot quality gate (scripts/qc.py) + 60 s rule; keeps fix history
+  python scripts/ads.py recreate <run_dir> <n> "<problem>" "<lesson>"   # capped: 1 per clip, max_recreations_per_ad
   python scripts/ads.py review <run_dir> pass|fail [notes]   # record the visual review of check/qc_sheet.png
   python scripts/ads.py finish <ad_id> <status> [note]   # awaiting_approval/approved/posted are QC-gated
   python scripts/ads.py status                   # the product ledger
@@ -37,7 +38,7 @@ MANILA = dt.timezone(dt.timedelta(hours=8))
 
 STATUSES = {"new", "in_progress", "prompts_only", "awaiting_approval", "approved", "posted", "rejected", "failed", "skip"}
 RESUMABLE = {"in_progress", "prompts_only", "failed"}
-WORD_CAP = {4: 6, 6: 9, 8: 14, 10: 18}
+WORD_CAP = {4: 5, 6: 8, 8: 12, 10: 16}   # with a safety margin so lines are never cut off (AD_GUIDE §4)
 ANALYSIS_KEYS = ["what", "buyer", "problem", "usage_steps", "payoff", "selling_points", "product_sheet"]
 
 
@@ -143,6 +144,74 @@ def cmd_new(key: str) -> None:
     print(rel(run_dir))
 
 
+SHOTS = {"close-up", "medium", "wide", "overhead", "macro", "pov", "over-the-shoulder"}
+# objects that make video models draw text (QC fails any text in the picture)
+TEXT_PRONE = re.compile(r"\b(sign|signage|signboard|label (that )?reads|reads [\"']|written|writing on|caption|subtitle|"
+                        r"price tag|screen (showing|displays?)|phone screen|laptop screen|monitor|menu board|poster|"
+                        r"newspaper|magazine|book cover|whiteboard|chalkboard|receipt|banner)\b", re.I)
+# hand actions video models usually garble
+RISKY_HANDS = re.compile(r"\b(typ(e|es|ing)|writ(e|es|ing)|ty(ing|es) (a|the)? ?(knot|lace)|sew(s|ing)?|thread(s|ing)?|"
+                         r"knit(s|ting)?|shuffl(e|es|ing)|count(s|ing)? (money|bills|coins)|play(s|ing)? (the )?(guitar|piano|ukulele)|"
+                         r"interlock(s|ing)?|braid(s|ing)?)\b", re.I)
+
+
+def check_quality(clips: list[dict], sheet: str) -> tuple[list[str], list[str]]:
+    """The QC rules written into the prompts (AD_GUIDE §5): catch, before any credit is spent, the prompt
+    mistakes that make Flow clips fail scripts/qc.py or the visual review."""
+    a = cfg().get("ads", {})
+    q = a.get("quality") or {}
+    host_sheet = (a.get("host_sheet") or "").strip()
+    errs, warns = [], []
+    prev_shot, seen = None, set()
+    for i, c in enumerate(clips, 1):
+        pr = c.get("prompt") or ""
+        body = pr.split(q.get("all", "\0"))[0]          # the scene description, before the quality clauses
+        hero = bool(c.get("hero"))
+        host = c.get("host") or ("none" if hero else "")
+        if host not in ("on_screen", "off_screen", "none"):
+            errs.append(f"clip {i}: set host to on_screen, off_screen or none")
+        for k in ("shows_product", "hands"):
+            if not isinstance(c.get(k), bool):
+                errs.append(f"clip {i}: set {k} to true or false")
+        need = ["all", "text", "hero" if hero else "speech"]
+        if c.get("shows_product"):
+            need.append("product")
+        if c.get("hands") or host == "off_screen":
+            need.append("hands")
+        if host == "on_screen":
+            need.append("face")
+        for k in need:
+            if q.get(k) and q[k] not in pr:
+                errs.append(f"clip {i}: missing quality clause '{k}' (config ads.quality.{k}, word for word)")
+        if c.get("shows_product") and sheet and sheet not in pr:
+            errs.append(f"clip {i}: shows the product — paste the product_sheet word for word")
+        if host == "on_screen" and host_sheet and host_sheet not in pr:
+            errs.append(f"clip {i}: host on screen — paste config ads.host_sheet word for word")
+        shot = (c.get("shot") or "").lower()
+        if shot not in SHOTS:
+            errs.append(f"clip {i}: shot must be one of {sorted(SHOTS)}")
+        elif shot == prev_shot:
+            errs.append(f"clip {i}: same shot ({shot}) as the clip before — vary framing so no clip looks redundant")
+        key = (shot, (c.get("visual") or "").strip().lower())
+        if key in seen:
+            errs.append(f"clip {i}: same shot and visual as an earlier clip (redundant)")
+        seen.add(key)
+        prev_shot = shot
+        if m := TEXT_PRONE.search(body):
+            errs.append(f"clip {i}: '{m.group(0)}' tends to make Flow draw text — describe the scene without it")
+        if m := RISKY_HANDS.search(body):
+            errs.append(f"clip {i}: '{m.group(0)}' is a hand action Flow often garbles — use hold/slide/press/pour/place/wipe")
+        if len(re.findall(r"\bthen\b", body, re.I)) >= 1 or body.count(", and ") >= 2:
+            warns.append(f"clip {i}: looks like more than one action — one simple action per clip")
+        if host == "on_screen" and shot in ("wide", "overhead"):
+            warns.append(f"clip {i}: host on screen in a {shot} shot — small faces garble; use medium or close-up")
+        if not hero and re.search(r"\d", c.get("voiceover") or ""):
+            errs.append(f"clip {i}: write numbers in the voice-over as words (digits get misread or skipped)")
+        if len(pr) > 1800:
+            warns.append(f"clip {i}: prompt is {len(pr)} chars — long prompts dilute the important details")
+    return errs, warns
+
+
 def cmd_validate(run_dir: Path) -> None:
     brief = json.loads((run_dir / "brief.json").read_text(encoding="utf-8"))
     path = run_dir / "prompts.json"
@@ -216,6 +285,9 @@ def cmd_validate(run_dir: Path) -> None:
             elif not dl:
                 warns.append(f"clip {i}: not hero and no voice-over — intended?")
         total += s if isinstance(s, (int, float)) else 0
+    quality_errs, quality_warns = check_quality(clips, sheet)
+    errs += quality_errs
+    warns += quality_warns
     lo = brief.get("length_seconds_min", 60)
     hi = brief.get("length_seconds_max", 75)
     if total < lo + 6:
@@ -225,8 +297,8 @@ def cmd_validate(run_dir: Path) -> None:
     want = brief.get("hero_clips_per_ad", 2)
     if not 1 <= heroes <= 3:
         errs.append(f"{heroes} hero clips; use 1-3 (config: {want})")
-    if spoken < 70:
-        warns.append(f"only {spoken} spoken words; a 62-75 s ad usually has 80-105")
+    if spoken < 60:
+        warns.append(f"only {spoken} spoken words; a 62-75 s ad usually has 70-90")
     if clips and not (clips[0].get("voiceover") or "").strip():
         errs.append("clip 1 must be the spoken hook")
     last_vo = next((c.get("voiceover") or "" for c in reversed(clips) if (c.get("voiceover") or "").strip()), "")
@@ -347,7 +419,8 @@ def qc_summary(q: dict) -> dict:
 
 
 def clips_to_recreate(run_dir: Path, problems: list[str]) -> list[int]:
-    """Clip numbers the automatic checks blamed (owner: a clip that fails QC is recreated in Flow)."""
+    """Clip numbers the automatic checks blamed. Free fixes (re-cut, re-download, trim) come first;
+    only a clip whose generation itself is flawed is recreated (ads.py recreate, capped)."""
     edit = json.loads((run_dir / "edit.json").read_text(encoding="utf-8"))
     script_n = len(json.loads((run_dir / "prompts.json").read_text(encoding="utf-8")).get("clips") or [])
     cuts = [c["n"] for c in edit.get("clips") or []]
@@ -391,7 +464,8 @@ def cmd_qc(run_dir: Path, fixed: str = "") -> None:
         q.setdefault("problems", []).append(f"ad content is {secs:.1f}s (end card excluded); must be >= {lo}s")
         q["passed"] = False
     q["content_s"] = round(secs, 2) if secs is not None else None
-    q["regenerate"] = clips_to_recreate(run_dir, q.get("problems") or [])
+    q["flagged_clips"] = clips_to_recreate(run_dir, q.get("problems") or [])
+    q.pop("regenerate", None)
     q["fixed"] = hist
     q["attempts"] = int(prev.get("attempts", 0)) + 1
     final = run_dir / f"{brief['ad_id']}-final.mp4"
@@ -405,8 +479,32 @@ def cmd_qc(run_dir: Path, fixed: str = "") -> None:
     log(run_dir, f"QC attempt {q['attempts']}: {'PASS' if q['passed'] else 'FAIL'}"
                  + (f" — {'; '.join(q['problems'])}" if q.get("problems") else "") + (f" (fix: {fixed})" if fixed else ""))
     print(f"QC attempt {q['attempts']}: {'PASSED automatic checks — now do the visual review (ads.py review)' if q['passed'] else 'FAILED'}"
-          + (f" — recreate clip(s) {q['regenerate']} in Flow (RUNBOOK 7c)" if q["regenerate"] else ""))
+          + (f" — flagged clip(s) {q['flagged_clips']}: try the free fixes first (RUNBOOK 7c)" if q["flagged_clips"] else ""))
     sys.exit(0 if q["passed"] and r.returncode == 0 else 1)
+
+
+def cmd_recreate(run_dir: Path, n: str, problem: str, lesson: str) -> None:
+    """Spend credits on recreating one flawed clip — only within the cap, and only with a written lesson
+    (the prompt rule that prevents this failure), which is added to PROMPT_LESSONS.md for future prompts."""
+    if not problem.strip() or not lesson.strip():
+        sys.exit('usage: ads.py recreate <run_dir> <clip n> "<QC problem>" "<prompt rule that prevents it>"')
+    brief = json.loads((run_dir / "brief.json").read_text(encoding="utf-8"))
+    cap = int(cfg().get("flow", {}).get("max_recreations_per_ad", 2))
+    rp = run_dir / "recreations.json"
+    done = json.loads(rp.read_text(encoding="utf-8")) if rp.exists() else []
+    clip = int(n)
+    if any(r["clip"] == clip for r in done):
+        sys.exit(f"RECREATE REFUSED: clip {clip} was already recreated once — don't pay for it a third time; "
+                 "mark the ad failed and report it")
+    if len(done) >= cap:
+        sys.exit(f"RECREATE REFUSED: {len(done)} recreations already (cap {cap} per ad) — mark the ad failed and report it")
+    stamp = f"{now():%Y-%m-%d}"
+    done.append({"clip": clip, "problem": problem, "lesson": lesson, "at": f"{now():%Y-%m-%d %H:%M}"})
+    rp.write_text(json.dumps(done, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    with (BASE / "PROMPT_LESSONS.md").open("a", encoding="utf-8") as f:
+        f.write(f"- {stamp} · {brief['ad_id']} clip {clip} · {problem} → {lesson}\n")
+    log(run_dir, f"recreate clip {clip} ({len(done)}/{cap}): {problem} → lesson: {lesson}")
+    print(f"OK to recreate clip {clip} ({len(done)}/{cap} used). Apply the lesson to its prompt, validate, then generate.")
 
 
 def cmd_review(run_dir: Path, result: str, notes: str = "") -> None:
@@ -501,6 +599,8 @@ def main(argv: list[str]) -> None:
         {"validate": cmd_validate, "render": cmd_render, "length": cmd_length}[cmd](resolve(args[0]))
     elif cmd == "qc" and len(args) >= 1:
         cmd_qc(resolve(args[0]), " ".join(args[1:]))
+    elif cmd == "recreate" and len(args) == 4:
+        cmd_recreate(resolve(args[0]), args[1], args[2], args[3])
     elif cmd == "review" and len(args) >= 2:
         cmd_review(resolve(args[0]), args[1], " ".join(args[2:]))
     elif cmd == "finish" and len(args) >= 2:

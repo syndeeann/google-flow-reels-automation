@@ -42,9 +42,9 @@ Open Flow (step 4) and read the balance from the PRO badge menu ("N Google Flow 
 ## 4. Analyze, script, prompts (per product)
 1. Open the product page in Chrome and read the full listing: title, all photos (look at them), description, specs, variants, reviews summary. Follow `AD_GUIDE.md` §1–§2 to write the analysis and pick the angle.
 2. `python scripts/ads.py new <product_id>` → prints the run folder `tiktok-shop/output/<date>-<ad_id>/` with `brief.json`.
-3. Write `<run_dir>/prompts.json` (AD_GUIDE §3–§7). Then:
+3. Read `tiktok-shop/PROMPT_LESSONS.md`, then write `<run_dir>/prompts.json` (AD_GUIDE §3–§7) with the QC rules built into every prompt (AD_GUIDE §5). Then:
    ```bash
-   python scripts/ads.py validate <run_dir>   # fix and repeat until OK
+   python scripts/ads.py validate <run_dir>   # enforces the built-in QC rules; fix and repeat until OK, and fix every WARN too
    python scripts/ads.py render <run_dir>     # writes prompts.md + caption.txt
    git add -A && git commit -m "Ad prompts: <ad_id>" && git push
    ```
@@ -56,9 +56,10 @@ Same mechanics as the Kilabot pipeline (`docs/RUNBOOK.md` step 3): load the `bui
 - **Product photo as an ingredient:** attach the product's main listing photo (+ Add ingredients → upload) so the generated product matches the real one. *To be confirmed in the dry run:* how the photo gets from the listing into Flow without breaking the rules below. If it can't be attached, rely on the product sheet and be extra strict in the visual review.
 - **Narrated clips:** Video · Ingredients · 9:16 · **Omni 1.1 Flash** · 720p · x1, length from the clip's `seconds`.
 - **Hero clips (`"hero": true`):** Video · 9:16 · **Veo 3.1 Fast** · 720p · 8 s · x1, no character attached (attach the product photo if Veo accepts ingredients).
-- Queue several generations, then poll the grid with `get_page_text`. Refused prompts: soften once and retry; record anything still refused.
+- **Pilot first, then the rest (saves credits):** generate only 2 clips first — the first hero clip (the product in close-up) and the first narrated clip. Download them and check them like QC would before queueing anything else: the product matches the listing photo and doesn't morph; hands are natural; no text; the line is spoken completely, starts after a short pause and ends before the clip does (look at where speech ends); the Ate Host voice is the one you want. If something is off, the same mistake is in the other prompts too: fix the rule in **all** prompts, add a lesson to `PROMPT_LESSONS.md`, re-validate, and only then generate the rest. A flawed pilot clip counts as a recreation (`ads.py recreate`).
+- Then queue the remaining generations and poll the grid with `get_page_text`. Refused prompts: soften once and retry; record anything still refused.
 - Credits/quota exhausted: stop, keep what finished, `ads.py finish <ad_id> failed "out of credits"` (clips stay in the project for the next run).
-- Never exceed `flow.max_clips_per_ad` generations per ad (redos count).
+- Never exceed `flow.max_clips_per_ad` generations per ad, and never more than `flow.max_recreations_per_ad` recreations (`ads.py recreate` enforces it).
 - **Downloading** (pre-approved for this ad's generated clips only): paste `scripts/flow_download_ads.js` into the project grid page with `javascript_tool`, then `await window.__ad(k, {"<unique phrase from the clip's prompt>": <clip n>, …})` for each thumbnail k, going back to the grid between calls. Use the voice-over's first words for narrated clips and a distinctive phrase of the hero prompt for hero clips. Record clip ↔ download order.
 
 ## 6. Edit
@@ -89,18 +90,17 @@ It writes `qc.json` and `check/qc_sheet.png` and fails on (from `qc.py`): clips 
 - **the product matches the listing photos** (shape, colour, size vs. hands, logo, parts) in every clip it appears — a wrong-looking product is a fail, it misrepresents what the buyer gets
 Record it: `python scripts/ads.py review <run_dir> pass "<what you checked, warnings judged>"` (or `fail "<clip + problem>"`).
 
-**7c. Fail → recreate the failing clip, then check again** (owner, 2026-10-28: when a clip fails QC, recreate it — don't patch it in the edit). Up to 2 fix rounds, within `flow.max_clips_per_ad` and the credit floor:
-1. `qc.json → regenerate` lists the clip numbers the automatic checks blamed; add any clip the visual review failed.
-2. **Recreate each listed clip in Flow** in the ad's project: a new generation from the same prompt, with one added sentence aimed at the problem —
-   - out of sync / audio doesn't match / no narration heard / line cut off → keep the line word for word; if it was cut off, use the next clip length up (6→8→10 s) or the base model's longest; "She speaks the whole line clearly at a natural pace, finishing before the clip ends."
-   - garbled face or hands → "Hands are natural with five fingers and a relaxed, realistic grip; face stays natural and consistent."
-   - wrong-looking product → re-attach the product photo and repeat the product sheet; "The product looks exactly like the attached photo: same shape, colour, size and markings, no changes."
-   - text/watermark in the picture → "Absolutely no text, letters, captions or watermarks anywhere."
-   - wrong scene, black or frozen frames, identical to another clip → re-state the clip's visual with a different camera move or framing from the clip it duplicated.
-   - refused by Flow → soften once and retry.
-   The prompt change goes into `prompts.json` (keep the same voice-over unless it was too long for the cap), then `ads.py validate`.
-3. Download only the new generation (`flow_download_ads.js`; the old clip stays in Flow, the new one is the latest match), replace `clips/<ad_id>-clipNN.mp4`, re-assemble.
-- Not a clip problem: the cut list itself out of order (every clip fine, just placed wrong) → re-order `edit.json`; a whole-file format or video/audio length mismatch → re-run `assemble.py`; under 60 s → recreate the shortest narrated clip one length up or add a hero clip.
+**7c. Fail → fix it, cheapest way first** (owner, 2026-10-28: clips must come out right from the prompts; spend credits on recreations only as a last resort). Up to 2 fix rounds. `qc.json → flagged_clips` lists the clips the automatic checks blamed.
+1. **Free fixes first (no credits):**
+   - out of sync / audio doesn't match its clip / clips out of order / extra or missing clip in the cut → re-cut: fix `edit.json` (order, trims, clip mapping), re-run `assemble.py`
+   - same file twice / identical-looking clips from a download mix-up → re-download the right clip from the ad's Flow project (`flow_download_ads.js`)
+   - black or frozen frames, a glitch, a stray word or a bad frame at a clip edge → trim it out (as long as the ad stays ≥ 60 s and no spoken word is cut)
+2. **Recreate only when the generation itself is flawed** (line cut off or missing in the clip, garbled hands or face, wrong-looking or morphing product, text in the picture, wrong scene, glitch in the middle of the clip) and no trim can save it:
+   ```bash
+   python scripts/ads.py recreate <run_dir> <n> "<QC problem>" "<the prompt rule that prevents it>"
+   ```
+   It refuses past the cap (1 recreation per clip, `flow.max_recreations_per_ad` per ad) and adds the lesson to `PROMPT_LESSONS.md` so future prompts avoid the same failure. Apply that lesson to the clip's prompt (and to any other clip with the same weakness — but don't regenerate clips that already passed), `ads.py validate`, generate once in the ad's Flow project, download only the new clip, replace `clips/<ad_id>-clipNN.mp4`, re-assemble.
+3. Under 60 s → loosen trims first; only if that isn't enough, recreate the shortest narrated clip one length up (counts as a recreation).
 After every fix: `python scripts/ads.py qc <run_dir> "<what you fixed>"` (keeps the fix history and attempt count in `qc.json → fixed / attempts` and the ledger), then the visual review again. Still failing after 2 rounds → `ads.py finish <ad_id> failed "<qc problem>"`, don't send it as finished, and say which clip and why in the final message. **Never send for approval, or post, a video that failed QC.**
 
 **7d. Pass → send for approval**

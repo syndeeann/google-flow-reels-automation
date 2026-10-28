@@ -22,6 +22,17 @@ ads:
   flow_character_voice: ""      # stock voice picked on the first run (RUNBOOK 5); reuse it every run
   look: "bright natural daylight, real Filipino home or everyday location, handheld smartphone-style UGC camera, realistic skin and hands, true-to-life product colors and scale, shallow depth of field, crisp detail"
   negatives: "no subtitles, no on-screen text, no watermark, no logos other than what is printed on the product itself, no distorted hands, no extra fingers, no morphing product"
+  host_sheet: "a Filipina woman in her late 20s with shoulder-length straight black hair, light-brown skin, a plain light-grey t-shirt, no jewellery"   # pasted word for word whenever the host is on screen
+  # Quality rules written INTO every Flow prompt so clips come out right the first time
+  # (owner 2026-10-28: avoid spending credits on recreations). ads.py validate refuses prompts missing a required clause.
+  quality:
+    all: "One continuous shot with no cuts, no transitions and no sudden zooms."
+    text: "Absolutely no text, letters, numbers, captions or watermarks appear anywhere in the frame."
+    hands: "Natural, anatomically correct hands with five fingers each, moving slowly and simply with a realistic grip."
+    product: "The product keeps exactly the same shape, colour, size and markings for the whole clip and never morphs, bends, melts or changes."
+    face: "Her face and hair stay natural and identical throughout, with no distortion."
+    speech: "She begins speaking after a brief half-second pause and finishes the whole line at a calm, natural pace about one second before the clip ends; no other voices."
+    hero: "Smooth, stable camera movement; no speech, no voice-over, no people talking."
   end_card:
     text: "Tap the yellow basket\npara makita ang presyo"
     sub: ""
@@ -33,7 +44,8 @@ flow:
   hero_model: "Veo 3.1 Fast"    # 8 s ≈ 20 credits; hero clips carry NO voice-over (keeps one consistent narrator voice)
   base_model: "Omni 1.1 Flash"  # 6 s = 10, 8 s = 12, 10 s = 15 credits; narrated clips with the Ate Host character
   hero_clips_per_ad: 2          # 1-3; the product in close-up, used, working
-  max_clips_per_ad: 14          # generations per ad including QC recreations (failed clips are recreated, owner 2026-10-28)
+  max_clips_per_ad: 11          # generations per ad: the script's clips plus at most max_recreations_per_ad
+  max_recreations_per_ad: 2     # owner 2026-10-28: get clips right the first time; recreate only a truly flawed clip
   credits_per_ad_estimate: 120  # e.g. 6 Omni narrated clips (~80) + 2 Veo hero clips (~40)
   kilabot_floor: 60             # never spend below this, so the Kwento: Kilabot daily video never stops
   outputs_per_prompt: 1
