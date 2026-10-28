@@ -2,7 +2,7 @@
 # The owner's decisions are dated so later runs know where each rule came from.
 
 tiktok:
-  handle: ""                    # filled in by the first run from the owner's TikTok profile (Claude in Chrome)
+  handle: "_xsynd"              # read from TikTok Studio 2026-10-28; filled in by the first run from the owner's TikTok profile (Claude in Chrome)
   showcase_urls:                # tried in order to read the showcase product list (owner's Chrome, signed in)
     - "https://affiliate.tiktok.com/"          # TikTok Shop Creator / Affiliate Center → Showcase
     - "https://www.tiktok.com/tiktokstudio"     # TikTok Studio (fallback: profile → Showcase tab)
