@@ -89,12 +89,18 @@ It writes `qc.json` and `check/qc_sheet.png` and fails on (from `qc.py`): clips 
 - **the product matches the listing photos** (shape, colour, size vs. hands, logo, parts) in every clip it appears — a wrong-looking product is a fail, it misrepresents what the buyer gets
 Record it: `python scripts/ads.py review <run_dir> pass "<what you checked, warnings judged>"` (or `fail "<clip + problem>"`).
 
-**7c. Fail → fix automatically, then check again** (up to 2 fix rounds, within `flow.max_clips_per_ad` and the credit floor):
-- out of sync / audio doesn't match its clip / clips out of order / extra or missing clip → re-cut: fix `edit.json` (order, trims, clip mapping), re-run `assemble.py`
-- same file twice / identical-looking clips → a download mix-up: re-download the right clip from the ad's Flow project (`flow_download_ads.js`), re-assemble
-- no narration heard / line cut off / garbled face or hands / wrong scene / text in the picture / **wrong-looking product** → regenerate only that clip (same prompt, softened if refused), re-download, re-assemble
-- black or frozen frames → trim them out if they're at a clip edge, otherwise regenerate the clip
-- under 60 s → loosen trims, else one more hero clip
+**7c. Fail → recreate the failing clip, then check again** (owner, 2026-10-28: when a clip fails QC, recreate it — don't patch it in the edit). Up to 2 fix rounds, within `flow.max_clips_per_ad` and the credit floor:
+1. `qc.json → regenerate` lists the clip numbers the automatic checks blamed; add any clip the visual review failed.
+2. **Recreate each listed clip in Flow** in the ad's project: a new generation from the same prompt, with one added sentence aimed at the problem —
+   - out of sync / audio doesn't match / no narration heard / line cut off → keep the line word for word; if it was cut off, use the next clip length up (6→8→10 s) or the base model's longest; "She speaks the whole line clearly at a natural pace, finishing before the clip ends."
+   - garbled face or hands → "Hands are natural with five fingers and a relaxed, realistic grip; face stays natural and consistent."
+   - wrong-looking product → re-attach the product photo and repeat the product sheet; "The product looks exactly like the attached photo: same shape, colour, size and markings, no changes."
+   - text/watermark in the picture → "Absolutely no text, letters, captions or watermarks anywhere."
+   - wrong scene, black or frozen frames, identical to another clip → re-state the clip's visual with a different camera move or framing from the clip it duplicated.
+   - refused by Flow → soften once and retry.
+   The prompt change goes into `prompts.json` (keep the same voice-over unless it was too long for the cap), then `ads.py validate`.
+3. Download only the new generation (`flow_download_ads.js`; the old clip stays in Flow, the new one is the latest match), replace `clips/<ad_id>-clipNN.mp4`, re-assemble.
+- Not a clip problem: the cut list itself out of order (every clip fine, just placed wrong) → re-order `edit.json`; a whole-file format or video/audio length mismatch → re-run `assemble.py`; under 60 s → recreate the shortest narrated clip one length up or add a hero clip.
 After every fix: `python scripts/ads.py qc <run_dir> "<what you fixed>"` (keeps the fix history and attempt count in `qc.json → fixed / attempts` and the ledger), then the visual review again. Still failing after 2 rounds → `ads.py finish <ad_id> failed "<qc problem>"`, don't send it as finished, and say which clip and why in the final message. **Never send for approval, or post, a video that failed QC.**
 
 **7d. Pass → send for approval**

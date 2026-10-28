@@ -346,6 +346,32 @@ def qc_summary(q: dict) -> dict:
             "warnings": q.get("warnings") or [], "fixed": q.get("fixed") or [], "attempts": q.get("attempts", 0)}
 
 
+def clips_to_recreate(run_dir: Path, problems: list[str]) -> list[int]:
+    """Clip numbers the automatic checks blamed (owner: a clip that fails QC is recreated in Flow)."""
+    edit = json.loads((run_dir / "edit.json").read_text(encoding="utf-8"))
+    script_n = len(json.loads((run_dir / "prompts.json").read_text(encoding="utf-8")).get("clips") or [])
+    cuts = [c["n"] for c in edit.get("clips") or []]
+    spans, t = [], 0.0
+    for c in edit.get("clips") or []:
+        d = int((c["end"] - c["start"]) * 24) / 24
+        spans.append((c["n"], t, t + d)); t += d
+    out: set[int] = set()
+    for p in problems:
+        if p.startswith("cut list clips"):      # missing or repeated clips; pure order slips are re-cut, not recreated
+            out |= set(range(1, script_n + 1)) - set(cuts)
+            out |= {n for n in cuts if cuts.count(n) > 1}
+        elif m := re.match(r"clips \[([\d, ]+)\] are the same file", p):
+            out |= set(int(x) for x in m.group(1).split(",")[1:])
+        elif m := re.match(r"clips (\d+) and (\d+) look identical", p):
+            out.add(int(m.group(2)))
+        elif m := re.match(r"clip (\d+)\b", p):
+            out.add(int(m.group(1)))
+        elif m := re.match(r"black frames ([\d.]+)–([\d.]+)s", p):
+            a, b = float(m.group(1)), float(m.group(2))
+            out |= {n for n, s, e in spans if s < b and e > a}
+    return sorted(out)
+
+
 def cmd_qc(run_dir: Path, fixed: str = "") -> None:
     """Same automatic quality gate as Kwento: Kilabot (scripts/qc.py), plus the ads' 60 s minimum.
     Keeps the fix history and attempt count across re-runs (qc.py rewrites qc.json each time)."""
@@ -365,6 +391,7 @@ def cmd_qc(run_dir: Path, fixed: str = "") -> None:
         q.setdefault("problems", []).append(f"ad content is {secs:.1f}s (end card excluded); must be >= {lo}s")
         q["passed"] = False
     q["content_s"] = round(secs, 2) if secs is not None else None
+    q["regenerate"] = clips_to_recreate(run_dir, q.get("problems") or [])
     q["fixed"] = hist
     q["attempts"] = int(prev.get("attempts", 0)) + 1
     final = run_dir / f"{brief['ad_id']}-final.mp4"
@@ -377,7 +404,8 @@ def cmd_qc(run_dir: Path, fixed: str = "") -> None:
     set_ad_qc(brief["ad_id"], qc_summary(q))
     log(run_dir, f"QC attempt {q['attempts']}: {'PASS' if q['passed'] else 'FAIL'}"
                  + (f" — {'; '.join(q['problems'])}" if q.get("problems") else "") + (f" (fix: {fixed})" if fixed else ""))
-    print(f"QC attempt {q['attempts']}: {'PASSED automatic checks — now do the visual review (ads.py review)' if q['passed'] else 'FAILED'}")
+    print(f"QC attempt {q['attempts']}: {'PASSED automatic checks — now do the visual review (ads.py review)' if q['passed'] else 'FAILED'}"
+          + (f" — recreate clip(s) {q['regenerate']} in Flow (RUNBOOK 7c)" if q["regenerate"] else ""))
     sys.exit(0 if q["passed"] and r.returncode == 0 else 1)
 
 

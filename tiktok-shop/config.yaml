@@ -33,7 +33,7 @@ flow:
   hero_model: "Veo 3.1 Fast"    # 8 s ≈ 20 credits; hero clips carry NO voice-over (keeps one consistent narrator voice)
   base_model: "Omni 1.1 Flash"  # 6 s = 10, 8 s = 12, 10 s = 15 credits; narrated clips with the Ate Host character
   hero_clips_per_ad: 2          # 1-3; the product in close-up, used, working
-  max_clips_per_ad: 11          # generations per ad including redos
+  max_clips_per_ad: 14          # generations per ad including QC recreations (failed clips are recreated, owner 2026-10-28)
   credits_per_ad_estimate: 120  # e.g. 6 Omni narrated clips (~80) + 2 Veo hero clips (~40)
   kilabot_floor: 60             # never spend below this, so the Kwento: Kilabot daily video never stops
   outputs_per_prompt: 1
