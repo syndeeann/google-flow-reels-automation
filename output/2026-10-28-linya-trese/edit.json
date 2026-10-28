@@ -1,0 +1,17 @@
+{
+ "clips": [
+  {"n": 1, "start": 0.8, "end": 9.6},
+  {"n": 2, "start": 0.0, "end": 9.9},
+  {"n": 3, "start": 0.0, "end": 9.65},
+  {"n": 4, "start": 0.0, "end": 8.0},
+  {"n": 5, "start": 0.2, "end": 7.4},
+  {"n": 6, "start": 0.0, "end": 8.0},
+  {"n": 7, "start": 0.0, "end": 6.8},
+  {"n": 8, "start": 0.0, "end": 8.9},
+  {"n": 9, "start": 0.0, "end": 10.0},
+  {"n": 10, "start": 0.3, "end": 6.0},
+  {"n": 11, "start": 0.0, "end": 10.0},
+  {"n": 12, "start": 0.0, "end": 10.0}
+ ],
+ "end_card": {"text": "Sasagutin mo ba\nang linya trese?", "sub": "Kwento: Kilabot", "seconds": 3.5}
+}

@@ -1,1 +1,2 @@
 - 2026-10-28 09:30 — Claimed topic 'linya-trese' (12 clips, 9:16).
+- 2026-10-28 09:49 — Finished with status 'ready_to_post'. QC passed
