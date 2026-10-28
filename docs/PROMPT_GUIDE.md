@@ -23,6 +23,7 @@ Claude writes the stories. Every finished video must pass the quality check (RUN
   - **Twist that re-reads the story** in the last line (the narrator is the ghost; the caller was calling from the future; the abandoned building was never abandoned; the kid saved the monster). No moral, no outro, no CTA spoken.
 - **No repeated words in the narration** (owner, 2026-10-28): never the same word twice in a row or twice in one clip's line ("papalapit nang papalapit", "Walang gumagalaw. Walang tumitingin." → rewrite), never the same two-word phrase in two clips, and vary any word that would show up in 3+ clips. `reels.py validate` and `qc.py` enforce this with `scripts/repeats.py`.
 - Keep it horror, not gore: imply violence (shadows, sounds, aftermath off screen). No children harmed or in danger on screen, no real people, no real crimes, no real company/school/building names, no brands.
+- **No dubbing** (owner, 2026-10-28): on-screen characters sometimes lip-sync the narrator's voice-over. Every narrated clip says nobody on screen moves their lips (lines above + the `negatives`); `reels.py validate` rejects a narrated prompt without "lips". Prefer faces in profile, from behind, half in shadow or busy with an action (holding a phone to the ear, looking at a screen) during narration; for a face close-up write "lips pressed together, silent". Never write "his voice is the voice-over" for an on-screen person without the closed-lips sentence.
 - **Second voices are risky:** Flow refused a clip twice when another character shouted a line. Keep other characters' lines short and quiet, or have the narrator quote them. Also refused: a covered body; a child on screen in a horror shot.
 - Title format: `Kilabot #N: <Tagalog title>`; N continues from the last number in the queue.
 
@@ -38,8 +39,8 @@ Never more than 18 words in one clip (it gets cut off at the end). Put `"seconds
 ## Prompts
 Every prompt stands on its own (the model doesn't remember other clips). Order:
 1. `Vertical 9:16 video.` + the Narrator line:
-   - off screen: `The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over.`
-   - on screen: `The attached Narrator character is the young man in this scene (use his look); his voice is the voice-over.`
+   - off screen: `The attached Narrator character is off-screen and does not appear; only his voice is heard as the voice-over. Anyone on screen keeps their lips closed and does not speak.`
+   - on screen: `The attached Narrator character is the young man in this scene (use his look). His voice is an inner-monologue voice-over recorded separately: his lips stay closed and still the whole time, he never speaks or mouths the words.`
    - clip where only another character speaks: no Narrator line, and don't attach the character in Flow.
 2. Camera + action for these seconds (slow push-in, static wide, slow pan to a doorway…). Suggest the creature (silhouette, eyes in the dark, shadow, sound) more than show it.
 3. Setting/light: the brief's `look` + scene details (Metro Manila street or province, as the story needs).

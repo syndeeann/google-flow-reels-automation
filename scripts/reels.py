@@ -197,6 +197,8 @@ def cmd_validate(run_dir: Path) -> None:
             problems.append(f"{tag}: character sheet isn't repeated word-for-word (hurts consistency)")
         if vo and narrator and narrator not in prompt:
             problems.append(f"{tag}: narrator description isn't repeated word-for-word")
+        if (c.get("voiceover") or "").strip() and "lips" not in prompt.lower():
+            problems.append(f"{tag}: narrated clip must say nobody on screen moves their lips (owner 2026-10-28: characters were dubbing the narration) — see PROMPT_GUIDE")
         if "no on-screen text" not in prompt.lower() and "no subtitles" not in prompt.lower():
             problems.append(f"{tag}: missing negatives (no subtitles / no on-screen text)")
     if clips and brief.get("cta") and brief.get("cta_in_last_clip", True):

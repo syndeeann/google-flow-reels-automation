@@ -15,7 +15,7 @@ voice:
 
 style:
   look: "dark foggy night, thick low mist, cold blue moonlight, deep shadows, cinematic, realistic, slow ominous camera movement, subtle film grain"   # add the setting per story (province or Metro Manila)
-  negatives: "no subtitles, no on-screen text, no watermark, no logos, no gore, no blood"
+  negatives: "no subtitles, no on-screen text, no watermark, no logos, no gore, no blood, nobody on screen talks or moves their lips (the narration is a voice-over only)"
 
 caption:
   # Final caption = caption_text (from prompts.json) + cta + hashtags (topic hashtags first, then these).

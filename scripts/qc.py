@@ -204,6 +204,31 @@ def main(run_dir: Path) -> int:
     lst.write_text("".join(f"file '{p.name}'\n" for p in tiles))
     sh(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst),
         "-vf", f"tile={cols}x{rows}:padding=4", "-frames:v", "1", str(chk / "qc_sheet.png")])
+    # Lip-sync sheet (owner, 2026-10-28: on-screen characters sometimes "dub" the narration).
+    # Only clips that show a person: 4 larger frames spread over the clip, so Claude can see whether
+    # anyone's mouth opens/moves with the voice-over. No face model is available in the workspace,
+    # so this is a visual check (RUNBOOK 4b), not an automatic one.
+    people = re.compile(r"\b(man|woman|guard|agent|boy|girl|lola|lolo|mother|father|teacher|student|vendor|"
+                        r"old|young man|person|people|face|character is the)\b", re.I)
+    lip_tiles = []
+    for n, t0, d in seg_times:
+        c = script[n - 1] if n <= len(script) else {}
+        if "is off-screen" in c.get("prompt", "") and not people.search(c.get("visual", "")):
+            continue
+        if not people.search(c.get("visual", "") + " " + c.get("prompt", "")[:400]):
+            continue
+        for k, frac in enumerate((0.15, 0.38, 0.62, 0.85)):
+            out = chk / f"lip_{n:02d}{k}.png"
+            sh(["ffmpeg", "-nostdin", "-v", "error", "-y", "-ss", f"{t0 + d * frac:.2f}", "-i", str(final), "-frames:v", "1",
+                "-vf", f"scale=360:640,drawtext=fontfile={FONT}:text='{n}.{k + 1}':x=8:y=8:fontsize=30:fontcolor=yellow:"
+                       "box=1:boxcolor=black@0.6", str(out)])
+            lip_tiles.append(out)
+    lip_clips = sorted({int(p.name[4:6]) for p in lip_tiles})
+    if lip_tiles:
+        ll = chk / "lip_list.txt"
+        ll.write_text("".join(f"file '{p.name}'\n" for p in lip_tiles))
+        sh(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(ll),
+            "-vf", f"tile=4x{len(lip_tiles) // 4}:padding=4", "-frames:v", "1", str(chk / "lip_sheet.png")])
     visuals = {str(n): (script[n - 1].get("visual", "") if n <= len(script) else "") for n, _, _ in seg_times}
 
     # Repeated words in the narrator's script (owner, 2026-10-28)
@@ -215,6 +240,7 @@ def main(run_dir: Path) -> int:
 
     result = {"passed": not problems, "problems": problems, "warnings": warnings, "info": info,
               "visual_review": {"sheet": "check/qc_sheet.png", "expected_visuals": visuals,
+                                "lip_sheet": "check/lip_sheet.png" if lip_tiles else None, "lip_check_clips": lip_clips,
                                 "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its "
                                                 "expected visual, clips are in story order, no clip repeats, no "
                                                 "text/watermark/garbled faces, characters stay consistent."}}

@@ -1,30 +1,49 @@
 {
- "passed": true,
- "problems": [],
- "warnings": [],
- "info": {
-  "worst_lag_ms": 10.0,
-  "duration": 106.38,
-  "size_mb": 9.05
- },
- "visual_review": {
-  "sheet": "check/qc_sheet.png",
-  "expected_visuals": {
-   "1": "Wide view of the empty call center floor at 3 AM; a desk phone at the far end blinks red",
-   "2": "Extreme close-up of a desk phone display glowing, a hand hovering over the handset",
-   "3": "The narrator at his desk wearing a headset, tired, coworkers in the background",
-   "4": "Static wide: agents frozen at their desks, nobody looks at the ringing phone at the far desk",
-   "5": "Over-the-shoulder: the phone on the next desk lights up and rings",
-   "6": "POV dolly along a row of desks, phones lighting up red one by one toward the camera",
-   "7": "Night lobby of an office tower, an old guard at the desk lit by CCTV monitors",
-   "8": "Close-up of the guard's face; behind him a CCTV screen shows the empty floor",
-   "9": "The narrator sits at his desk; the phone right in front of him flashes red; coworkers have their backs turned",
-   "10": "Extreme close-up of a hand slowly lifting the phone handset",
-   "11": "Close-up of the narrator holding the handset, eyes widening; a faint silhouette stands at the far desk behind him",
-   "12": "The narrator's empty desk with the handset off the hook; across the floor a new agent at the far desk looks at her ringing phone"
+  "passed": false,
+  "problems": [
+    "repeated words in script: clip 4: \"walang\" used twice in one line — \"Labintatlong ring. Walang gumagalaw. Walang tumitingin. Tapos titigil... na parang may sumagot.\"",
+    "repeated words in script: clip 6: \"papalapit nang papalapit\" — word repeated",
+    "repeated words in script: clip 6: \"papalapit\" used twice in one line — \"Martes, isang mesa pa. Miyerkules, isa pa. Papalapit nang papalapit sa upuan ko.\"",
+    "repeated words in script: \"linya trese\" repeated in clips [1, 8]",
+    "repeated words in script: \"labintatlong ring\" repeated in clips [4, 10]",
+    "repeated words in script: \"dulong mesa\" repeated in clips [5, 12]"
+  ],
+  "warnings": [
+    "repeated words in script: \"linya\" appears in 4 clips [1, 7, 8, 11] — vary it unless it is the one deliberate callback",
+    "repeated words in script: \"alas-tres\" appears in 4 clips [1, 3, 9, 12] — vary it unless it is the one deliberate callback",
+    "repeated words in script: \"ring\" appears in 3 clips [3, 4, 10] — vary it unless it is the one deliberate callback",
+    "repeated words in script: \"mesa\" appears in 3 clips [5, 6, 12] — vary it unless it is the one deliberate callback"
+  ],
+  "info": {
+    "worst_lag_ms": 10.0,
+    "duration": 106.38,
+    "size_mb": 9.05
   },
-  "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its expected visual, clips are in story order, no clip repeats, no text/watermark/garbled faces, characters stay consistent.",
-  "claude": "PASS: 12 clips in script order, no repeated shots, narrator look consistent (clips 3, 9, 11), guard consistent (7, 8). Minor: faint background building sign and a 'SECURITY' lanyard print — judged OK. Clip 7 ends on the floor instead of the lobby; clip 11's silhouette is not visible — story still reads."
- },
- "fixed": []
+  "visual_review": {
+    "sheet": "check/qc_sheet.png",
+    "expected_visuals": {
+      "1": "Wide view of the empty call center floor at 3 AM; a desk phone at the far end blinks red",
+      "2": "Extreme close-up of a desk phone display glowing, a hand hovering over the handset",
+      "3": "The narrator at his desk wearing a headset, tired, coworkers in the background",
+      "4": "Static wide: agents frozen at their desks, nobody looks at the ringing phone at the far desk",
+      "5": "Over-the-shoulder: the phone on the next desk lights up and rings",
+      "6": "POV dolly along a row of desks, phones lighting up red one by one toward the camera",
+      "7": "Night lobby of an office tower, an old guard at the desk lit by CCTV monitors",
+      "8": "Close-up of the guard's face; behind him a CCTV screen shows the empty floor",
+      "9": "The narrator sits at his desk; the phone right in front of him flashes red; coworkers have their backs turned",
+      "10": "Extreme close-up of a hand slowly lifting the phone handset",
+      "11": "Close-up of the narrator holding the handset, eyes widening; a faint silhouette stands at the far desk behind him",
+      "12": "The narrator's empty desk with the handset off the hook; across the floor a new agent at the far desk looks at her ringing phone"
+    },
+    "lip_sheet": "check/lip_sheet.png",
+    "lip_check_clips": [
+      3,
+      7,
+      8,
+      9,
+      11,
+      12
+    ],
+    "instructions": "Two frames per clip (a = 25%, b = 75%). Confirm each clip shows its expected visual, clips are in story order, no clip repeats, no text/watermark/garbled faces, characters stay consistent."
+  }
 }
