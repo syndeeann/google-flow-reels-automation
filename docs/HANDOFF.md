@@ -45,6 +45,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 - 2026-10-27 10:15: owner: stories **up to 2 minutes**, and new theme families besides folklore: **abandoned buildings, call center (BPO) horrors, school horrors, horror for kids (kwentong pambata)**; "make it interesting and not boring". Done: config (110 s target, 16-clip cap, credit tiers full ≥400 / medium 200–399 / lean <200), PROMPT_GUIDE (theme rotation, engagement rules, kids-story safety rules), CAPTION_GUIDE (per-theme search words; kids stories = YouTube "made for kids"), RUNBOOK step 2, reels.py (4–16 clips), assemble.py (two-pass encode fits any length up to ~2 min under 9.5 MB; tested 123 s → 9.0 MB, sync 10 ms).
   - Credit math: a 2-min story costs ~170–200 credits; the plan adds 50/day. From 493 that's roughly two full-length days, then mostly medium/lean videos with a full one every few days.
 
+- 2026-10-28 08:05 (daily run): Kilabot #5 "Linya Trese" (call center theme, 12 clips, 106 s; balance 543 → ~377). QC passed. Posted to YouTube (https://youtube.com/shorts/dNpQf1pS3sc). **Facebook held**: the Project instructions still require the owner's explicit approval of each video + caption for Facebook, which overrides the scheduled prompt's auto-post; status `ready_to_post` until the owner approves or edits the Project instructions. Flow: Agent chip defaults ON again; type into `div[aria-label="What do you want to create?"]`, not the hidden textarea.
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.
