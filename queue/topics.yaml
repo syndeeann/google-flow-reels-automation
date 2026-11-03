@@ -16,12 +16,12 @@
 
 topics:
   - id: model-unit-pasig
-    status: in_progress
+    status: draft
     theme: abandoned_buildings
     topic: "Kilabot #6: Ang Model Unit — a night guard at an abandoned, powerless condo tower sees a light on the 9th floor every night"
     folklore: "Abandoned building horror (original)"
     clip_count: 8
-    notes: "Twist: he runs down from the lit model unit where three mannequins sit at a table set for four; from below, the window now shows four figures, and the fourth wears his uniform. Setting: unfinished condominium tower in Pasig (no company names)."
+    notes: "Twist: he runs down from the lit model unit where three mannequins sit at a table set for four; from below, the window now shows four figures, and the fourth wears his uniform. Setting: unfinished condominium tower in Pasig (no company names). PARKED 2026-11-03: script + prompts are written (output/2026-11-03-model-unit-pasig, ~106 credits), no clips made; another run was already generating Kilabot #6 'Ang Buzzer ng Ward 3' (also abandoned buildings). Renumber the title/captions and set status ready when it's next."
 
   - id: linya-trese
     status: posted
