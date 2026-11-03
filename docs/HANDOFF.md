@@ -50,6 +50,8 @@ Syndee (GitHub: syndeeann), Asia/Manila timezone. Google Flow on the Google AI P
 
 - 2026-10-29 00:30: owner introduced named skills (repo syndeeann/custom-claude-skills) and a new order: **Marites** (storyteller) story/script → **Senyorita** (ai-prompt-expert) Flow prompts → Flow clips → **Perpekto** (flow-clip-qa) checks each clip against the story → **Jaiman** (video-editor) compiles in story order → Perpekto checks the final → only on PASS post to YouTube + Facebook → **Chelsea** (portfolio-updater) updates the portfolio. Written up in `docs/PIPELINE.md` (stages, hand-offs, loops, the horror-story brief to give each skill); `scripts/skills_bridge.py` copies the skills' script/prompts files into a run's `prompts.json`; CLAUDE.md and RUNBOOK point to it. Not yet run end to end on a real video. Scheduled-task prompts were not changed (they follow RUNBOOK). Needs: custom-claude-skills and my-portfolio added (push) to the scheduled tasks' repositories; the `video-editor` (Jaiman) skill installed in Claude, otherwise it is read from the skills repo.
 
+- 2026-11-03 19:15: owner **paused automated Kwento: Kilabot creation** until further notice. Scheduled tasks "Kwento: Kilabot daily videos" and "Kwento: Kilabot catch-up" are disabled (not deleted); re-enable them when the owner says to resume. TikTok Shop daily ads task untouched. Parked topic: model-unit-pasig (draft, prompts written, needs renumbering).
+
 ## Decided
 - Facebook Page: **Kwento: Kilabot**.
 - Style: Tagalog horror stories based on Filipino folklore, dark foggy night scenes, slow eerie male narrator, every video ends on a twist.
