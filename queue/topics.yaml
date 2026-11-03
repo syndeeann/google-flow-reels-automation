@@ -15,6 +15,14 @@
 # Every story: Tagalog, Filipino folklore, dark foggy night, slow eerie male narrator, ends on a twist.
 
 topics:
+  - id: model-unit-pasig
+    status: in_progress
+    theme: abandoned_buildings
+    topic: "Kilabot #6: Ang Model Unit — a night guard at an abandoned, powerless condo tower sees a light on the 9th floor every night"
+    folklore: "Abandoned building horror (original)"
+    clip_count: 8
+    notes: "Twist: he runs down from the lit model unit where three mannequins sit at a table set for four; from below, the window now shows four figures, and the fourth wears his uniform. Setting: unfinished condominium tower in Pasig (no company names)."
+
   - id: linya-trese
     status: posted
     theme: call_center
