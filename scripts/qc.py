@@ -30,6 +30,9 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from assemble import expand  # noqa: E402  (cut / cover spans -> plain pieces)
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from assemble import FPS, lag_ms, pcm  # noqa: E402
 
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
@@ -72,11 +75,12 @@ def main(run_dir: Path) -> int:
     tid = brief["topic_id"]
     final = run_dir / f"{tid}-final.mp4"
     script = data["clips"]
-    cuts = edit["clips"]
+    edit_clips = edit["clips"]
+    cuts = expand(edit_clips)
     problems, warnings, info = [], [], {}
 
     # 1. completeness / order
-    ns = [c["n"] for c in cuts]
+    ns = [c["n"] for c in edit_clips]
     if ns != list(range(1, len(script) + 1)):
         problems.append(f"cut list clips {ns} != script clips 1..{len(script)} in order (missing, extra, repeated or out of order)")
 
@@ -107,19 +111,20 @@ def main(run_dir: Path) -> int:
                 problems.append(f"clips {keys[i]} and {keys[j]} look identical (mean pixel diff {diff:.1f}) — redundant clip?")
 
     # 3-5. per-segment identity, sync, narration
-    src_audio = {c["n"]: pcm(srcs[c["n"]], c["start"], c["end"] - c["start"]) for c in cuts if srcs[c["n"]].exists()}
+    src_audio = {i: pcm(srcs[c["n"]], c["start"], c["end"] - c["start"]) for i, c in enumerate(cuts) if srcs[c["n"]].exists()}
     t = 0.0
     seg_times = []
     worst = 0.0
-    for c in cuts:
+    outs = {}
+    for pi, c in enumerate(cuts):
         n = c["n"]
         d = int((c["end"] - c["start"]) * FPS) / FPS
         seg_times.append((n, t, d))
-        if n not in src_audio:
+        if pi not in src_audio:
             t += d
             continue
         out = pcm(final, t, d)
-        lag = lag_ms(src_audio[n], out)
+        lag = lag_ms(src_audio[pi], out)
         worst = max(worst, abs(lag))
         if abs(lag) > 60:
             problems.append(f"clip {n} at {t:.1f}s: voice-over out of sync by {lag:+.0f} ms")
@@ -131,16 +136,14 @@ def main(run_dir: Path) -> int:
             ea = np.abs(a[:m]).reshape(-1, 80).mean(1); eb = np.abs(b[:m]).reshape(-1, 80).mean(1)
             m2 = min(len(ea), len(eb)); ea, eb = ea[:m2], eb[:m2]
             return float(np.corrcoef(ea, eb)[0, 1]) if ea.std() > 0 and eb.std() > 0 else -1.0
-        own = corr(src_audio[n], out)
-        others = [(corr(src_audio[k], out), k) for k in src_audio if k != n]
+        own = corr(src_audio[pi], out)
+        others = [(corr(src_audio[j], out), cuts[j]["n"]) for j in src_audio if cuts[j]["n"] != n]
         best_other = max(others) if others else (-1.0, None)
         if own < 0.5 or best_other[0] > own + 0.05:
             problems.append(f"clip {n} at {t:.1f}s: audio doesn't match its own clip (own {own:.2f}, clip {best_other[1]} {best_other[0]:.2f})")
 
         line = (script[n - 1].get("voiceover") or "") + (script[n - 1].get("dialogue") or "") if n <= len(script) else ""
-        sr = speech_ratio(out)
-        if line.strip() and sr < 0.15:
-            problems.append(f"clip {n} at {t:.1f}s: little or no narration heard (speech {sr:.0%}) — line missing or cut")
+        outs.setdefault(n, []).append(out)
         # audio dropout: a fully silent stretch >= 0.7 s in the middle of a narrated clip
         if line.strip() and len(out) > 16000:
             k = 400
@@ -157,6 +160,19 @@ def main(run_dir: Path) -> int:
 
     # 6. picture glitches (whole video; end card excluded)
     story_end = t
+    for n, parts in outs.items():     # narration is judged per whole clip (a cut-out piece can be all pause)
+        line = spoken(script[n - 1]) if 'spoken' in globals() else ((script[n - 1].get("voiceover") or "") + (script[n - 1].get("dialogue") or ""))
+        if n <= len(script) and line.strip() and speech_ratio(np.concatenate(parts)) < 0.15:
+            problems.append(f"clip {n}: little or no narration heard — line missing or cut")
+
+    # spoken repeats: the same word / phrase said twice in the generated audio (what the script check cannot hear)
+    rep_hits = []
+    if True:
+        from audio_repeats import find_repeats, describe
+        rep_hits = find_repeats(pcm(final, 0, story_end))
+        info["audio_repeats"] = rep_hits
+        for r in rep_hits:
+            (problems if (r["strong"] or True) else warnings).append(describe(r))
     blk = sh(["ffmpeg", "-nostdin", "-v", "info", "-t", f"{story_end:.2f}", "-i", str(final), "-vf",
               "blackdetect=d=0.4:pic_th=0.98", "-an", "-f", "null", "-"])
     for s, e in re.findall(r"black_start:([\d.]+) black_end:([\d.]+)", blk):

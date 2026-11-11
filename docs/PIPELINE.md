@@ -10,13 +10,14 @@ next stage may reject.**
 | 1 | **Marites** | `storyteller` | Learns the concept, writes the horror story and the clip-by-clip script | script `.md` + `.prompts.json` → Senyorita |
 | 2 | **Senyorita** | `ai-prompt-expert` | Turns the script into thorough, flawless Google Flow prompts | prompts `.md` + `.json` → Flow generation |
 | 3 | Claude (runner) | — | Generates the clips in Flow and downloads them (RUNBOOK 3) | raw clips → Perpekto |
-| 4 | **Perpekto** | `flow-clip-qa` | **Pass 1:** checks every clip, knowing the story | verdict per clip → Jaiman (or back to 3) |
+| 4 | **Perpekto** | `flow-clip-qa` | **Pass 1:** checks every clip, knowing the story | verdict per clip + the edit that fixes each flaw → Jaiman |
 | 5 | **Jaiman** | `video-editor` | Compiles the clips in the story's order into one video | final video + cut list → Perpekto |
-| 6 | **Perpekto** | `flow-clip-qa` | **Pass 2:** checks the finished video | PASS → post; FAIL → back to Jaiman or 3 |
+| 6 | **Perpekto** | `flow-clip-qa` | **Pass 2:** checks the finished video, including a listen-by-sound check for repeated words | PASS → post; FAIL → back to Jaiman (edit) |
 | 7 | Claude (runner) | — | Posts to **YouTube and Facebook**, only after Perpekto's pass 2 PASS (RUNBOOK 5) | links → Chelsea |
 | 8 | **Chelsea** | `portfolio-updater` | Updates the portfolio with the posted video | live portfolio |
 
 **Hard gates**
+- **Nothing is ever regenerated to fix a flaw** (owner, 2026-11-12: "do not regenerate the video, edit it when there is a flaw"). A flaw is fixed by editing the video (trim, cut out, cover with clean picture). If editing cannot fix it, the video is logged `failed` and not posted; credits are not spent on a second attempt. The only Flow generation is the first pass over a topic's clips, and a refused prompt (Flow itself refusing) rewritten and submitted.
 - Nothing reaches Flow until Marites's script and Senyorita's prompts both pass their lint and `reels.py validate`.
 - Nothing is edited until Perpekto passes the clips (pass 1). Nothing is posted until Perpekto passes the final (pass 2).
   No PASS from Perpekto = no post, on either platform. A failed video is logged `failed` and never posted.
@@ -72,6 +73,8 @@ and tells the skill to use the `kwento-kilabot` profile.
   in sync (≤ 60 ms); no black or frozen frames, no glitch at any join; video/audio length match; 720×1280, under
   9.5 MB (YouTube/Facebook upload limit for the runner); the end card reads correctly.
 - Also run `python scripts/qc.py <run_dir>` (this repo's own gate); a failure in either one is a FAIL.
+- **Repeated words, two checks (owner, 2026-11-12, after a posted video still had a repeated word):** (1) the written script (`repeats.py`); (2) the audio Flow generated (`audio_repeats.py`, run on every narrated clip in pass 1 and on the whole final in pass 2): a word or phrase the narrator says twice is a FAIL even when the written line is clean. In this project a *possible* repeat (weak match) also fails; a clip whose speech runs much longer than its word count (> ~1.35× + 0.6 s) fails too. Perpekto reports the time span to cut. Spoken words are not transcribed (no speech recognition here), so this is by sound: if something still sounds doubled, tell the owner which clip and time.
+- Each flaw comes with the **edit that fixes it** (trim / `cut` / `cover`, see Loops), never "regenerate".
 - Verdict and evidence only. Perpekto never regenerates, re-edits or posts.
 
 ### Role block: Jaiman (video-editor)
@@ -80,7 +83,7 @@ and tells the skill to use the `kwento-kilabot` profile.
 - Trim each clip's unstable first/last half-second, keep the quiet beat and the pause before the twist, and land every
   narration line inside its own clip.
 - Build with `scripts/assemble.py` (this project's finishing: frame-locked audio, end card, ≤ 9.5 MB) driven by
-  the same `edit.json` (`n`, `start`, `end` in story order); then run `jaiman_edit.py check` on the result.
+  the same `edit.json` (`n`, `start`, `end` in story order, plus `cut` / `cover` spans to remove a repeated word or hide a bad picture without regenerating); then run `jaiman_edit.py check` on the result.
 - Hand Perpekto the final video and `edit.json`, with what was and was not measured.
 
 ### Role block: Chelsea (portfolio-updater)
@@ -92,12 +95,13 @@ and tells the skill to use the `kwento-kilabot` profile.
 | Problem found | Goes back to | Fix |
 |---|---|---|
 | Script/prompt lint fails, repeated words, line too long for its clip | Marites / Senyorita | rewrite that line or prompt, re-lint |
-| A clip shows the wrong scene, text, garbled face/hands, dubbing, or no narration (pass 1) | Runner → Flow | regenerate **only that clip** (softened if refused), re-download, Perpekto re-checks that clip |
-| A line is too long for its clip (Jaiman) | Marites | shorten the line; regenerate that clip |
+| A word/phrase said twice in the audio, or speech much longer than the line (pass 1 or 2) | Jaiman | `cut` the repeated span on that clip (or trim `end`), rebuild, Perpekto re-checks |
+| A clip shows text, a garbled face/hands, the wrong picture or a moving mouth for part of the clip (pass 1) | Jaiman | `cover` that span with clean picture from another clip (narration kept), or `cut` a flawed beat that carries no words |
+| No narration / line cut off / the whole clip unusable and no clean footage anywhere | — | cannot be fixed by editing: log `failed`, do not post, tell the owner which clip and why (no regeneration) |
+| A line is too long for its clip (Jaiman) | Marites | shorten the line **before** generating; after generating, trim or cut instead |
 | Clips out of order, bad trim, out of sync, glitch at a join (pass 2) | Jaiman | fix `edit.json`, rebuild, Perpekto re-checks |
-| Pass 2 fails because of a bad clip | Runner → Flow → Perpekto pass 1 | regenerate, re-check, re-edit |
 
-At most 2 fix rounds per stage, within the credit cap. Still failing: `reels.py finish <topic_id> failed "<what>"`,
+At most 2 fix rounds per stage. Fixes cost no Flow credits. Still failing: `reels.py finish <topic_id> failed "<what>"`,
 log it in the Video Log, do not post, say which clip and why.
 
 ## What each hand-off looks like

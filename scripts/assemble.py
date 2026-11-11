@@ -6,6 +6,12 @@
 Reads <run_dir>/edit.json:
 {
   "clips": [{"n": 1, "start": 0.4, "end": 8.0}, ...],          # story order; files clips/<topic_id>-clipNN.mp4
+      # fixing a flaw by EDITING (owner 2026-11-12: never regenerate; edit the video instead). Optional per clip:
+      #   "cut":   [[3.1, 4.0], ...]   source seconds REMOVED from the clip (picture and sound), e.g. a word Flow
+      #                                said twice, or a glitch; the pieces on either side are joined.
+      #   "cover": [{"from": 2.0, "to": 3.1, "pic": {"n": 5, "start": 4.0}}]
+      #                                keep this clip's SOUND for the span but show clean picture from another
+      #                                clip (garbled hands, stray text, a mouth moving while the narrator talks).
   "bed": {"clip": 22, "start": 5.6, "end": 6.8,                 # a sound lifted from one generated clip
           "every": 2.6, "gain_db": -8, "lowpass": 2800,
           "under": [1, 2, 3]},                                  # clip numbers that get the bed
@@ -87,6 +93,33 @@ def lag_ms(ref: np.ndarray, sig: np.ndarray, max_ms: int = 1500) -> float:
     return arg * 10.0
 
 
+def expand(clips: list[dict]) -> list[dict]:
+    """Turn each clip (with optional cut / cover spans) into plain pieces: {n, start, end, pic?}."""
+    out = []
+    for c in clips:
+        cuts = sorted((float(a), float(b)) for a, b in c.get("cut", []))
+        covers = sorted(c.get("cover", []), key=lambda x: x["from"])
+        edges = {round(float(c["start"]), 3), round(float(c["end"]), 3)}
+        for a, b in cuts:
+            edges |= {round(a, 3), round(b, 3)}
+        for cv in covers:
+            edges |= {round(float(cv["from"]), 3), round(float(cv["to"]), 3)}
+        pts = sorted(e for e in edges if c["start"] - 1e-6 <= e <= c["end"] + 1e-6)
+        for a, b in zip(pts, pts[1:]):
+            if b - a < 0.1:
+                continue
+            mid = (a + b) / 2
+            if any(x <= mid < y for x, y in cuts):
+                continue
+            piece = {"n": c["n"], "start": a, "end": b}
+            for cv in covers:
+                if cv["from"] <= mid < cv["to"]:
+                    pic = cv["pic"]
+                    piece["pic"] = {"n": pic["n"], "start": float(pic["start"]) + (a - cv["from"])}
+            out.append(piece)
+    return out
+
+
 def main(run_dir: Path) -> None:
     brief = json.loads((run_dir / "brief.json").read_text(encoding="utf-8"))
     edit = json.loads((run_dir / "edit.json").read_text(encoding="utf-8"))
@@ -105,16 +138,19 @@ def main(run_dir: Path) -> None:
 
     vsegs, asegs, plan = [], [], []
     t = 0.0
-    for k, c in enumerate(edit["clips"]):
+    for k, c in enumerate(expand(edit["clips"])):
         src = run_dir / "clips" / f"{tid}-clip{c['n']:02d}.mp4"
+        pic = c.get("pic")
+        vsrc = run_dir / "clips" / f"{tid}-clip{pic['n']:02d}.mp4" if pic else src
+        vstart = pic["start"] if pic else c["start"]
         avail = int(run(["ffprobe", "-v", "error", "-count_packets", "-select_streams", "v",
-                         "-show_entries", "stream=nb_read_packets", "-of", "csv=p=0", str(src)]).strip())
-        frames = min(int((c["end"] - c["start"]) * FPS), avail - int(round(c["start"] * FPS)))
+                         "-show_entries", "stream=nb_read_packets", "-of", "csv=p=0", str(vsrc)]).strip())
+        frames = min(int((c["end"] - c["start"]) * FPS), avail - int(round(vstart * FPS)))
         d = frames / FPS                      # exact segment length
         S = frames * SR // FPS                # exact audio samples
         gain = max(-12.0, min(12.0, -16.0 - loudness(src, c["start"], d)))
         v = tmp / f"v{k:02d}.mkv"
-        run(["-ss", f"{c['start']:.3f}", "-i", str(src), "-frames:v", str(frames), "-an",
+        run(["-ss", f"{vstart:.3f}", "-i", str(vsrc), "-frames:v", str(frames), "-an",
              "-vf", f"scale={W}:{H}:flags=lanczos,setsar=1,fps={FPS},format=yuv420p",
              "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", str(v)])
         vf_got = int(run(["ffprobe", "-v", "error", "-count_packets", "-select_streams", "v",
